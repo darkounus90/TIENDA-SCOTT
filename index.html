@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Grupo Empresarial El Pedalazo - Tienda de Bicicletas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header__content">
+      <div class="logo">
+        <span>El Pedalazo</span>
+      </div>
+
+      <nav class="nav">
+        <a href="#home">Inicio</a>
+        <a href="#categorias">Categorías</a>
+        <a href="#productos">Productos</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <div class="header__actions">
+        <input type="text" id="searchInput" placeholder="Buscar bicicletas, cascos..." />
+        <button class="btn-icon" id="cartButton">
+          🛒 <span id="cartCount">0</span>
+        </button>
+        <button class="btn-secondary" id="loginButton">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="container hero__content">
+      <div class="hero__text">
+        <h1>Pedalea más lejos, vende más fuerte</h1>
+        <p>
+          Bicicletas, accesorios y equipamiento profesional para montaña, ruta, gravel y ciudad. Grupo Empresarial El Pedalazo.
+        </p>
+        <div class="hero__actions">
+          <a href="#productos" class="btn-primary">Ver ofertas</a>
+          <a href="#servicios" class="btn-secondary">Taller y mantenimiento</a>
+        </div>
+      </div>
+      <div class="hero__image">
+        <!-- Aquí podrías poner una imagen real -->
+        <div class="hero__badge">MTB · Ruta · Gravel · E‑Bikes</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="section" id="categorias">
+    <div class="container">
+      <h2>Categorías principales</h2>
+      <p>Encuentra la bicicleta ideal y complementos para cada tipo de ciclismo.</p>
+
+      <div class="grid categorias__grid">
+        <article class="card categoria" data-category="mtb">
+          <h3>Montaña (MTB)</h3>
+          <p>XC, trail y enduro para dominar cualquier terreno.</p>
+        </article>
+
+        <article class="card categoria" data-category="ruta">
+          <h3>Ruta</h3>
+          <p>Ligereza y aerodinámica para largas distancias.</p>
+        </article>
+
+        <article class="card categoria" data-category="gravel">
+          <h3>Gravel</h3>
+          <p>Aventura y versatilidad en caminos mixtos.</p>
+        </article>
+
+        <article class="card categoria" data-category="ciudad">
+          <h3>Ciudad / Urbanas</h3>
+          <p>Comodidad y estilo para el día a día.</p>
+        </article>
+
+        <article class="card categoria" data-category="ebike">
+          <h3>E‑Bikes</h3>
+          <p>Asistencia eléctrica para ir más lejos con menos esfuerzo.</p>
+        </article>
+
+        <article class="card categoria" data-category="accesorios">
+          <h3>Accesorios</h3>
+          <p>Cascos, luces, herramientas, rodillos y más.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="section" id="productos">
+    <div class="container">
+      <div class="section__header">
+        <h2>Productos destacados</h2>
+        <select id="categoryFilter">
+          <option value="all">Todas las categorías</option>
+          <option value="mtb">Montaña</option>
+          <option value="ruta">Ruta</option>
+          <option value="gravel">Gravel</option>
+          <option value="ciudad">Ciudad</option>
+          <option value="ebike">E‑Bikes</option>
+          <option value="accesorios">Accesorios</option>
+        </select>
+      </div>
+
+      <div class="grid productos__grid" id="productList">
+        <!-- JS inyecta las tarjetas de producto aquí -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS / TALLER -->
+  <section class="section section--alt" id="servicios">
+    <div class="container servicios__content">
+      <div>
+        <h2>Taller especializado y servicios</h2>
+        <p>
+          Ofrecemos mantenimiento preventivo, reparaciones completas, ajustes de transmisión
+          y servicio de suspensión para todas las marcas.
+        </p>
+        <ul class="servicios__list">
+          <li>Mantenimiento básico y avanzado.</li>
+          <li>Ajuste de frenos, cambios y suspensión.</li>
+          <li>Armado de bicicletas nuevas y personalización.</li>
+          <li>Asesoría para elección de talla y tipo de bicicleta.</li>
+        </ul>
+      </div>
+      <div class="servicios__box">
+        <h3>Agenda tu servicio</h3>
+        <form id="serviceForm">
+          <label>
+            Nombre
+            <input type="text" name="nombre" required />
+          </label>
+          <label>
+            Teléfono / WhatsApp
+            <input type="tel" name="telefono" required />
+          </label>
+          <label>
+            Tipo de servicio
+            <select name="tipo" required>
+              <option value="mantenimiento">Mantenimiento general</option>
+              <option value="ajuste">Ajuste cambios / frenos</option>
+              <option value="suspension">Servicio de suspensión</option>
+              <option value="asesoria">Asesoría de compra</option>
+            </select>
+          </label>
+          <button type="submit" class="btn-primary btn-full">Enviar solicitud</button>
+          <p class="form__status" id="serviceStatus"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contacto">
+    <div class="container footer__content">
+      <div>
+        <h3>Grupo Empresarial El Pedalazo</h3>
+        <p>Tu tienda de bicicletas y accesorios en línea.</p>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <p>Pitalito, Huila - Colombia</p>
+        <p>WhatsApp: +57 000 000 0000</p>
+        <p>Email: ventas@elpedalazo.com</p>
+      </div>
+      <div>
+        <h4>Redes</h4>
+        <p>Instagram · Facebook · TikTok</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 Grupo Empresarial El Pedalazo. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL CARRITO -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-modal__content">
+      <button class="cart-modal__close" id="closeCart">✕</button>
+      <h2>Carrito</h2>
+      <div id="cartItems"></div>
+      <div class="cart-modal__footer">
+        <p>Total: <span id="cartTotal">$0</span></p>
+        <button class="btn-primary btn-full" id="checkoutButton">Finalizar compra</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL LOGIN -->
+  <div class="cart-modal" id="loginModal">
+    <div class="cart-modal__content login-modal">
+      <button class="cart-modal__close" id="closeLogin">✕</button>
+      <div class="login-header">
+        <div class="login-logo">
+          <span class="logo-text">El Pedalazo</span>
+        </div>
+        <h2>Iniciar Sesión</h2>
+        <p>Accede a tu cuenta para gestionar productos</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="loginUsername">
+            <i class="icon">👤</i> Usuario
+          </label>
+          <input type="text" id="loginUsername" name="username" required placeholder="Ingresa tu usuario" />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">
+            <i class="icon">🔒</i> Contraseña
+          </label>
+          <div class="password-input">
+            <input type="password" id="loginPassword" name="password" required placeholder="Ingresa tu contraseña" />
+            <button type="button" class="toggle-password" id="toggleLoginPassword">
+              <i class="eye-icon">👁️</i>
+            </button>
+          </div>
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" name="remember" />
+            <span class="checkmark"></span>
+            Recordarme
+          </label>
+          <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit" class="btn-login">Iniciar Sesión</button>
+        <div class="divider">
+          <span>o</span>
+        </div>
+        <p class="register-link">¿No tienes cuenta? <a href="#" id="showRegister">Regístrate aquí</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL REGISTER -->
+  <div class="cart-modal" id="registerModal">
+    <div class="cart-modal__content login-modal">
+      <button class="cart-modal__close" id="closeRegister">✕</button>
+      <div class="login-header">
+        <div class="login-logo">
+          <span class="logo-text">El Pedalazo</span>
+        </div>
+        <h2>Crear Cuenta</h2>
+        <p>Únete a Grupo Empresarial El Pedalazo y comienza a vender</p>
+      </div>
+      <form id="registerForm" class="login-form">
+        <div class="form-group">
+          <label for="registerUsername">
+            <i class="icon">👤</i> Usuario
+          </label>
+          <input type="text" id="registerUsername" name="username" required placeholder="Elige un usuario" />
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">
+            <i class="icon">🔒</i> Contraseña
+          </label>
+          <div class="password-input">
+            <input type="password" id="registerPassword" name="password" required placeholder="Crea una contraseña" />
+            <button type="button" class="toggle-password" id="toggleRegisterPassword">
+              <i class="eye-icon">👁️</i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="registerConfirmPassword">
+            <i class="icon">🔒</i> Confirmar Contraseña
+          </label>
+          <input type="password" id="registerConfirmPassword" name="confirmPassword" required placeholder="Repite la contraseña" />
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" name="terms" required />
+            <span class="checkmark"></span>
+            Acepto los <a href="#" class="terms-link">términos y condiciones</a>
+          </label>
+        </div>
+        <button type="submit" class="btn-login">Crear Cuenta</button>
+        <div class="divider">
+          <span>o</span>
+        </div>
+        <p class="register-link">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL AGREGAR PRODUCTO (solo para admins) -->
+  <div class="cart-modal" id="addProductModal">
+    <div class="cart-modal__content add-product-modal">
+      <button class="cart-modal__close" id="closeAddProduct">✕</button>
+      <h2>Agregar Nuevo Producto</h2>
+      <form id="addProductForm" class="product-form">
+        <div class="form-section">
+          <h3>Información Básica</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="productName"><span class="icon">🏷️</span> Nombre del Producto</label>
+              <input type="text" id="productName" name="name" required placeholder="Ej: MTB Aluminio 29">
+            </div>
+            <div class="form-group">
+              <label for="productBrand"><span class="icon">🏢</span> Marca</label>
+              <input type="text" id="productBrand" name="brand" required placeholder="Ej: Marca X">
+            </div>
+            <div class="form-group">
+              <label for="productCategory"><span class="icon">📂</span> Categoría</label>
+              <select id="productCategory" name="category" required>
+                <option value="">Seleccionar categoría</option>
+                <option value="mtb">MTB</option>
+                <option value="ruta">Ruta</option>
+                <option value="gravel">Gravel</option>
+                <option value="ciudad">Ciudad</option>
+                <option value="ebike">E-Bike</option>
+                <option value="accesorios">Accesorios</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="productPrice"><span class="icon">💰</span> Precio (COP)</label>
+              <input type="number" id="productPrice" name="price" required placeholder="Ej: 3500000">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Detalles Adicionales</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="productTag"><span class="icon">🏷️</span> Etiqueta</label>
+              <input type="text" id="productTag" name="tag" required placeholder="Ej: Novedad">
+            </div>
+            <div class="form-group">
+              <label for="productUse"><span class="icon">🚴</span> Uso</label>
+              <input type="text" id="productUse" name="use" required placeholder="Ej: Montaña">
+            </div>
+            <div class="form-group">
+              <label for="productStock"><span class="icon">📦</span> Stock Inicial</label>
+              <input type="number" id="productStock" name="stock" required placeholder="Ej: 10">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3><span class="icon">📸</span> Imagen del Producto</h3>
+          <div class="image-upload-section">
+            <div class="image-upload-area" id="imageUploadArea">
+              <div class="upload-placeholder">
+                <div class="upload-icon">📷</div>
+                <p>Haz clic para seleccionar una imagen</p>
+                <span>o arrastra y suelta aquí</span>
+                <small>Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+              </div>
+              <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;">
+            </div>
+            <div id="imagePreview" class="image-preview">
+              <div class="preview-placeholder">
+                <span class="icon">🖼️</span>
+                <p>Previsualización de imagen</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" id="cancelAddProduct">Cancelar</button>
+            <button type="submit" class="btn-primary">Agregar Producto</button>
+          </div>
+        </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
