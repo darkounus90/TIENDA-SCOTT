@@ -1,11 +1,15 @@
 <?php
 // db.php - conexión a MySQL
+// ...existing code...
 $host = 'localhost';
-$user = 'c2721903_scott';
+$user = 'c2721903';
 $pass = 'danida50PE';
 $db = 'c2721903_scott';
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
-    die(json_encode(["error" => "Error de conexión a MySQL"]));
+    die('<h2 style="color:red">Error de conexión a MySQL</h2>');
+}
+if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
+    echo '<h2 style="color:green">Conexión exitosa a la base de datos MySQL</h2>';
 }
 ?>
