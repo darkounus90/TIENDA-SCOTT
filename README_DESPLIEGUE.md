@@ -38,6 +38,7 @@
 ```bash
 npm install
 npm start
+# Actualización de sincronización - 26 Jan 2026
 ```
 
 Si tienes problemas, contacta al soporte de DonWeb.
