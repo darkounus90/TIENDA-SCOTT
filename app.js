@@ -1,3 +1,110 @@
+// --- MI CUENTA ---
+const accountButton = document.getElementById("accountButton");
+const accountModal = document.getElementById("accountModal");
+const closeAccount = document.getElementById("closeAccount");
+const accountTabs = document.querySelectorAll(".account-tab");
+const accountInfoTab = document.getElementById("accountInfoTab");
+const accountOrdersTab = document.getElementById("accountOrdersTab");
+const accountAddressesTab = document.getElementById("accountAddressesTab");
+const ordersList = document.getElementById("ordersList");
+const addressesList = document.getElementById("addressesList");
+const addAddressBtn = document.getElementById("addAddressBtn");
+
+function openAccountModal() {
+  renderAccountInfo();
+  accountModal.classList.add("cart-modal--open");
+}
+function closeAccountModal() {
+  accountModal.classList.remove("cart-modal--open");
+}
+accountButton.addEventListener("click", openAccountModal);
+closeAccount.addEventListener("click", closeAccountModal);
+accountModal.addEventListener("click", e => {
+  if (e.target === accountModal) closeAccountModal();
+});
+accountTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    accountTabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    accountInfoTab.style.display = tab.dataset.tab === "info" ? "block" : "none";
+    accountOrdersTab.style.display = tab.dataset.tab === "orders" ? "block" : "none";
+    accountAddressesTab.style.display = tab.dataset.tab === "addresses" ? "block" : "none";
+    if (tab.dataset.tab === "orders") renderOrders();
+    if (tab.dataset.tab === "addresses") renderAddresses();
+  });
+});
+
+function renderAccountInfo() {
+  if (!currentUser) {
+    accountInfoTab.innerHTML = '<p>No has iniciado sesión.</p>';
+    return;
+  }
+  accountInfoTab.innerHTML = `
+    <h3>Información personal</h3>
+    <form id="accountInfoForm" class="account-form">
+      <label>Usuario
+        <input type="text" name="username" value="${currentUser.username}" disabled />
+      </label>
+      <label>Email
+        <input type="email" name="email" value="${currentUser.email || ''}" required />
+      </label>
+      <label>Rol
+        <input type="text" value="${currentUser.isAdmin ? 'Administrador' : 'Cliente'}" disabled />
+      </label>
+      <button type="submit" class="btn-primary">Guardar cambios</button>
+    </form>
+  `;
+  const form = document.getElementById('accountInfoForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    if (!email) {
+      alert('El email no puede estar vacío.');
+      return;
+    }
+    const res = await updateUserInfo({ email });
+    if (res && res.success) {
+      currentUser.email = email;
+      alert('Datos actualizados correctamente.');
+      renderAccountInfo();
+    } else {
+      alert(res && res.message ? res.message : 'No se pudo actualizar la información.');
+    }
+  });
+}
+// Lógica para actualizar datos del usuario (solo email editable)
+async function updateUserInfo(data) {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE}/update_user.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+    return await response.json();
+  } catch (err) {
+    return { success: false, message: 'Error de conexión.' };
+  }
+}
+
+function renderOrders() {
+  // Simulación: no hay pedidos aún
+  ordersList.innerHTML = '<p>No tienes pedidos registrados.</p>';
+}
+
+function renderAddresses() {
+  // Simulación: no hay direcciones aún
+  addressesList.innerHTML = '<p>No tienes direcciones guardadas.</p>';
+}
+
+if (addAddressBtn) {
+  addAddressBtn.addEventListener("click", () => {
+    alert("Funcionalidad de agregar dirección próximamente.");
+  });
+}
 // Usuarios y productos desde API
 let products = [];
 let currentUser = null;
@@ -49,12 +156,14 @@ async function loginUser(username, password) {
       body: JSON.stringify({ username, password })
     });
     const data = await response.json();
-    if (response.ok) {
+    if (data.success && data.token && data.user) {
       localStorage.setItem('token', data.token);
       currentUser = data.user;
       updateLoginButton();
+      closeLoginModal();
+      alert('¡Bienvenido, ' + currentUser.username + '!');
     } else {
-      alert(data.message);
+      alert(data.message || 'Usuario o contraseña incorrectos.');
     }
   } catch (err) {
     console.error('Error logging in:', err);
@@ -195,30 +304,25 @@ if (searchInput) {
 // Actualizar botón de login
 function updateLoginButton() {
   const token = localStorage.getItem('token');
-  if (token) {
-    // Decodificar token para obtener user (simple, en producción usa jwt.decode)
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      currentUser = { username: payload.username || 'User', isAdmin: payload.isAdmin };
-      loginButton.textContent = `Hola, ${currentUser.username}`;
-      if (currentUser.isAdmin) {
-        if (!document.getElementById("addProductButton")) {
-          const addBtn = document.createElement("button");
-          addBtn.id = "addProductButton";
-          addBtn.className = "btn-secondary";
-          addBtn.textContent = "Agregar Producto";
-          loginButton.parentNode.insertBefore(addBtn, loginButton.nextSibling);
-          addBtn.addEventListener("click", openAddProduct);
-        }
+  if (token && currentUser) {
+    loginButton.textContent = `Hola, ${currentUser.username}`;
+    loginButton.style.display = "inline-block";
+    accountButton.style.display = "inline-block";
+    if (currentUser.isAdmin) {
+      if (!document.getElementById("addProductButton")) {
+        const addBtn = document.createElement("button");
+        addBtn.id = "addProductButton";
+        addBtn.className = "btn-secondary";
+        addBtn.textContent = "Agregar Producto";
+        loginButton.parentNode.insertBefore(addBtn, loginButton.nextSibling);
+        addBtn.addEventListener("click", openAddProduct);
       }
-    } catch (err) {
-      localStorage.removeItem('token');
-      currentUser = null;
-      loginButton.textContent = "Login";
     }
   } else {
     currentUser = null;
     loginButton.textContent = "Login";
+    loginButton.style.display = "inline-block";
+    accountButton.style.display = "none";
     const addBtn = document.getElementById("addProductButton");
     if (addBtn) addBtn.remove();
   }

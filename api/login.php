@@ -8,20 +8,31 @@ $username = $conn->real_escape_string($data['username'] ?? '');
 $password = $data['password'] ?? '';
 
 if (!$username || !$password) {
-    echo json_encode(["message" => "Usuario y contraseña requeridos"]);
+    echo json_encode(["success" => false, "message" => "Usuario y contraseña requeridos"]);
     exit;
 }
 $res = $conn->query("SELECT id, username, email, password, isAdmin FROM users WHERE username='$username'");
 if ($res->num_rows === 0) {
-    echo json_encode(["message" => "Usuario no encontrado"]);
+    echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
     exit;
 }
 $user = $res->fetch_assoc();
 if (!password_verify($password, $user['password'])) {
-    echo json_encode(["message" => "Contraseña incorrecta"]);
+    echo json_encode(["success" => false, "message" => "Contraseña incorrecta"]);
     exit;
 }
-// No JWT, solo datos básicos
 unset($user['password']);
-echo json_encode(["user" => $user]);
+// Simular un token simple (NO JWT real, solo para frontend)
+$tokenPayload = base64_encode(json_encode([
+    'username' => $user['username'],
+    'isAdmin' => $user['isAdmin'],
+    'iat' => time()
+]));
+$token = $tokenPayload . '.' . md5($tokenPayload . 'SALT');
+echo json_encode([
+    "success" => true,
+    "message" => "Login exitoso",
+    "user" => $user,
+    "token" => $token
+]);
 ?>

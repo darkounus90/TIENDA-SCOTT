@@ -9,19 +9,22 @@ $email = $conn->real_escape_string($data['email'] ?? '');
 $password = $data['password'] ?? '';
 
 if (!$username || !$email || !$password) {
-    echo json_encode(["message" => "Usuario, correo y contraseña requeridos"]);
+    echo json_encode(["success" => false, "message" => "Usuario, correo y contraseña requeridos"]);
     exit;
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(["message" => "Correo electrónico inválido"]);
+    echo json_encode(["success" => false, "message" => "Correo electrónico inválido"]);
     exit;
 }
 $res = $conn->query("SELECT id FROM users WHERE username='$username' OR email='$email'");
 if ($res->num_rows > 0) {
-    echo json_encode(["message" => "El usuario o correo ya existen"]);
+    echo json_encode(["success" => false, "message" => "El usuario o correo ya existen"]);
     exit;
 }
 $hashed = password_hash($password, PASSWORD_DEFAULT);
-$conn->query("INSERT INTO users (username, email, password, isAdmin) VALUES ('$username', '$email', '$hashed', 0)");
-echo json_encode(["message" => "Usuario registrado correctamente"]);
+if ($conn->query("INSERT INTO users (username, email, password, isAdmin) VALUES ('$username', '$email', '$hashed', 0)")) {
+    echo json_encode(["success" => true, "message" => "Usuario registrado correctamente"]);
+} else {
+    echo json_encode(["success" => false, "message" => "Error al registrar usuario"]);
+}
 ?>

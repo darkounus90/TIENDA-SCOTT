@@ -28,6 +28,33 @@
           🛒 <span id="cartCount">0</span>
         </button>
         <button class="btn-secondary" id="loginButton">Login</button>
+        <button class="btn-secondary" id="accountButton" style="display:none;">Mi Cuenta</button>
+      </div>
+      <!-- MODAL MI CUENTA -->
+      <div class="cart-modal" id="accountModal">
+        <div class="cart-modal__content account-modal">
+          <button class="cart-modal__close" id="closeAccount">✕</button>
+          <div class="account-header">
+            <h2>Mi Cuenta</h2>
+          </div>
+          <div class="account-tabs">
+            <button class="account-tab active" data-tab="info">Información</button>
+            <button class="account-tab" data-tab="orders">Pedidos</button>
+            <button class="account-tab" data-tab="addresses">Direcciones</button>
+          </div>
+          <div class="account-content" id="accountInfoTab">
+            <!-- JS inyecta info de usuario aquí -->
+          </div>
+          <div class="account-content" id="accountOrdersTab" style="display:none;">
+            <h3>Historial de pedidos</h3>
+            <div id="ordersList">Cargando...</div>
+          </div>
+          <div class="account-content" id="accountAddressesTab" style="display:none;">
+            <h3>Direcciones de envío</h3>
+            <div id="addressesList">Cargando...</div>
+            <button class="btn-secondary" id="addAddressBtn">Agregar dirección</button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
