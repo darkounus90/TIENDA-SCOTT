@@ -2,10 +2,10 @@
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
-  host: 'TU_HOST', // ejemplo: 'mysql.donweb.com'
-  user: 'TU_USUARIO',
-  password: 'TU_CONTRASEÑA',
-  database: 'TU_BASE_DE_DATOS'
+  host: '200.58.111.97',
+  user: 'c2721903_scott',
+  password: 'danida50PE',
+  database: 'c2721903_scott'
 });
 
 connection.connect((err) => {
