@@ -4,16 +4,16 @@ header('Content-Type: application/json');
 require 'db.php';
 
 
-// Permitir tanto JSON como x-www-form-urlencoded
-if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
+// Priorizar $_POST (formulario clásico), solo usar JSON si $_POST está vacío
+$username = $conn->real_escape_string($_POST['username'] ?? '');
+$email = $conn->real_escape_string($_POST['email'] ?? '');
+$password = $_POST['password'] ?? '';
+if (!$username || !$email || !$password) {
+    // Si $_POST está vacío, intentar JSON
     $data = json_decode(file_get_contents('php://input'), true);
     $username = $conn->real_escape_string($data['username'] ?? '');
     $email = $conn->real_escape_string($data['email'] ?? '');
     $password = $data['password'] ?? '';
-} else {
-    $username = $conn->real_escape_string($_POST['username'] ?? '');
-    $email = $conn->real_escape_string($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
 }
 
 if (!$username || !$email || !$password) {

@@ -174,27 +174,16 @@ async function loginUser(username, password) {
 // Función para register
 async function registerUser(username, email, password) {
   try {
-    // Intento 1: JSON
-    let response = await fetch(`${API_BASE}/register.php`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password })
-    });
-    let data = await response.json();
-    if (response.ok && data.success) {
-      showRegisterSuccess();
-      return;
-    }
-    // Si falla, intento 2: FormData
+    // SIEMPRE enviar como FormData para máxima compatibilidad
     const formData = new FormData();
     formData.append('username', username);
     formData.append('email', email);
     formData.append('password', password);
-    response = await fetch(`${API_BASE}/register.php`, {
+    const response = await fetch(`${API_BASE}/register.php`, {
       method: 'POST',
       body: formData
     });
-    data = await response.json();
+    const data = await response.json();
     if (response.ok && data.success) {
       showRegisterSuccess();
     } else {
