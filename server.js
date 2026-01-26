@@ -12,9 +12,26 @@ app.put('/api/users/:id/role', (req, res) => {
     res.json({ message: 'Rol actualizado correctamente' });
   });
 });
-// Ruta para listar usuarios (solo para administración, ejemplo simple)
-app.get('/api/users', (req, res) => {
-  connection.query('SELECT id, username, isAdmin FROM users', (err, results) => {
+// Middleware para verificar token y admin
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'tu_secreto_jwt_produccion'; // Usa el mismo secreto que en login
+function verifyAdmin(req, res, next) {
+  const auth = req.headers['authorization'];
+  if (!auth) return res.status(401).json({ message: 'Token requerido' });
+  const token = auth.replace('Bearer ', '');
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    if (!decoded.isAdmin) return res.status(403).json({ message: 'Solo administradores' });
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Token inválido' });
+  }
+}
+
+// Ruta para listar usuarios (solo admin)
+app.get('/api/users', verifyAdmin, (req, res) => {
+  connection.query('SELECT id, username, email, isAdmin FROM users', (err, results) => {
     if (err) return res.status(500).json({ message: err.message });
     res.json(results);
   });

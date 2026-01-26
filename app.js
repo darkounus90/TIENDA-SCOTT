@@ -43,7 +43,7 @@ async function saveProduct(product) {
 // Función para login
 async function loginUser(username, password) {
   try {
-    const response = await fetch(`${API_BASE}/login`, {
+    const response = await fetch(`${API_BASE}/login.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
@@ -65,7 +65,7 @@ async function loginUser(username, password) {
 // Función para register
 async function registerUser(username, email, password) {
   try {
-    const response = await fetch(`${API_BASE}/register`, {
+    const response = await fetch(`${API_BASE}/register.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password })
@@ -77,10 +77,7 @@ async function registerUser(username, email, password) {
   }
 }
 
-// Función para guardar usuario actual
-function saveCurrentUser() {
-  localStorage.setItem('currentUser', JSON.stringify(currentUser));
-}
+
 
 const currencyFormat = value =>
   value.toLocaleString("es-CO", { style: "currency", currency: "COP" });
@@ -304,85 +301,11 @@ registerForm.addEventListener("submit", async e => {
   closeRegisterModal();
 });
 
-// Add Product
-addProductForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  if (!currentUser || !currentUser.isAdmin) {
-    alert("No tienes permisos para agregar productos.");
-    return;
-  }
 
-  const formData = new FormData(addProductForm);
-  const newProduct = {
-    name: formData.get("name"),
-    brand: formData.get("brand"),
-    category: formData.get("category"),
-    price: Number(formData.get("price")),
-    tag: formData.get("tag"),
-    use: formData.get("use"),
-    stock: Number(formData.get("stock"))
-  };
 
-  const imageFile = formData.get("image");
-  if (imageFile) {
-    const reader = new FileReader();
-    reader.onload = function(event) {
-      newProduct.image = event.target.result;
-      saveProduct(newProduct);
-      addProductForm.reset();
-      imagePreview.innerHTML = "";
-      closeAddProductModal();
-      alert("Producto agregado con éxito.");
-    };
-    reader.readAsDataURL(imageFile);
-  } else {
-    await saveProduct(newProduct);
-    addProductForm.reset();
-    imagePreview.innerHTML = "";
-    closeAddProductModal();
-    alert("Producto agregado con éxito.");
-  }
-});
 
-// Add Product
-const imageUploadArea = document.getElementById("imageUploadArea");
-const cancelAddProduct = document.getElementById("cancelAddProduct");
 
-addProductForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  if (!currentUser || !currentUser.isAdmin) {
-    alert("No tienes permisos para agregar productos.");
-    return;
-  }
 
-  const formData = new FormData(addProductForm);
-  const newProduct = {
-    name: formData.get("name"),
-    brand: formData.get("brand"),
-    category: formData.get("category"),
-    price: Number(formData.get("price")),
-    tag: formData.get("tag"),
-    use: formData.get("use"),
-    stock: Number(formData.get("stock"))
-  };
-
-  const imageFile = formData.get("image");
-  if (imageFile) {
-    try {
-      newProduct.image = await readImageAsBase64(imageFile);
-    } catch (err) {
-      alert('Error al leer la imagen');
-      return;
-    }
-  }
-
-  if (await saveProduct(newProduct)) {
-    addProductForm.reset();
-    imagePreview.innerHTML = '<div class="preview-placeholder"><span class="icon">🖼️</span><p>Previsualización de imagen</p></div>';
-    closeAddProductModal();
-    alert("Producto agregado con éxito.");
-  }
-});
 
 // Toggle password visibility
 const toggleLoginPassword = document.getElementById("toggleLoginPassword");
@@ -567,18 +490,7 @@ checkoutButton.addEventListener("click", () => {
   }
 });
 
-// Formulario servicio
-const serviceForm = document.getElementById("serviceForm");
-const serviceStatus = document.getElementById("serviceStatus");
 
-serviceForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const formData = new FormData(serviceForm);
-  const nombre = formData.get("nombre");
-
-  serviceStatus.textContent = `Gracias ${nombre}, pronto nos pondremos en contacto para confirmar tu cita.`;
-  serviceForm.reset();
-});
 
 cancelAddProduct.addEventListener("click", () => {
   addProductForm.reset();

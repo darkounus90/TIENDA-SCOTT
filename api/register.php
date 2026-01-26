@@ -1,0 +1,27 @@
+<?php
+// register.php - registro de usuario
+header('Content-Type: application/json');
+require 'db.php';
+
+$data = json_decode(file_get_contents('php://input'), true);
+$username = $conn->real_escape_string($data['username'] ?? '');
+$email = $conn->real_escape_string($data['email'] ?? '');
+$password = $data['password'] ?? '';
+
+if (!$username || !$email || !$password) {
+    echo json_encode(["message" => "Usuario, correo y contraseña requeridos"]);
+    exit;
+}
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(["message" => "Correo electrónico inválido"]);
+    exit;
+}
+$res = $conn->query("SELECT id FROM users WHERE username='$username' OR email='$email'");
+if ($res->num_rows > 0) {
+    echo json_encode(["message" => "El usuario o correo ya existen"]);
+    exit;
+}
+$hashed = password_hash($password, PASSWORD_DEFAULT);
+$conn->query("INSERT INTO users (username, email, password, isAdmin) VALUES ('$username', '$email', '$hashed', 0)");
+echo json_encode(["message" => "Usuario registrado correctamente"]);
+?>
