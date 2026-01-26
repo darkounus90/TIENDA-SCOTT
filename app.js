@@ -71,10 +71,22 @@ async function registerUser(username, email, password) {
       body: JSON.stringify({ username, email, password })
     });
     const data = await response.json();
-    alert(data.message);
+    if (response.ok && data.success) {
+      showRegisterSuccess();
+    } else {
+      alert(data.message || 'No se pudo crear la cuenta.');
+    }
   } catch (err) {
     console.error('Error registering:', err);
+    alert('Error de conexión. Intenta nuevamente.');
   }
+// Mostrar confirmación visual de registro exitoso
+function showRegisterSuccess() {
+  closeRegisterModal();
+  setTimeout(() => {
+    alert('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
+  }, 300);
+}
 }
 
 
