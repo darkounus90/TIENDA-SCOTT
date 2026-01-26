@@ -409,6 +409,7 @@ registerForm.addEventListener("submit", async e => {
   e.preventDefault();
   const formData = new FormData(registerForm);
   const username = formData.get("username");
+  const email = formData.get("email");
   const password = formData.get("password");
   const confirmPassword = formData.get("confirmPassword");
 
@@ -417,7 +418,7 @@ registerForm.addEventListener("submit", async e => {
     return;
   }
 
-  await registerUser(username, password);
+  await registerUser(username, email, password);
   closeRegisterModal();
 });
 
