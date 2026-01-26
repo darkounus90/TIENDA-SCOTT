@@ -63,12 +63,12 @@ async function loginUser(username, password) {
 }
 
 // Función para register
-async function registerUser(username, password) {
+async function registerUser(username, email, password) {
   try {
     const response = await fetch(`${API_BASE}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ username, email, password })
     });
     const data = await response.json();
     alert(data.message);
