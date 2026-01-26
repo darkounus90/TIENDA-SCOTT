@@ -1,3 +1,6 @@
+// Depuración: guardar datos recibidos
+file_put_contents('debug.txt', 'POST: ' . print_r($_POST, true) . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'RAW: ' . file_get_contents('php://input') . PHP_EOL, FILE_APPEND);
 <?php
 // register.php - registro de usuario
 header('Content-Type: application/json');
@@ -5,15 +8,17 @@ require 'db.php';
 
 
 // Priorizar $_POST (formulario clásico), solo usar JSON si $_POST está vacío
-$username = $conn->real_escape_string($_POST['username'] ?? '');
-$email = $conn->real_escape_string($_POST['email'] ?? '');
-$password = $_POST['password'] ?? '';
+// Limpiar espacios con trim()
+$username = $conn->real_escape_string(trim($_POST['username'] ?? ''));
+$email = $conn->real_escape_string(trim($_POST['email'] ?? ''));
+$password = trim($_POST['password'] ?? '');
 if (!$username || !$email || !$password) {
     // Si $_POST está vacío, intentar JSON
     $data = json_decode(file_get_contents('php://input'), true);
-    $username = $conn->real_escape_string($data['username'] ?? '');
-    $email = $conn->real_escape_string($data['email'] ?? '');
-    $password = $data['password'] ?? '';
+    $username = $conn->real_escape_string(trim($data['username'] ?? ''));
+    $email = $conn->real_escape_string(trim($data['email'] ?? ''));
+    $password = trim($data['password'] ?? '');
+    file_put_contents('debug.txt', 'JSON: ' . print_r($data, true) . PHP_EOL, FILE_APPEND);
 }
 
 if (!$username || !$email || !$password) {
@@ -26,6 +31,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         "message" => "Correo electrónico inválido",
         "debug_email" => $email
     ]);
+    file_put_contents('debug.txt', 'EMAIL INVALIDO: ' . $email . PHP_EOL, FILE_APPEND);
     exit;
 }
 $res = $conn->query("SELECT id FROM users WHERE username='$username' OR email='$email'");
