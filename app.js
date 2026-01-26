@@ -1,7 +1,7 @@
 // Usuarios y productos desde API
 let products = [];
 let currentUser = null;
-const API_BASE = '/api'; // Cambia a la URL completa en producción si es necesario
+const API_BASE = 'https://bikeclubpedalazo.online/api'; // URL real del backend en producción
 
 // Función para obtener productos
 async function fetchProducts() {
