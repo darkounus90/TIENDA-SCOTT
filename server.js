@@ -46,22 +46,27 @@ app.get('/test-mysql', (req, res) => {
 });
 
 
-// Ruta para registrar usuarios
+// Ruta para registrar usuarios (con email y verificación de formato)
 const bcrypt = require('bcryptjs');
 app.post('/api/register', async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Usuario y contraseña requeridos' });
+  const { username, email, password } = req.body;
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: 'Usuario, correo y contraseña requeridos' });
+  }
+  // Verificar formato de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Correo electrónico inválido' });
   }
   try {
-    // Verificar si el usuario ya existe
-    connection.query('SELECT * FROM users WHERE username = ?', [username], async (err, results) => {
+    // Verificar si el usuario o correo ya existen
+    connection.query('SELECT * FROM users WHERE username = ? OR email = ?', [username, email], async (err, results) => {
       if (err) return res.status(500).json({ message: err.message });
-      if (results.length > 0) return res.status(400).json({ message: 'El usuario ya existe' });
+      if (results.length > 0) return res.status(400).json({ message: 'El usuario o correo ya existen' });
       // Encriptar contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
       // Insertar usuario como cliente (isAdmin = 0)
-      connection.query('INSERT INTO users (username, password, isAdmin) VALUES (?, ?, 0)', [username, hashedPassword], (err, result) => {
+      connection.query('INSERT INTO users (username, email, password, isAdmin) VALUES (?, ?, ?, 0)', [username, email, hashedPassword], (err, result) => {
         if (err) return res.status(500).json({ message: err.message });
         res.status(201).json({ message: 'Usuario registrado correctamente' });
       });
