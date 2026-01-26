@@ -21,7 +21,11 @@ if (!$username || !$email || !$password) {
     exit;
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(["success" => false, "message" => "Correo electrónico inválido"]);
+    echo json_encode([
+        "success" => false,
+        "message" => "Correo electrónico inválido",
+        "debug_email" => $email
+    ]);
     exit;
 }
 $res = $conn->query("SELECT id FROM users WHERE username='$username' OR email='$email'");
