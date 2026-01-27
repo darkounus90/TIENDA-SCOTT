@@ -1,10 +1,19 @@
-// Depuración: guardar datos recibidos
-file_put_contents('debug.txt', 'POST: ' . print_r($_POST, true) . PHP_EOL, FILE_APPEND);
-file_put_contents('debug.txt', 'RAW: ' . file_get_contents('php://input') . PHP_EOL, FILE_APPEND);
 
-// Depuración extra: registrar valores individuales
+// DEPURACIÓN EXHAUSTIVA
+file_put_contents('debug.txt', "\n--- NUEVO REGISTRO ---\n", FILE_APPEND);
+file_put_contents('debug.txt', '$_POST: ' . print_r($_POST, true) . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', '$_REQUEST: ' . print_r($_REQUEST, true) . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'RAW: ' . file_get_contents('php://input') . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'SERVER: ' . print_r($_SERVER, true) . PHP_EOL, FILE_APPEND);
+
+$debug_username = $_POST['username'] ?? '';
 $debug_email = $_POST['email'] ?? '';
-file_put_contents('debug.txt', 'EMAIL EN POST: ' . $debug_email . PHP_EOL, FILE_APPEND);
+$debug_password = $_POST['password'] ?? '';
+$debug_confirm = $_POST['confirmPassword'] ?? '';
+file_put_contents('debug.txt', 'username en POST: ' . $debug_username . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'email en POST: ' . $debug_email . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'password en POST: ' . $debug_password . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'confirmPassword en POST: ' . $debug_confirm . PHP_EOL, FILE_APPEND);
 
 <?php
 // register.php - registro de usuario
@@ -17,7 +26,11 @@ require 'db.php';
 $username = $conn->real_escape_string(trim($_POST['username'] ?? ''));
 $email = $conn->real_escape_string(trim($_POST['email'] ?? ''));
 $password = trim($_POST['password'] ?? '');
-file_put_contents('debug.txt', 'EMAIL DESPUES DE TRIM: ' . $email . PHP_EOL, FILE_APPEND);
+$confirmPassword = trim($_POST['confirmPassword'] ?? '');
+file_put_contents('debug.txt', 'username después de trim: ' . $username . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'email después de trim: ' . $email . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'password después de trim: ' . $password . PHP_EOL, FILE_APPEND);
+file_put_contents('debug.txt', 'confirmPassword después de trim: ' . $confirmPassword . PHP_EOL, FILE_APPEND);
 if (!$username || !$email || !$password) {
     // Si $_POST está vacío, intentar JSON
     $data = json_decode(file_get_contents('php://input'), true);
