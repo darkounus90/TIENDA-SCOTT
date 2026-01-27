@@ -1,6 +1,11 @@
 // Depuración: guardar datos recibidos
 file_put_contents('debug.txt', 'POST: ' . print_r($_POST, true) . PHP_EOL, FILE_APPEND);
 file_put_contents('debug.txt', 'RAW: ' . file_get_contents('php://input') . PHP_EOL, FILE_APPEND);
+
+// Depuración extra: registrar valores individuales
+$debug_email = $_POST['email'] ?? '';
+file_put_contents('debug.txt', 'EMAIL EN POST: ' . $debug_email . PHP_EOL, FILE_APPEND);
+
 <?php
 // register.php - registro de usuario
 header('Content-Type: application/json');
@@ -12,6 +17,7 @@ require 'db.php';
 $username = $conn->real_escape_string(trim($_POST['username'] ?? ''));
 $email = $conn->real_escape_string(trim($_POST['email'] ?? ''));
 $password = trim($_POST['password'] ?? '');
+file_put_contents('debug.txt', 'EMAIL DESPUES DE TRIM: ' . $email . PHP_EOL, FILE_APPEND);
 if (!$username || !$email || !$password) {
     // Si $_POST está vacío, intentar JSON
     $data = json_decode(file_get_contents('php://input'), true);
