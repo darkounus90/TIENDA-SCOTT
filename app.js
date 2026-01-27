@@ -413,13 +413,28 @@ registerForm.addEventListener("submit", async e => {
   const password = formData.get("password");
   const confirmPassword = formData.get("confirmPassword");
 
-  if (password !== confirmPassword) {
+
+  const trimmedUsername = username?.trim();
+  const trimmedEmail = email?.trim();
+  const trimmedPassword = password?.trim();
+  const trimmedConfirmPassword = confirmPassword?.trim();
+
+  if (!trimmedUsername || !trimmedEmail || !trimmedPassword || !trimmedConfirmPassword) {
+    alert("Todos los campos son obligatorios.");
+    return;
+  }
+  if (trimmedPassword !== trimmedConfirmPassword) {
     alert("Las contraseñas no coinciden.");
     return;
   }
-
-  await registerUser(username, email, password);
-  closeRegisterModal();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(trimmedEmail)) {
+    alert("El email no es válido.");
+    return;
+  }
+  const result = await registerUser(trimmedUsername, trimmedEmail, trimmedPassword);
+  if (result === true) {
+    closeRegisterModal();
+  }
 });
 
 
@@ -494,13 +509,13 @@ function readImageAsBase64(file) {
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
+  return response.ok && data.success;
 }
-
-// Carrito básico
-const cartButton = document.getElementById("cartButton");
-const cartModal = document.getElementById("cartModal");
-const closeCart = document.getElementById("closeCart");
-const cartItemsContainer = document.getElementById("cartItems");
+function showRegisterSuccess() {
+  closeRegisterModal();
+  setTimeout(() => {
+    alert('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
+  }, 100);
 const cartTotalElement = document.getElementById("cartTotal");
 const cartCountElement = document.getElementById("cartCount");
 const checkoutButton = document.getElementById("checkoutButton");
