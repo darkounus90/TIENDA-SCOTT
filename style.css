@@ -17,19 +17,28 @@
 }
 
 .account-tab {
-  background: var(--color-card);
+  background: #f1f5f9;
   border: none;
-  padding: 0.5rem 1.2rem;
-  border-radius: var(--radius-sm);
-  color: var(--color-text);
+  padding: 0.6rem 1.2rem;
+  color: #64748b;
   font-weight: 500;
   cursor: pointer;
-  transition: background var(--transition);
+  border-radius: 999px;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.account-tab:hover {
+  background: #e2e8f0;
+  color: var(--color-text);
+  transform: translateY(-1px);
 }
 
 .account-tab.active {
   background: var(--color-primary);
-  color: #fff;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
 }
 
 .account-content {
@@ -1332,6 +1341,13 @@ a {
 }
 
 /* FIX: Restore header positioning for dropdown */
+/* FIX: Restore header positioning for dropdown */
 .header__actions {
+  /* position: relative;  <-- Removed, using specific container now */
+}
+
+.user-menu-container {
   position: relative;
+  display: flex;
+  align-items: center;
 }
