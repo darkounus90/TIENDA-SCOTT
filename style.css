@@ -1,86 +1,4 @@
-/* --- MI CUENTA --- */
-.account-modal {
-  max-width: 420px;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-}
-
-.account-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.account-tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  justify-content: center;
-}
-
-.account-tab {
-  background: #f1f5f9;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  color: #64748b;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: 999px;
-  transition: all 0.2s;
-  font-size: 0.9rem;
-}
-
-.account-tab:hover {
-  background: #e2e8f0;
-  color: var(--color-text);
-  transform: translateY(-1px);
-}
-
-.account-tab.active {
-  background: var(--color-primary);
-  color: white;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
-}
-
-.account-content {
-  margin-bottom: 1.5rem;
-}
-
-.account-form label {
-  display: block;
-  margin-bottom: 0.7rem;
-  color: var(--color-muted);
-  font-size: 0.97rem;
-}
-
-.account-form input {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid #e0e0e0;
-  margin-top: 0.2rem;
-  margin-bottom: 0.8rem;
-  font-size: 1rem;
-}
-
-.account-form input[disabled] {
-  background: #f3f3f3;
-  color: #888;
-}
-
-.account-content h3 {
-  margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1.15rem;
-}
-
-.account-content p {
-  color: var(--color-muted);
-  font-size: 0.98rem;
-}
-
-.account-content button.btn-secondary {
-  margin-top: 1rem;
-}
+/* Old Account Styles Removed - Moved to End */
 
 :root {
   --color-bg: #ffffff;
@@ -1346,8 +1264,89 @@ a {
   /* position: relative;  <-- Removed, using specific container now */
 }
 
-.user-menu-container {
-  position: relative;
+align-items: center;
+}
+
+/* --- MI CUENTA (Specific Overrides) --- */
+.cart-modal__content.account-modal {
+  max-width: 480px;
+  /* Slightly wider */
+  padding: 2rem;
+}
+
+.account-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.account-tabs {
   display: flex;
-  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+  background: #f8fafc;
+  padding: 0.4rem;
+  border-radius: 99px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.account-tab {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+  color: #64748b;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 99px;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.account-tab:hover {
+  color: var(--color-text);
+}
+
+.account-tab.active {
+  background: white;
+  color: var(--color-primary);
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.account-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.account-form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #475569;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.account-form input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  background: #fff;
+  transition: all 0.2s;
+}
+
+.account-form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+  outline: none;
+}
+
+.account-form input:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #cbd5e1;
 }

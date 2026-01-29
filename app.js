@@ -27,6 +27,9 @@ function openAccountModal(initialTab = "info") {
   if (initialTab === "addresses") renderAddresses();
 
   accountModal.classList.add("cart-modal--open");
+  // Reset scroll position to top
+  const content = accountModal.querySelector('.cart-modal__content');
+  if (content) content.scrollTop = 0;
 }
 
 function closeAccountModal() {
