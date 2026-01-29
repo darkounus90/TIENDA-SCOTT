@@ -1330,3 +1330,8 @@ a {
   display: block;
   opacity: 0.5;
 }
+
+/* FIX: Restore header positioning for dropdown */
+.header__actions {
+  position: relative;
+}
