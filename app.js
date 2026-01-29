@@ -10,9 +10,6 @@ const ordersList = document.getElementById("ordersList");
 const addressesList = document.getElementById("addressesList");
 const addAddressBtn = document.getElementById("addAddressBtn");
 
-const addressesList = document.getElementById("addressesList");
-const addAddressBtn = document.getElementById("addAddressBtn");
-
 function openAccountModal(initialTab = "info") {
   // Activate correct tab
   accountTabs.forEach(t => t.classList.remove("active"));
