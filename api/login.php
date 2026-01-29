@@ -34,6 +34,7 @@ if (!password_verify($password, $user['password'])) {
     exit;
 }
 unset($user['password']);
+$user['isAdmin'] = (int)$user['isAdmin'];
 // Simular un token simple (NO JWT real, solo para frontend)
 $tokenPayload = base64_encode(json_encode([
     'username' => $user['username'],
