@@ -1,7 +1,7 @@
 <?php
 // db.php - conexión a MySQL
 // ...existing code...
-$host = '200.58.111.97';
+$host = 'localhost';
 $user = 'c2721903_scott';
 $pass = 'danida50PE';
 $db = 'c2721903_scott';
