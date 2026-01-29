@@ -108,7 +108,7 @@ if (addAddressBtn) {
 // Usuarios y productos desde API
 let products = [];
 let currentUser = null;
-const API_BASE = 'http://localhost:3000/api'; // URL local para desarrollo con PHP
+const API_BASE = 'api'; // Path relativo para producción y desarrollo
 
 // Función para obtener productos
 async function fetchProducts() {
