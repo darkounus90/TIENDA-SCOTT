@@ -1175,7 +1175,158 @@ a {
   background: #fef2f2;
 }
 
-/* Relative positioning for parent */
-.header__actions {
+/* ORDERS LIST STYLES */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: all 0.2s ease;
   position: relative;
+  overflow: hidden;
+}
+
+.order-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-primary);
+  opacity: 0.5;
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.75rem;
+}
+
+.order-id {
+  font-weight: 700;
+  color: #334155;
+  font-size: 1.1rem;
+}
+
+.order-date {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.order-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.order-status.pending {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #ffedd5;
+}
+
+.order-status.completed {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #d1fae5;
+}
+
+.order-status.cancelled {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fee2e2;
+}
+
+.order-items {
+  margin-bottom: 1rem;
+}
+
+.order-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 0.4rem 0;
+  color: #475569;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f8fafc;
+  font-weight: 700;
+  color: var(--color-text);
+  font-size: 1.1rem;
+}
+
+/* ACCOUNT FORM STYLES */
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.account-form label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.account-form input {
+  padding: 0.8rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: #f8fafc;
+}
+
+.account-form input:focus {
+  outline: none;
+  background: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+}
+
+.account-form input:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+  border-color: #e2e8f0;
+}
+
+.account-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--color-muted);
+}
+
+.account-empty .icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  opacity: 0.5;
 }

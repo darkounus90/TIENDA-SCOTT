@@ -10,50 +10,86 @@ const ordersList = document.getElementById("ordersList");
 const addressesList = document.getElementById("addressesList");
 const addAddressBtn = document.getElementById("addAddressBtn");
 
-function openAccountModal() {
-  renderAccountInfo();
+const addressesList = document.getElementById("addressesList");
+const addAddressBtn = document.getElementById("addAddressBtn");
+
+function openAccountModal(initialTab = "info") {
+  // Activate correct tab
+  accountTabs.forEach(t => t.classList.remove("active"));
+  const targetTabBtn = document.querySelector(`.account-tab[data-tab="${initialTab}"]`);
+  if (targetTabBtn) targetTabBtn.classList.add("active");
+
+  // Show correct content
+  accountInfoTab.style.display = initialTab === "info" ? "block" : "none";
+  accountOrdersTab.style.display = initialTab === "orders" ? "block" : "none";
+  accountAddressesTab.style.display = initialTab === "addresses" ? "block" : "none";
+
+  // Render content
+  if (initialTab === "info") renderAccountInfo();
+  if (initialTab === "orders") renderOrders();
+  if (initialTab === "addresses") renderAddresses();
+
   accountModal.classList.add("cart-modal--open");
 }
+
 function closeAccountModal() {
   accountModal.classList.remove("cart-modal--open");
 }
-accountButton.addEventListener("click", openAccountModal);
+
+// NOTE: event listener for accountButton removed here as it is hidden/deprecated in favor of dropdown
+// accountButton.addEventListener("click", () => openAccountModal("info")); 
+
 closeAccount.addEventListener("click", closeAccountModal);
 accountModal.addEventListener("click", e => {
   if (e.target === accountModal) closeAccountModal();
 });
+
 accountTabs.forEach(tab => {
   tab.addEventListener("click", () => {
+    const tabName = tab.dataset.tab;
+
+    // UI Updates
     accountTabs.forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
-    accountInfoTab.style.display = tab.dataset.tab === "info" ? "block" : "none";
-    accountOrdersTab.style.display = tab.dataset.tab === "orders" ? "block" : "none";
-    accountAddressesTab.style.display = tab.dataset.tab === "addresses" ? "block" : "none";
-    if (tab.dataset.tab === "orders") renderOrders();
-    if (tab.dataset.tab === "addresses") renderAddresses();
+
+    accountInfoTab.style.display = tabName === "info" ? "block" : "none";
+    accountOrdersTab.style.display = tabName === "orders" ? "block" : "none";
+    accountAddressesTab.style.display = tabName === "addresses" ? "block" : "none";
+
+    // Data Fetching
+    if (tabName === "info") renderAccountInfo();
+    if (tabName === "orders") renderOrders();
+    if (tabName === "addresses") renderAddresses(); // Placeholder
   });
 });
 
 function renderAccountInfo() {
   if (!currentUser) {
-    accountInfoTab.innerHTML = '<p>No has iniciado sesión.</p>';
+    accountInfoTab.innerHTML = '<div class="account-empty">No has iniciado sesión.</div>';
     return;
   }
+
+  // Premium Form Design
   accountInfoTab.innerHTML = `
-    <h3>Información personal</h3>
     <form id="accountInfoForm" class="account-form">
-      <label>Usuario
+      <label>
+        <span>👤 Nombre de usuario</span>
         <input type="text" name="username" value="${currentUser.username}" disabled />
       </label>
-      <label>Email
-        <input type="email" name="email" value="${currentUser.email || ''}" required />
+      <label>
+        <span>✉️ Correo electrónico</span>
+        <input type="email" name="email" value="${currentUser.email || ''}" required placeholder="ejemplo@email.com" />
       </label>
-      <label>Rol
-        <input type="text" value="${currentUser.isAdmin ? 'Administrador' : 'Cliente'}" disabled />
+      <label>
+        <span>🔑 Rol de usuario</span>
+        <input type="text" value="${currentUser.isAdmin ? 'Administrador' : 'Cliente Registrado'}" disabled />
       </label>
-      <button type="submit" class="btn-primary">Guardar cambios</button>
+      <div style="margin-top: 1rem;">
+        <button type="submit" class="btn-primary" style="width: 100%;">💾 Guardar Cambios</button>
+      </div>
     </form>
   `;
+
   const form = document.getElementById('accountInfoForm');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -65,14 +101,15 @@ function renderAccountInfo() {
     const res = await updateUserInfo({ email });
     if (res && res.success) {
       currentUser.email = email;
-      alert('Datos actualizados correctamente.');
-      renderAccountInfo();
+      alert('✅ Datos actualizados correctamente.');
+      // Update local storage if needed or just memory
     } else {
-      alert(res && res.message ? res.message : 'No se pudo actualizar la información.');
+      alert(res && res.message ? res.message : 'Error al actualizar.');
     }
   });
 }
-// Lógica para actualizar datos del usuario (solo email editable)
+
+// Logic to update user info
 async function updateUserInfo(data) {
   try {
     const token = localStorage.getItem('token');
@@ -90,14 +127,85 @@ async function updateUserInfo(data) {
   }
 }
 
-function renderOrders() {
-  // Simulación: no hay pedidos aún
-  ordersList.innerHTML = '<p>No tienes pedidos registrados.</p>';
+async function renderOrders() {
+  const list = document.getElementById("ordersList");
+  list.innerHTML = '<div style="text-align:center; padding: 2rem;">Cargando pedidos...</div>';
+
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      list.innerHTML = '<div class="account-empty">Inicia sesión para ver tus pedidos.</div>';
+      return;
+    }
+
+    const response = await fetch(`${API_BASE}/orders.php`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    const data = await response.json();
+
+    if (data.success && data.orders && data.orders.length > 0) {
+      list.innerHTML = '<div class="orders-list"></div>';
+      const container = list.querySelector(".orders-list");
+
+      data.orders.forEach(order => {
+        const date = new Date(order.created_at).toLocaleDateString() + ' ' + new Date(order.created_at).toLocaleTimeString();
+
+        let itemsHtml = '';
+        order.items.forEach(item => {
+          itemsHtml += `
+            <div class="order-item-row">
+              <span>${item.product_name} (x${item.quantity})</span>
+              <span>${currencyFormat(item.price * item.quantity)}</span>
+            </div>
+          `;
+        });
+
+        const card = document.createElement("div");
+        card.className = "order-card";
+        card.innerHTML = `
+          <div class="order-header">
+            <div>
+              <div class="order-id">Pedido #${order.id}</div>
+              <div class="order-date">${date}</div>
+            </div>
+            <div class="order-status ${order.status.toLowerCase()}">${order.status}</div>
+          </div>
+          <div class="order-items">
+            ${itemsHtml}
+          </div>
+          <div class="order-total">
+            <span>Total</span>
+            <span>${currencyFormat(order.total)}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+    } else {
+      // Empty State
+      list.innerHTML = `
+        <div class="account-empty">
+          <span class="icon">📦</span>
+          <p>No tienes pedidos realizados aún.</p>
+          <button class="btn-secondary" onclick="closeAccountModal(); window.location.href='#productos'">Ir a comprar</button>
+        </div>
+      `;
+    }
+  } catch (err) {
+    console.error(err);
+    list.innerHTML = '<p style="color:red; text-align:center;">Error al cargar pedidos.</p>';
+  }
 }
 
 function renderAddresses() {
-  // Simulación: no hay direcciones aún
-  addressesList.innerHTML = '<p>No tienes direcciones guardadas.</p>';
+  // Placeholder
+  addressesList.innerHTML = `
+    <div class="account-empty">
+      <span class="icon">📍</span>
+      <p>No tienes direcciones guardadas.</p>
+    </div>
+  `;
 }
 
 if (addAddressBtn) {
