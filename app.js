@@ -276,28 +276,82 @@ if (searchInput) {
   });
 }
 
+// Dropdown logic
+const userDropdown = document.getElementById("userDropdown");
+const menuProfile = document.getElementById("menuProfile");
+const menuOrders = document.getElementById("menuOrders");
+const menuLogout = document.getElementById("menuLogout");
+
+// Close dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (!loginButton.contains(e.target) && !userDropdown.contains(e.target)) {
+    userDropdown.classList.remove("active");
+  }
+});
+
+// Menu Actions
+menuProfile.addEventListener("click", () => {
+  userDropdown.classList.remove("active");
+  openAccountModal("info");
+});
+
+menuOrders.addEventListener("click", () => {
+  userDropdown.classList.remove("active");
+  openAccountModal("orders");
+});
+
+menuLogout.addEventListener("click", () => {
+  localStorage.removeItem('token');
+  currentUser = null;
+  userDropdown.classList.remove("active");
+  updateLoginButton();
+  window.location.reload();
+});
+
 // Actualizar botón de login
 function updateLoginButton() {
   const token = localStorage.getItem('token');
   if (token && currentUser) {
-    loginButton.textContent = `Hola, ${currentUser.username}`;
+    // Logged In State
+    loginButton.textContent = `Hola, ${currentUser.username} ▾`;
     loginButton.style.display = "inline-block";
-    accountButton.style.display = "inline-block";
+
+    // Hide old explicit account button if visible
+    accountButton.style.display = "none";
+
+    // Change click behavior to toggle dropdown
+    loginButton.onclick = (e) => {
+      e.stopPropagation();
+      userDropdown.classList.toggle("active");
+    };
+
     if (currentUser.isAdmin) {
       if (!document.getElementById("addProductButton")) {
         const addBtn = document.createElement("button");
         addBtn.id = "addProductButton";
         addBtn.className = "btn-secondary";
-        addBtn.textContent = "Agregar Producto";
-        loginButton.parentNode.insertBefore(addBtn, loginButton.nextSibling);
+        addBtn.textContent = "Admin: Agregar +";
+        addBtn.style.backgroundColor = "#fffbeb";
+        addBtn.style.color = "#b45309";
+        addBtn.style.borderColor = "#fcd34d";
+        loginButton.parentNode.insertBefore(addBtn, loginButton);
         addBtn.addEventListener("click", openAddProduct);
       }
     }
   } else {
+    // Logged Out State
     currentUser = null;
-    loginButton.textContent = "Login";
+    loginButton.textContent = "Iniciar Sesión";
     loginButton.style.display = "inline-block";
     accountButton.style.display = "none";
+    userDropdown.classList.remove("active");
+
+    // Restore default login behavior
+    loginButton.onclick = (e) => {
+      e.preventDefault();
+      openLogin();
+    };
+
     const addBtn = document.getElementById("addProductButton");
     if (addBtn) addBtn.remove();
   }
