@@ -358,16 +358,9 @@ function updateLoginButton() {
 }
 
 // Login/Register
+// Login/Register
 function openLogin() {
-  if (localStorage.getItem('token')) {
-    // Logout
-    localStorage.removeItem('token');
-    currentUser = null;
-    updateLoginButton();
-    alert("Sesión cerrada.");
-  } else {
-    loginModal.classList.add("cart-modal--open");
-  }
+  loginModal.classList.add("cart-modal--open");
 }
 
 function closeLoginModal() {
@@ -390,7 +383,7 @@ function closeAddProductModal() {
   addProductModal.classList.remove("cart-modal--open");
 }
 
-loginButton.addEventListener("click", openLogin);
+// loginButton listener is now handled in updateLoginButton
 closeLogin.addEventListener("click", closeLoginModal);
 closeRegister.addEventListener("click", closeRegisterModal);
 closeAddProduct.addEventListener("click", closeAddProductModal);
