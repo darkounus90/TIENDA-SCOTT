@@ -258,7 +258,7 @@ async function loginUser(username, password) {
     }
   } catch (err) {
     console.error('Error logging in:', err);
-    alert('Error de conexión. Verifica que el servidor PHP esté corriendo (php -S localhost:3000).');
+    alert('Error de conexión con el servidor. Por favor intenta de nuevo.');
   }
 }
 
