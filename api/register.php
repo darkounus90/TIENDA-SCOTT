@@ -23,6 +23,9 @@ if (!$data) {
 $username = $conn->real_escape_string(trim($data['username'] ?? ''));
 $email = $conn->real_escape_string(trim($data['email'] ?? ''));
 $phone = $conn->real_escape_string(trim($data['phone'] ?? ''));
+$department = $conn->real_escape_string(trim($data['department'] ?? ''));
+$city = $conn->real_escape_string(trim($data['city'] ?? ''));
+$address = $conn->real_escape_string(trim($data['address'] ?? ''));
 $password = trim($data['password'] ?? '');
 
 if (!$username || !$email || !$password) {
@@ -48,7 +51,8 @@ if ($checkRes && $checkRes->num_rows > 0) {
 $hashed = password_hash($password, PASSWORD_DEFAULT);
 
 // Insertar
-$sql = "INSERT INTO users (username, email, phone, password, isAdmin) VALUES ('$username', '$email', '$phone', '$hashed', 0)";
+$sql = "INSERT INTO users (username, email, phone, department, city, address, password, isAdmin) 
+        VALUES ('$username', '$email', '$phone', '$department', '$city', '$address', '$hashed', 0)";
 if ($conn->query($sql)) {
     echo json_encode(["success" => true, "message" => "Usuario registrado correctamente"]);
 } else {

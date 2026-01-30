@@ -193,7 +193,7 @@
     </div>
     <div class="footer__bottom">
       <p>&copy; 2026 Grupo Empresarial El Pedalazo. Todos los derechos reservados.</p>
-      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem;">Versión 3.9</p>
+      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem;">Versión 4.1</p>
     </div>
   </footer>
 
@@ -311,6 +311,33 @@
         <i class="icon">📱</i> Teléfono / Celular
       </label>
       <input type="tel" id="registerPhone" name="phone" placeholder="Ej: 3001234567" />
+    </div>
+
+    <!-- Address Section -->
+    <div class="form-group">
+      <label for="registerDepartment">
+        <i class="icon">🗺️</i> Departamento
+      </label>
+      <select id="registerDepartment" name="department"
+        style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#fff">
+        <option value="">Selecciona un departamento</option>
+        <!-- JS via colombia.json -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="registerCity">
+        <i class="icon">🏙️</i> Ciudad
+      </label>
+      <select id="registerCity" name="city" disabled
+        style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#f1f5f9">
+        <option value="">Selecciona primero un departamento</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="registerAddress">
+        <i class="icon">📍</i> Dirección de entrega
+      </label>
+      <input type="text" id="registerAddress" name="address" required placeholder="Ej: Cra 100 # 20-30" />
     </div>
     <div class="form-group">
       <label for="registerPassword">
@@ -445,6 +472,127 @@
     </div>
     </form>
   </div>
+  </div>
+
+  <!-- Admin Dashboard Modal -->
+  <div class="bg-modal" id="adminDashboardModal">
+    <div class="cart-modal__content admin-dashboard-modal">
+      <div class="admin-header">
+        <h2><span class="icon">🚀</span> Panel de Control</h2>
+        <div class="close-modal" id="closeAdminDashboard">×</div>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="tab-overview">Resumen</button>
+        <button class="admin-tab-btn" data-tab="tab-orders">Ventas</button>
+        <button class="admin-tab-btn" data-tab="tab-inventory">Inventario</button>
+        <button class="admin-tab-btn" data-tab="tab-users">Usuarios</button>
+      </div>
+
+      <div class="admin-content-area">
+        <!-- Tab: Overview -->
+        <div id="tab-overview" class="view-section active">
+          <div class="dashboard-grid">
+            <div class="stat-card">
+              <div class="stat-icon">💰</div>
+              <div class="stat-info">
+                <h4>Ventas Totales</h4>
+                <p id="statTotalSales">$0</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📦</div>
+              <div class="stat-info">
+                <h4>Pedidos Hoy</h4>
+                <p id="statOrdersToday">0</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🚲</div>
+              <div class="stat-info">
+                <h4>Productos</h4>
+                <p id="statTotalProducts">0</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">👥</div>
+              <div class="stat-info">
+                <h4>Usuarios</h4>
+                <p id="statTotalUsers">0</p>
+              </div>
+            </div>
+          </div>
+
+          <h3>Últimos Pedidos</h3>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ref</th>
+                  <th>Usuario</th>
+                  <th>Total</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody id="recentOrdersTable">
+                <!-- Loaded via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab: Orders -->
+        <div id="tab-orders" class="view-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3>Historial de Ventas</h3>
+            <input type="text" placeholder="Buscar por referencia..."
+              style="padding:0.5rem; border-radius:8px; border:1px solid #ccc;">
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Referencia</th>
+                <th>Cliente</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="allOrdersTable"></tbody>
+          </table>
+        </div>
+
+        <!-- Tab: Inventory -->
+        <div id="tab-inventory" class="view-section">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3>Inventario y Precios</h3>
+            <button class="btn-primary" onclick="openAddProduct()">+ Nuevo Producto</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Stock</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTable"></tbody>
+          </table>
+        </div>
+
+        <!-- Tab: Users -->
+        <div id="tab-users" class="view-section">
+          <h3>Usuarios Registrados</h3>
+          <p>Próximamente...</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>

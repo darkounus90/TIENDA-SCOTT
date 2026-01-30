@@ -106,4 +106,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     }
     exit;
 }
+
+// --- PUT: Actualizar Producto ---
+if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    
+    $id = (int)($data['id'] ?? 0);
+    if ($id <= 0) {
+        echo json_encode(["success" => false, "message" => "ID inválido"]);
+        exit;
+    }
+
+    $name = $conn->real_escape_string($data['name'] ?? '');
+    $brand = $conn->real_escape_string($data['brand'] ?? '');
+    $category = $conn->real_escape_string($data['category'] ?? '');
+    $price = (float)($data['price'] ?? 0);
+    $tag = $conn->real_escape_string($data['tag'] ?? '');
+    $stock = (int)($data['stock'] ?? 0);
+    $barcode = $conn->real_escape_string($data['barcode'] ?? '');
+    
+    // Solo actualizar imágenes si se envían nuevas
+    $imagesSql = "";
+    if (isset($data['images']) && is_array($data['images']) && count($data['images']) > 0) {
+        $imagesJson = $conn->real_escape_string(json_encode($data['images']));
+        $imagesSql = ", images='$imagesJson'";
+    }
+
+    $sql = "UPDATE products SET 
+            name='$name', brand='$brand', category='$category', 
+            price=$price, tag='$tag', stock=$stock, barcode='$barcode'
+            $imagesSql
+            WHERE id=$id";
+
+    if ($conn->query($sql) === TRUE) {
+        echo json_encode(["success" => true, "message" => "Producto actualizado"]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Error DB: " . $conn->error]);
+    }
+    exit;
+}
 ?>

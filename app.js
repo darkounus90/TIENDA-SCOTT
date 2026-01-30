@@ -276,6 +276,31 @@ async function fetchProducts() {
   }
 }
 
+// Función para register
+async function registerUser(username, email, phone, password, addressData = {}) {
+  try {
+    const payload = { username, email, phone, password, ...addressData };
+
+    const response = await fetch(`${API_BASE}/register.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await response.json();
+    if (response.ok && data.success) {
+      showRegisterSuccess();
+      return true;
+    } else {
+      alert(data.message || 'Error en el registro');
+      return false;
+    }
+  } catch (err) {
+    console.error('Error registering:', err);
+    alert('Error al conectar con el servidor de registro');
+    return false;
+  }
+}
+
 // Función para login
 async function loginUser(username, password) {
   try {
@@ -614,7 +639,18 @@ registerForm.addEventListener("submit", async e => {
     alert("El email no es válido.");
     return;
   }
-  const result = await registerUser(trimmedUsername, trimmedEmail, trimmedPhone, trimmedPassword);
+
+  // Capture Address
+  const dep = document.getElementById("registerDepartment").value;
+  const city = document.getElementById("registerCity").value;
+  const address = document.getElementById("registerAddress").value;
+
+  if (!dep || !city || !address) {
+    alert("Por favor completa los datos de ubicación.");
+    return;
+  }
+
+  const result = await registerUser(trimmedUsername, trimmedEmail, trimmedPhone, trimmedPassword, { department: dep, city: city, address: address });
   if (result === true) {
     closeRegisterModal();
   }
@@ -1112,4 +1148,74 @@ async function processCheckout() {
     console.error(e);
     alert("Error procesando pedido");
   }
+}
+
+/* --- ADDRESS & COLOMBIA DEPARTMENTS LOGIC --- */
+const colombiaDeps = {
+  "Amazonas": ["Leticia", "Puerto Nariño"],
+  "Antioquia": ["Medellín", "Bello", "Itagüí", "Envigado", "Apartadó", "Rionegro", "Turbo", "Caucasia"],
+  "Arauca": ["Arauca", "Arauquita", "Saravena", "Tame"],
+  "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Sabanalarga"],
+  "Bolívar": ["Cartagena", "Magangué", "Turbaco", "Arjona"],
+  "Boyacá": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá"],
+  "Caldas": ["Manizales", "La Dorada", "Chinchiná", "Villamaría"],
+  "Caquetá": ["Florencia", "San Vicente del Caguán"],
+  "Casanare": ["Yopal", "Aguazul", "Villanueva"],
+  "Cauca": ["Popayán", "Santander de Quilichao", "Puerto Tejada"],
+  "Cesar": ["Valledupar", "Aguachica", "Codazzi"],
+  "Chocó": ["Quibdó", "Istmina"],
+  "Córdoba": ["Montería", "Lorica", "Sahagún", "Cereté"],
+  "Cundinamarca": ["Bogotá", "Soacha", "Zipaquirá", "Fusagasugá", "Facatativá", "Chía", "Mosquera"],
+  "Guainía": ["Inírida"],
+  "Guaviare": ["San José del Guaviare"],
+  "Huila": ["Neiva", "Pitalito", "Garzón"],
+  "La Guajira": ["Riohacha", "Maicao", "Uribia"],
+  "Magdalena": ["Santa Marta", "Ciénaga", "Zona Bananera"],
+  "Meta": ["Villavicencio", "Acacías", "Granada"],
+  "Nariño": ["Pasto", "Tumaco", "Ipiales"],
+  "Norte de Santander": ["Cúcuta", "Ocaña", "Villa del Rosario", "Los Patios"],
+  "Putumayo": ["Mocoa", "Puerto Asís"],
+  "Quindío": ["Armenia", "Calarcá", "La Tebaida"],
+  "Risaralda": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal"],
+  "San Andrés y Providencia": ["San Andrés"],
+  "Santander": ["Bucaramanga", "Floridablanca", "Barrancabermeja", "Girón", "Piedecuesta"],
+  "Sucre": ["Sincelejo", "Corozal"],
+  "Tolima": ["Ibagué", "Espinal", "Melgar"],
+  "Valle del Cauca": ["Cali", "Buenaventura", "Palmira", "Tuluá", "Yumbo", "Cartago", "Jamundí", "Buga"],
+  "Vaupés": ["Mitú"],
+  "Vichada": ["Puerto Carreño"]
+};
+
+const depSelect = document.getElementById("registerDepartment");
+const citySelect = document.getElementById("registerCity");
+
+if (depSelect && citySelect) {
+  // Populate Departments
+  Object.keys(colombiaDeps).sort().forEach(dep => {
+    const opt = document.createElement("option");
+    opt.value = dep;
+    opt.textContent = dep;
+    depSelect.appendChild(opt);
+  });
+
+  // Handle Change
+  depSelect.addEventListener("change", () => {
+    const selected = depSelect.value;
+    citySelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
+
+    if (selected && colombiaDeps[selected]) {
+      citySelect.disabled = false;
+      citySelect.style.background = "#fff";
+      colombiaDeps[selected].sort().forEach(city => {
+        const opt = document.createElement("option");
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+    } else {
+      citySelect.disabled = true;
+      citySelect.style.background = "#f1f5f9";
+      citySelect.innerHTML = '<option value="">Selecciona primero un departamento</option>';
+    }
+  });
 }
