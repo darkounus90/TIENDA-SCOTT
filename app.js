@@ -263,12 +263,12 @@ async function loginUser(username, password) {
 }
 
 // Función para register
-async function registerUser(username, email, password) {
+async function registerUser(username, email, phone, password) {
   try {
     const response = await fetch(`${API_BASE}/register.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password })
+      body: JSON.stringify({ username, email, phone, password })
     });
     const data = await response.json();
     if (response.ok && data.success) {
@@ -543,19 +543,21 @@ loginForm.addEventListener("submit", async e => {
 registerForm.addEventListener("submit", async e => {
   e.preventDefault();
   const formData = new FormData(registerForm);
-  const username = formData.get("username");
-  const email = formData.get("email");
-  const password = formData.get("password");
-  const confirmPassword = formData.get("confirmPassword");
+  const username = registerForm.username.value;
+  const email = registerForm.email.value;
+  const phone = registerForm.phone.value;
+  const password = registerForm.password.value;
+  const confirmPassword = registerForm.confirmPassword.value;
 
 
   const trimmedUsername = username?.trim();
   const trimmedEmail = email?.trim();
+  const trimmedPhone = phone?.trim();
   const trimmedPassword = password?.trim();
   const trimmedConfirmPassword = confirmPassword?.trim();
 
   if (!trimmedUsername || !trimmedEmail || !trimmedPassword || !trimmedConfirmPassword) {
-    alert("Todos los campos son obligatorios.");
+    alert("Todos los campos obligatorios deben llenarse.");
     return;
   }
   if (trimmedPassword !== trimmedConfirmPassword) {
@@ -566,7 +568,7 @@ registerForm.addEventListener("submit", async e => {
     alert("El email no es válido.");
     return;
   }
-  const result = await registerUser(trimmedUsername, trimmedEmail, trimmedPassword);
+  const result = await registerUser(trimmedUsername, trimmedEmail, trimmedPhone, trimmedPassword);
   if (result === true) {
     closeRegisterModal();
   }

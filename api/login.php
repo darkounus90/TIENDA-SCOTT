@@ -16,14 +16,15 @@ $data = json_decode(file_get_contents('php://input'), true);
 // Fallback to $_POST just in case
 if (!$data && $_POST) $data = $_POST;
 
-$username = $conn->real_escape_string($data['username'] ?? '');
+$username = $conn->real_escape_string($data['username'] ?? ''); // This can now be username or email
 $password = $data['password'] ?? '';
 
 if (!$username || !$password) {
-    echo json_encode(["success" => false, "message" => "Usuario y contraseña requeridos"]);
+    echo json_encode(["success" => false, "message" => "Usuario/Correo y contraseña requeridos"]);
     exit;
 }
-$res = $conn->query("SELECT id, username, email, password, isAdmin FROM users WHERE username='$username'");
+// Check both username and email columns
+$res = $conn->query("SELECT id, username, email, phone, password, isAdmin FROM users WHERE username='$username' OR email='$username'");
 if ($res->num_rows === 0) {
     echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
     exit;
