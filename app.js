@@ -630,8 +630,8 @@ function updateLoginButton() {
     loginButton.textContent = `Hola, ${currentUser.username} ▾`;
     loginButton.style.display = "inline-block";
 
-    // Hide old explicit account button if visible
-    accountButton.style.display = "none";
+    // Clean up if needed
+    // accountButton.style.display = "none"; // Removed ref
 
     // Change click behavior to toggle dropdown
     loginButton.onclick = (e) => {
@@ -649,8 +649,10 @@ function updateLoginButton() {
         // Let's copy style class if reusable, or just inline.
         // Actually, just regular button path.
         btn.style.textAlign = "left";
+        // btn.style.width = "100%"; // Removed to prevent overflow issues
+        btn.style.width = "auto";
+        btn.style.minWidth = "100%"; // Ensure it fills container but doesn't force width
         btn.style.padding = "0.75rem 1rem";
-        btn.style.width = "100%";
         btn.style.background = "#eff6ff"; // Light blue to stand out slightly
         btn.style.border = "none";
         btn.style.borderBottom = "1px solid #e2e8f0";
@@ -675,7 +677,7 @@ function updateLoginButton() {
     currentUser = null;
     loginButton.textContent = "Iniciar Sesión";
     loginButton.style.display = "inline-block";
-    accountButton.style.display = "none";
+    // accountButton.style.display = "none"; 
     userDropdown.classList.remove("active");
 
     // Restore default login behavior
