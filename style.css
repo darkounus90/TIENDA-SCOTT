@@ -1964,3 +1964,25 @@ a {
   transform: translateY(0) scale(1);
   opacity: 1;
 }
+
+/* Admin Button in User Dropdown */
+.account-btn-admin {
+  text-align: left;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #eff6ff !important;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1d4ed8;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 8px 8px 0 0;
+}
+
+.account-btn-admin:hover {
+  background: #dbeafe !important;
+}

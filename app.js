@@ -644,25 +644,7 @@ function updateLoginButton() {
         const btn = document.createElement("button");
         btn.id = "menuAdmin";
         btn.innerHTML = '<span class="icon">🚀</span> Panel Admin';
-        // Remove confusing secondary class and style manually to match dropdown items but with highlight
-        // Dropdown items are just buttons. 
-        // Let's copy style class if reusable, or just inline.
-        // Actually, just regular button path.
-        btn.style.textAlign = "left";
-        // btn.style.width = "100%"; // Removed to prevent overflow issues
-        btn.style.width = "auto";
-        btn.style.minWidth = "100%"; // Ensure it fills container but doesn't force width
-        btn.style.padding = "0.75rem 1rem";
-        btn.style.background = "#eff6ff"; // Light blue to stand out slightly
-        btn.style.border = "none";
-        btn.style.borderBottom = "1px solid #e2e8f0";
-        btn.style.color = "#1d4ed8";
-        btn.style.fontWeight = "600";
-        btn.style.cursor = "pointer";
-        btn.style.fontSize = "0.9rem";
-        btn.style.display = "flex";
-        btn.style.alignItems = "center";
-        btn.style.gap = "0.5rem";
+        btn.className = "account-btn-admin"; // Use new class in style.css
 
         btn.onclick = () => window.location.href = "admin.html";
 
