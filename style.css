@@ -1260,11 +1260,15 @@ a {
 
 /* FIX: Restore header positioning for dropdown */
 /* FIX: Restore header positioning for dropdown */
+/* FIX: Restore header positioning for dropdown */
 .header__actions {
   /* position: relative;  <-- Removed, using specific container now */
 }
 
-align-items: center;
+.user-menu-container {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 /* --- MI CUENTA (Specific Overrides) --- */
