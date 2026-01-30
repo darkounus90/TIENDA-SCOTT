@@ -1960,6 +1960,12 @@ a {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
 }
 
+/* Fix for unrelated modals (Login/Register/Cart) using cart-modal--open */
+.cart-modal--open .cart-modal__content {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
 .bg-modal.active .cart-modal__content {
   transform: translateY(0) scale(1);
   opacity: 1;
