@@ -30,6 +30,14 @@ if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
 if ($phone) {
     $updates[] = "phone='$phone'";
 }
+$department = $conn->real_escape_string($data['department'] ?? '');
+if ($department) $updates[] = "department='$department'";
+
+$city = $conn->real_escape_string($data['city'] ?? '');
+if ($city) $updates[] = "city='$city'";
+
+$address = $conn->real_escape_string($data['address'] ?? '');
+if ($address) $updates[] = "address='$address'";
 
 if (empty($updates)) {
     echo json_encode(["success" => false, "message" => "No hay datos para actualizar"]);

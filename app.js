@@ -137,7 +137,141 @@ function renderAccountInfo() {
     // Validate minimal phone length if present
     let fullPhone = "";
     if (phoneBody) {
-      fullPhone = code + phoneBody;
+      // Add helper to populate cities
+      function populateCities(depSelect, citySelect, selectedCity = null) {
+        const dep = depSelect.value;
+        citySelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
+
+        if (dep && colombiaDeps[dep]) {
+          citySelect.disabled = false;
+          citySelect.style.background = "#fff";
+          colombiaDeps[dep].sort().forEach(city => {
+            const opt = document.createElement("option");
+            opt.value = city;
+            opt.textContent = city;
+            if (selectedCity && city === selectedCity) opt.selected = true;
+            citySelect.appendChild(opt);
+          });
+        } else {
+          citySelect.disabled = true;
+          citySelect.style.background = "#f1f5f9";
+          citySelect.innerHTML = '<option value="">Selecciona primero un departamento</option>';
+        }
+      }
+
+      function renderAddresses() {
+        if (!currentUser) {
+          accountAddressesTab.innerHTML = '<div class="account-empty">No has iniciado sesión.</div>';
+          return;
+        }
+
+        // Determine current values
+        const currentDep = currentUser.department || "";
+        const currentCity = currentUser.city || "";
+        const currentAddr = currentUser.address || "";
+
+        accountAddressesTab.innerHTML = `
+    <div class="address-card">
+      <h3>📍 Dirección Principal</h3>
+      <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Esta es la dirección que usaremos para tus envíos.</p>
+      
+      <form id="addressForm" class="account-form">
+        <label>
+          <span>🗺️ Departamento</span>
+          <select id="profileDep" name="department" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;">
+             <option value="">Selecciona...</option>
+             <!-- JS Populated -->
+          </select>
+        </label>
+        
+        <label>
+          <span>🏙️ Ciudad</span>
+          <select id="profileCity" name="city" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;" disabled>
+             <option value="">Selecciona departamento...</option>
+          </select>
+        </label>
+
+        <label>
+          <span>🏠 Dirección y Nomenclatura</span>
+          <input type="text" name="address" value="${currentAddr}" placeholder="Ej: Cra 45 # 20-10, Apto 501" required />
+        </label>
+
+        <div style="margin-top: 1rem;">
+          <button type="submit" class="btn-primary" style="width: 100%;">Actualizar Dirección</button>
+        </div>
+      </form>
+    </div>
+  `;
+
+        // Populate Logic
+        const depSelect = document.getElementById("profileDep");
+        const citySelect = document.getElementById("profileCity");
+
+        if (typeof colombiaDeps !== 'undefined') {
+          Object.keys(colombiaDeps).sort().forEach(d => {
+            const opt = document.createElement("option");
+            opt.value = d;
+            opt.textContent = d;
+            if (currentDep === d) opt.selected = true;
+            depSelect.appendChild(opt);
+          });
+
+          // Init Cities
+          if (currentDep) {
+            populateCities(depSelect, citySelect, currentCity);
+          }
+
+          // Change Listener
+          depSelect.addEventListener("change", () => {
+            populateCities(depSelect, citySelect);
+          });
+        }
+
+        // Handle Submit
+        document.getElementById("addressForm").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const newDep = depSelect.value;
+          const newCity = citySelect.value;
+          const newAddr = e.target.address.value.trim();
+
+          if (!newDep || !newCity || !newAddr) {
+            alert("Por favor completa todos los campos.");
+            return;
+          }
+
+          try {
+            const res = await fetch(`${API_BASE}/update_user.php`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+              },
+              body: JSON.stringify({
+                department: newDep,
+                city: newCity,
+                address: newAddr
+              })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+              // Update local currentUser
+              currentUser.department = newDep;
+              currentUser.city = newCity;
+              currentUser.address = newAddr;
+              localStorage.setItem('user', JSON.stringify(currentUser));
+
+              alert("✅ Dirección actualizada correctamente");
+            } else {
+              alert("Error: " + data.message);
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Error de conexión");
+          }
+        });
+      }
+
     }
 
     if (!email) {
@@ -1216,6 +1350,145 @@ if (depSelect && citySelect) {
       citySelect.disabled = true;
       citySelect.style.background = "#f1f5f9";
       citySelect.innerHTML = '<option value="">Selecciona primero un departamento</option>';
+    }
+  });
+}
+
+// --- ADDRESS MANAGEMENT (PROFILE) ---
+
+function populateCities(depSelect, citySelect, selectedCity = null) {
+  const dep = depSelect.value;
+  citySelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
+  
+  if (dep && colombiaDeps[dep]) {
+    citySelect.disabled = false;
+    citySelect.style.background = "#fff";
+    colombiaDeps[dep].sort().forEach(city => {
+      const opt = document.createElement("option");
+      opt.value = city;
+      opt.textContent = city;
+      if (selectedCity && city === selectedCity) opt.selected = true;
+      citySelect.appendChild(opt);
+    });
+  } else {
+    citySelect.disabled = true;
+    citySelect.style.background = "#f1f5f9";
+    citySelect.innerHTML = '<option value="">Selecciona primero un departamento</option>';
+  }
+}
+
+function renderAddresses() {
+  const accountAddressesTab = document.getElementById("accountAddressesTab");
+  if (!currentUser) {
+    if(accountAddressesTab) accountAddressesTab.innerHTML = '<div class="account-empty">No has iniciado sesión.</div>';
+    return;
+  }
+  
+  if(!accountAddressesTab) return;
+
+  // Determine current values
+  const currentDep = currentUser.department || "";
+  const currentCity = currentUser.city || "";
+  const currentAddr = currentUser.address || "";
+
+  accountAddressesTab.innerHTML = `
+    <div class="address-card">
+      <h3>📍 Dirección Principal</h3>
+      <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Esta es la dirección que usaremos para tus envíos.</p>
+      
+      <form id="addressForm" class="account-form">
+        <label>
+          <span>🗺️ Departamento</span>
+          <select id="profileDep" name="department" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;">
+             <option value="">Selecciona...</option>
+             <!-- JS Populated -->
+          </select>
+        </label>
+        
+        <label>
+          <span>🏙️ Ciudad</span>
+          <select id="profileCity" name="city" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;" disabled>
+             <option value="">Selecciona departamento...</option>
+          </select>
+        </label>
+
+        <label>
+          <span>🏠 Dirección y Nomenclatura</span>
+          <input type="text" name="address" value="${currentAddr}" placeholder="Ej: Cra 45 # 20-10, Apto 501" required />
+        </label>
+
+        <div style="margin-top: 1rem;">
+          <button type="submit" class="btn-primary" style="width: 100%;">Actualizar Dirección</button>
+        </div>
+      </form>
+    </div>
+  `;
+
+  // Populate Logic
+  const depSelect = document.getElementById("profileDep");
+  const citySelect = document.getElementById("profileCity");
+
+  if (typeof colombiaDeps !== 'undefined') {
+    Object.keys(colombiaDeps).sort().forEach(d => {
+      const opt = document.createElement("option");
+      opt.value = d;
+      opt.textContent = d;
+      if (currentDep === d) opt.selected = true;
+      depSelect.appendChild(opt);
+    });
+
+    // Init Cities
+    if (currentDep) {
+      populateCities(depSelect, citySelect, currentCity);
+    }
+
+    // Change Listener
+    depSelect.addEventListener("change", () => {
+       populateCities(depSelect, citySelect);
+    });
+  }
+
+  // Handle Submit
+  document.getElementById("addressForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const newDep = depSelect.value;
+    const newCity = citySelect.value;
+    const newAddr = e.target.address.value.trim();
+
+    if (!newDep || !newCity || !newAddr) {
+      alert("Por favor completa todos los campos.");
+      return;
+    }
+
+    try {
+       const res = await fetch(`${API_BASE}/update_user.php`, {
+         method: 'POST',
+         headers: { 
+           'Content-Type': 'application/json',
+           'Authorization': localStorage.getItem('token') 
+         },
+         body: JSON.stringify({ 
+           department: newDep, 
+           city: newCity, 
+           address: newAddr 
+         })
+       });
+
+       const data = await res.json();
+       if (data.success) {
+         // Update local currentUser
+         currentUser.department = newDep;
+         currentUser.city = newCity;
+         currentUser.address = newAddr;
+         localStorage.setItem('user', JSON.stringify(currentUser));
+         
+         alert("✅ Dirección actualizada correctamente");
+       } else {
+         alert("Error: " + data.message);
+       }
+    } catch(err) {
+      console.error(err);
+      alert("Error de conexión");
     }
   });
 }
