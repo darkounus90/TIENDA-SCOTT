@@ -640,24 +640,34 @@ function updateLoginButton() {
     };
 
     if (currentUser.isAdmin) {
-      if (!document.getElementById("openAdminBtn")) {
-        const addBtn = document.createElement("button");
-        addBtn.id = "openAdminBtn";
-        addBtn.className = "btn-secondary";
-        addBtn.innerHTML = '<span class="icon">🚀</span> Admin';
-        addBtn.style.backgroundColor = "#fffbeb";
-        addBtn.style.color = "#b45309";
-        addBtn.style.borderColor = "#fcd34d";
-        addBtn.style.fontWeight = "bold";
-        addBtn.style.marginLeft = "1rem";
+      if (!document.getElementById("menuAdmin")) {
+        const btn = document.createElement("button");
+        btn.id = "menuAdmin";
+        btn.innerHTML = '<span class="icon">🚀</span> Panel Admin';
+        // Remove confusing secondary class and style manually to match dropdown items but with highlight
+        // Dropdown items are just buttons. 
+        // Let's copy style class if reusable, or just inline.
+        // Actually, just regular button path.
+        btn.style.textAlign = "left";
+        btn.style.padding = "0.75rem 1rem";
+        btn.style.width = "100%";
+        btn.style.background = "#eff6ff"; // Light blue to stand out slightly
+        btn.style.border = "none";
+        btn.style.borderBottom = "1px solid #e2e8f0";
+        btn.style.color = "#1d4ed8";
+        btn.style.fontWeight = "600";
+        btn.style.cursor = "pointer";
+        btn.style.fontSize = "0.9rem";
+        btn.style.display = "flex";
+        btn.style.alignItems = "center";
+        btn.style.gap = "0.5rem";
 
-        // Insert before logout
-        const logoutBtn = document.getElementById("logoutButton");
-        logoutBtn.parentNode.insertBefore(addBtn, logoutBtn);
+        btn.onclick = () => window.location.href = "admin.html";
 
-        addBtn.addEventListener("click", () => {
-          openAdmin();
-        });
+        // Insert as first item in dropdown for visibility
+        if (userDropdown) {
+          userDropdown.insertBefore(btn, userDropdown.firstChild);
+        }
       }
     }
   } else {
@@ -674,8 +684,8 @@ function updateLoginButton() {
       openLogin();
     };
 
-    const addBtn = document.getElementById("openAdminBtn");
-    if (addBtn) addBtn.remove();
+    const adminBtn = document.getElementById("menuAdmin");
+    if (adminBtn) adminBtn.remove();
   }
 }
 
@@ -1359,7 +1369,7 @@ if (depSelect && citySelect) {
 function populateCities(depSelect, citySelect, selectedCity = null) {
   const dep = depSelect.value;
   citySelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
-  
+
   if (dep && colombiaDeps[dep]) {
     citySelect.disabled = false;
     citySelect.style.background = "#fff";
@@ -1380,11 +1390,11 @@ function populateCities(depSelect, citySelect, selectedCity = null) {
 function renderAddresses() {
   const accountAddressesTab = document.getElementById("accountAddressesTab");
   if (!currentUser) {
-    if(accountAddressesTab) accountAddressesTab.innerHTML = '<div class="account-empty">No has iniciado sesión.</div>';
+    if (accountAddressesTab) accountAddressesTab.innerHTML = '<div class="account-empty">No has iniciado sesión.</div>';
     return;
   }
-  
-  if(!accountAddressesTab) return;
+
+  if (!accountAddressesTab) return;
 
   // Determine current values
   const currentDep = currentUser.department || "";
@@ -1444,7 +1454,7 @@ function renderAddresses() {
 
     // Change Listener
     depSelect.addEventListener("change", () => {
-       populateCities(depSelect, citySelect);
+      populateCities(depSelect, citySelect);
     });
   }
 
@@ -1461,32 +1471,32 @@ function renderAddresses() {
     }
 
     try {
-       const res = await fetch(`${API_BASE}/update_user.php`, {
-         method: 'POST',
-         headers: { 
-           'Content-Type': 'application/json',
-           'Authorization': localStorage.getItem('token') 
-         },
-         body: JSON.stringify({ 
-           department: newDep, 
-           city: newCity, 
-           address: newAddr 
-         })
-       });
+      const res = await fetch(`${API_BASE}/update_user.php`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+          department: newDep,
+          city: newCity,
+          address: newAddr
+        })
+      });
 
-       const data = await res.json();
-       if (data.success) {
-         // Update local currentUser
-         currentUser.department = newDep;
-         currentUser.city = newCity;
-         currentUser.address = newAddr;
-         localStorage.setItem('user', JSON.stringify(currentUser));
-         
-         alert("✅ Dirección actualizada correctamente");
-       } else {
-         alert("Error: " + data.message);
-       }
-    } catch(err) {
+      const data = await res.json();
+      if (data.success) {
+        // Update local currentUser
+        currentUser.department = newDep;
+        currentUser.city = newCity;
+        currentUser.address = newAddr;
+        localStorage.setItem('user', JSON.stringify(currentUser));
+
+        alert("✅ Dirección actualizada correctamente");
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (err) {
       console.error(err);
       alert("Error de conexión");
     }

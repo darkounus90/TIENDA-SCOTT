@@ -12,4 +12,4 @@ if ($conn->connect_error) {
 if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
     echo '<h2 style="color:green">Conexión exitosa a la base de datos MySQL</h2>';
 }
-?>
+// End of file (no closing tag)
