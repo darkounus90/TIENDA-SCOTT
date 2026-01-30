@@ -7,7 +7,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 $username = $conn->real_escape_string($data['username'] ?? '');
 $password = $data['password'] ?? '';
 $id = intval($data['id'] ?? 0);
-isAdmin = intval($data['isAdmin'] ?? 0);
+$isAdmin = intval($data['isAdmin'] ?? 0);
 
 // Solo admin puede cambiar roles
 $res = $conn->query("SELECT isAdmin FROM users WHERE username='$username'");
