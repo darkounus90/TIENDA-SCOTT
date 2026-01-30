@@ -768,8 +768,34 @@ cancelAddProduct.addEventListener("click", () => {
   closeAddProductModal();
 });
 
+// Restore Session
+async function initSession() {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+
+  try {
+    // Decode basic payload for UI (base64 part of fake JWT)
+    const payload = JSON.parse(atob(token.split('.')[0]));
+    if (payload && payload.username) {
+      currentUser = {
+        username: payload.username,
+        email: payload.email || '', // Might be missing in old tokens
+        isAdmin: payload.isAdmin,
+        phone: payload.phone || ''
+      };
+
+      // Optional: Verify token validity with backend if needed
+      // const res = await fetch(`${API_BASE}/me.php`, { headers: { 'Authorization': token } });
+    }
+  } catch (e) {
+    console.error("Invalid token:", e);
+    localStorage.removeItem('token');
+  }
+}
+
 // Inicializar
 (async () => {
+  await initSession();
   await fetchProducts();
   renderProducts();
   updateLoginButton();

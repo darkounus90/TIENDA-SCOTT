@@ -39,6 +39,8 @@ $user['isAdmin'] = (int)$user['isAdmin'];
 // Simular un token simple (NO JWT real, solo para frontend)
 $tokenPayload = base64_encode(json_encode([
     'username' => $user['username'],
+    'email' => $user['email'],
+    'phone' => $user['phone'] ?? '',
     'isAdmin' => $user['isAdmin'],
     'iat' => time()
 ]));
