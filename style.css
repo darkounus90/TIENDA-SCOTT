@@ -1258,12 +1258,7 @@ a {
   opacity: 0.5;
 }
 
-/* FIX: Restore header positioning for dropdown */
-/* FIX: Restore header positioning for dropdown */
-/* FIX: Restore header positioning for dropdown */
-.header__actions {
-  /* position: relative;  <-- Removed, using specific container now */
-}
+/* FIX: Restore header positioning for dropdown - Handled by user-menu-container */
 
 .user-menu-container {
   position: relative;
