@@ -333,11 +333,18 @@ a {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: none;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; <-- REMOVED to prevent top cut-off */
+  /* justify-content: center; <-- REMOVED */
   z-index: 100;
   padding: 1rem;
   transition: opacity 0.3s ease;
+  overflow-y: auto;
+  /* Enable scroll on the overlay wrapper */
+}
+
+.cart-modal--open {
+  display: flex !important;
+  /* margin: auto handles the centering now */
 }
 
 .cart-modal--open {
@@ -352,6 +359,8 @@ a {
   background: white;
   border-radius: 24px;
   padding: 2.5rem;
+  margin: auto;
+  /* SAFE CENTER: Centers in flex, but top-aligns if overflowing */
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.5);
   position: relative;
@@ -737,34 +746,7 @@ a {
   color: var(--color-muted);
 }
 
-/* Carrito modal */
-
-.cart-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.8);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 30;
-}
-
-.cart-modal--open {
-  display: flex;
-}
-
-.cart-modal__content {
-  width: 100%;
-  max-width: 420px;
-  max-height: 80vh;
-  background: white;
-  border-radius: 20px;
-  padding: 1.5rem;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
+/* Legacy modal styles removed to avoid conflict with Premium Modals section */
 
 .cart-modal__close {
   align-self: flex-end;
