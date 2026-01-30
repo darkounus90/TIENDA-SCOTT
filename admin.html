@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.2">
+    <link rel="stylesheet" href="style.css?v=4.2.1">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -219,30 +219,36 @@
         async function checkAdmin() {
             const token = localStorage.getItem('token');
             if (!token) {
-                window.location.href = '/';
+                alert("No hay token de sesión. Inicia sesión nuevamente.");
+                window.location.href = 'index.html';
                 return;
             }
 
             try {
-                // Show a loading/checking state (optional, or just wait blank)
-                // document.body.style.opacity = '0.5'; 
+                // Check against API with Bearer prefix
+                const res = await fetch(`${API_BASE}/me.php`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
 
-                const res = await fetch(`${API_BASE}/me.php`, { headers: { 'Authorization': token } });
-                // If 500 or 404
-                if (!res.ok) throw new Error("Auth check failed");
+                if (!res.ok) {
+                    throw new Error(`Error del servidor: ${res.status}`);
+                }
 
                 const data = await res.json();
+
                 if (data.success && data.user.isAdmin) {
                     document.getElementById('adminApp').style.display = 'grid';
                     document.getElementById('adminUsername').textContent = data.user.username;
                     loadDashboard();
                 } else {
-                    console.warn("Not admin or invalid session");
-                    window.location.href = '/';
+                    console.warn("Acceso denegado:", data);
+                    alert("Acceso denegado: No tienes permisos de administrador o tu sesión ha expirado.");
+                    window.location.href = 'index.html';
                 }
             } catch (e) {
                 console.error("Admin check error:", e);
-                window.location.href = '/';
+                alert("Error al verificar credenciales: " + e.message);
+                window.location.href = 'index.html';
             }
         }
 
