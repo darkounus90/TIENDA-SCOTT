@@ -481,16 +481,24 @@ function updateLoginButton() {
     };
 
     if (currentUser.isAdmin) {
-      if (!document.getElementById("addProductButton")) {
+      if (!document.getElementById("openAdminBtn")) {
         const addBtn = document.createElement("button");
-        addBtn.id = "addProductButton";
+        addBtn.id = "openAdminBtn";
         addBtn.className = "btn-secondary";
-        addBtn.textContent = "Admin: Agregar +";
+        addBtn.innerHTML = '<span class="icon">🚀</span> Admin';
         addBtn.style.backgroundColor = "#fffbeb";
         addBtn.style.color = "#b45309";
         addBtn.style.borderColor = "#fcd34d";
-        loginButton.parentNode.insertBefore(addBtn, loginButton);
-        addBtn.addEventListener("click", openAddProduct);
+        addBtn.style.fontWeight = "bold";
+        addBtn.style.marginLeft = "1rem";
+
+        // Insert before logout
+        const logoutBtn = document.getElementById("logoutButton");
+        logoutBtn.parentNode.insertBefore(addBtn, logoutBtn);
+
+        addBtn.addEventListener("click", () => {
+          openAdmin();
+        });
       }
     }
   } else {
@@ -507,7 +515,7 @@ function updateLoginButton() {
       openLogin();
     };
 
-    const addBtn = document.getElementById("addProductButton");
+    const addBtn = document.getElementById("openAdminBtn");
     if (addBtn) addBtn.remove();
   }
 }
@@ -940,3 +948,168 @@ async function initSession() {
   renderProducts();
   updateLoginButton();
 })();
+
+/* --- ADMIN DASHBOARD & ORDERS LOGIC --- */
+
+// Render Admin Dashboard
+const adminModal = document.getElementById("adminDashboardModal");
+const closeAdminDashboard = document.getElementById("closeAdminDashboard");
+const adminTabBtns = document.querySelectorAll(".admin-tab-btn");
+
+function openAdmin() {
+  if (adminModal) {
+    adminModal.classList.add("active");
+    loadDashboardData();
+  }
+}
+
+if (closeAdminDashboard) {
+  closeAdminDashboard.addEventListener("click", () => {
+    adminModal.classList.remove("active");
+  });
+}
+
+// Tab Switching with Animations
+adminTabBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    // Reset active states
+    adminTabBtns.forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".view-section").forEach(s => s.classList.remove("active"));
+
+    // Set new active
+    btn.classList.add("active");
+    const targetId = btn.getAttribute("data-tab");
+    document.getElementById(targetId).classList.add("active");
+  });
+});
+
+async function loadDashboardData() {
+  try {
+    const res = await fetch(`${API_BASE}/orders.php`, {
+      headers: { 'Authorization': localStorage.getItem('token') } // Simulate token
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      renderOrdersTable(data.orders);
+      renderOverview(data.orders);
+      renderInventoryTable();
+    }
+  } catch (e) { console.error("Error loading dashboard", e); }
+}
+
+function renderOverview(orders) {
+  const totalSales = orders
+    .filter(o => o.status !== 'cancelled')
+    .reduce((sum, o) => sum + Number(o.total), 0);
+
+  const today = new Date().toISOString().split('T')[0];
+  const ordersToday = orders.filter(o => o.created_at.startsWith(today)).length;
+
+  document.getElementById("statTotalSales").textContent = currencyFormat(totalSales);
+  document.getElementById("statOrdersToday").textContent = ordersToday;
+  document.getElementById("statTotalProducts").textContent = products.length;
+  // Users stat needs users fetch, skipping for now
+
+  // Recent Orders (Top 5)
+  const recentTable = document.getElementById("recentOrdersTable");
+  recentTable.innerHTML = orders.slice(0, 5).map(o => `
+    <tr>
+      <td>${o.reference || o.id}</td>
+      <td>${o.user_name || 'Desconocido'}</td>
+      <td>${currencyFormat(o.total)}</td>
+      <td><span class="status-badge status-${o.status}">${o.status}</span></td>
+      <td>${new Date(o.created_at).toLocaleDateString()}</td>
+    </tr>
+  `).join('');
+}
+
+function renderOrdersTable(orders) {
+  const table = document.getElementById("allOrdersTable");
+  table.innerHTML = orders.map(o => `
+    <tr>
+      <td>#${o.id}</td>
+      <td>${o.reference || '-'}</td>
+      <td>${o.user_name}<br><small>${o.user_email || ''}</small></td>
+      <td>${o.items.length} items</td>
+      <td>${currencyFormat(o.total)}</td>
+      <td>
+        <select onchange="updateOrderStatus(${o.id}, this.value)" style="padding:4px; border-radius:4px;">
+           <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+           <option value="approved" ${o.status === 'approved' ? 'selected' : ''}>Approved</option>
+           <option value="completed" ${o.status === 'completed' ? 'selected' : ''}>Completed</option>
+           <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+        </select>
+      </td>
+      <td><button class="btn-secondary" style="padding:4px 8px; font-size:12px;">Ver</button></td>
+    </tr>
+  `).join('');
+}
+
+async function updateOrderStatus(id, status) {
+  try {
+    await fetch(`${API_BASE}/orders.php`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, status })
+    });
+    alert("Estado actualizado");
+    loadDashboardData(); // Refresh
+  } catch (e) { alert("Error"); }
+}
+
+function renderInventoryTable() {
+  const table = document.getElementById("inventoryTable");
+  table.innerHTML = products.map(p => `
+    <tr>
+      <td><img src="${p.image || p.images[0]}" style="width:40px; height:40px; object-fit:contain;"></td>
+      <td>${p.name}</td>
+      <td>${p.category}</td>
+      <td>${p.stock}</td>
+      <td>${currencyFormat(p.price)}</td>
+      <td>
+         <button onclick="editProduct(${p.id})" style="border:none; background:none; cursor:pointer;">✏️</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// REAL CHECKOUT (Replaces Confirm)
+async function processCheckout() {
+  if (cart.length === 0) return;
+
+  try {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user.username) { alert("Inicia sesión primero"); return; }
+
+    // Create payload
+    const payload = {
+      items: cart
+    };
+
+    const res = await fetch(`${API_BASE}/orders.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert(`Pedido Creado! Ref: ${data.reference}. Total: ${currencyFormat(data.total)}`);
+      cart = [];
+      updateCartUI();
+      closeCartModal();
+      // Here we would redirect to Wompi
+      // window.location.href = "https://checkout.wompi.co/...?ref=" + data.reference;
+    } else {
+      alert("Error: " + data.message);
+    }
+  } catch (e) {
+    console.error(e);
+    alert("Error procesando pedido");
+  }
+}
