@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="style.css?v=3.1" />
+  <link rel="stylesheet" href="style.css?v=3.2" />
 </head>
 
 <body>
@@ -43,32 +43,7 @@
           </div>
         </div>
       </div>
-      <!-- MODAL MI CUENTA -->
-      <div class="cart-modal" id="accountModal">
-        <div class="cart-modal__content account-modal">
-          <button class="cart-modal__close" id="closeAccount">✕</button>
-          <div class="account-header">
-            <h2>Mi Cuenta</h2>
-          </div>
-          <div class="account-tabs">
-            <button class="account-tab active" data-tab="info">Información</button>
-            <button class="account-tab" data-tab="orders">Pedidos</button>
-            <button class="account-tab" data-tab="addresses">Direcciones</button>
-          </div>
-          <div class="account-content" id="accountInfoTab">
-            <!-- JS inyecta info de usuario aquí -->
-          </div>
-          <div class="account-content" id="accountOrdersTab" style="display:none;">
-            <h3>Historial de pedidos</h3>
-            <div id="ordersList">Cargando...</div>
-          </div>
-          <div class="account-content" id="accountAddressesTab" style="display:none;">
-            <h3>Direcciones de envío</h3>
-            <div id="addressesList">Cargando...</div>
-            <button class="btn-secondary" id="addAddressBtn">Agregar dirección</button>
-          </div>
-        </div>
-      </div>
+      <!-- MODAL MI CUENTA MOVED TO BOTTOM -->
     </div>
   </header>
 
@@ -218,9 +193,36 @@
     </div>
     <div class="footer__bottom">
       <p>&copy; 2026 Grupo Empresarial El Pedalazo. Todos los derechos reservados.</p>
-      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem;">Versión 3.1</p>
+      <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.5rem;">Versión 3.2</p>
     </div>
   </footer>
+
+  <!-- MODAL MI CUENTA -->
+  <div class="cart-modal" id="accountModal">
+    <div class="cart-modal__content account-modal">
+      <button class="cart-modal__close" id="closeAccount">✕</button>
+      <div class="account-header">
+        <h2>Mi Cuenta</h2>
+      </div>
+      <div class="account-tabs">
+        <button class="account-tab active" data-tab="info">Información</button>
+        <button class="account-tab" data-tab="orders">Pedidos</button>
+        <button class="account-tab" data-tab="addresses">Direcciones</button>
+      </div>
+      <div class="account-content" id="accountInfoTab">
+        <!-- JS inyecta info de usuario aquí -->
+      </div>
+      <div class="account-content" id="accountOrdersTab" style="display:none;">
+        <h3>Historial de pedidos</h3>
+        <div id="ordersList">Cargando...</div>
+      </div>
+      <div class="account-content" id="accountAddressesTab" style="display:none;">
+        <h3>Direcciones de envío</h3>
+        <div id="addressesList">Cargando...</div>
+        <button class="btn-secondary" id="addAddressBtn">Agregar dirección</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODAL CARRITO -->
   <div class="cart-modal" id="cartModal">
