@@ -218,19 +218,30 @@
 
         async function checkAdmin() {
             const token = localStorage.getItem('token');
-            if (!token) window.location.href = '/';
+            if (!token) {
+                window.location.href = '/'; 
+                return;
+            }
 
             try {
+                // Show a loading/checking state (optional, or just wait blank)
+                // document.body.style.opacity = '0.5'; 
+
                 const res = await fetch(`${API_BASE}/me.php`, { headers: { 'Authorization': token } });
+                // If 500 or 404
+                if(!res.ok) throw new Error("Auth check failed");
+
                 const data = await res.json();
                 if (data.success && data.user.isAdmin) {
                     document.getElementById('adminApp').style.display = 'grid';
                     document.getElementById('adminUsername').textContent = data.user.username;
                     loadDashboard();
                 } else {
+                    console.warn("Not admin or invalid session");
                     window.location.href = '/';
                 }
             } catch (e) {
+                console.error("Admin check error:", e);
                 window.location.href = '/';
             }
         }

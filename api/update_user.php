@@ -4,8 +4,13 @@ header('Content-Type: application/json');
 require 'db.php';
 
 // Autenticación simple por token (simulado)
-$headers = getallheaders();
-$auth = $headers['Authorization'] ?? '';
+$auth = null;
+if (function_exists('apache_request_headers')) {
+    $headers = apache_request_headers();
+    if (isset($headers['Authorization'])) $auth = $headers['Authorization'];
+}
+if (!$auth && isset($_SERVER['HTTP_AUTHORIZATION'])) $auth = $_SERVER['HTTP_AUTHORIZATION'];
+
 if (!$auth || !preg_match('/Bearer (.+)/', $auth, $matches)) {
     echo json_encode(["success" => false, "message" => "No autorizado"]);
     exit;
