@@ -636,45 +636,96 @@ toggleRegisterPassword.addEventListener("click", () => {
   toggleRegisterPassword.querySelector(".eye-icon").textContent = type === "password" ? "👁️" : "🙈";
 });
 
-// Image upload functionality
-imageInput.addEventListener("change", handleImageSelect);
+// Image upload functionality (Multi-image Grid)
+const imageUploadGrid = document.getElementById("imageUploadGrid");
+let productImages = [null, null, null, null]; // Store Base64 strings
 
-imageUploadArea.addEventListener("click", () => {
-  imageInput.click();
-});
+if (imageUploadGrid) {
+  const slots = imageUploadGrid.querySelectorAll(".image-slot");
 
-imageUploadArea.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  imageUploadArea.classList.add("dragover");
-});
+  slots.forEach((slot, index) => {
+    const input = slot.querySelector("input[type='file']");
 
-imageUploadArea.addEventListener("dragleave", () => {
-  imageUploadArea.classList.remove("dragover");
-});
+    // Click slot to trigger input
+    slot.addEventListener("click", (e) => {
+      if (e.target.closest(".remove-img-btn")) return; // Ignore click on remove button
+      if (!productImages[index]) {
+        input.click();
+      }
+    });
 
-imageUploadArea.addEventListener("drop", (e) => {
-  e.preventDefault();
-  imageUploadArea.classList.remove("dragover");
-  const files = e.dataTransfer.files;
-  if (files.length > 0) {
-    imageInput.files = files;
-    handleImageSelect();
-  }
-});
+    // Handle file selection
+    input.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
 
-function handleImageSelect() {
-  const file = imageInput.files[0];
-  if (file) {
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
-      alert("La imagen es demasiado grande. Máximo 5MB.");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
-    };
-    reader.readAsDataURL(file);
-  }
+      if (file.size > 5 * 1024 * 1024) {
+        alert("La imagen es demasiado grande. Máximo 5MB.");
+        return;
+      }
+
+      try {
+        const base64 = await readImageAsBase64(file);
+        productImages[index] = base64;
+
+        // Update UI
+        slot.classList.add("has-image");
+        const img = document.createElement("img");
+        img.src = base64;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "remove-img-btn";
+        removeBtn.innerHTML = "×";
+        removeBtn.onclick = (ev) => {
+          ev.stopPropagation(); // Stop bubbling to slot click
+          clearSlot(index);
+        };
+
+        // Clear previous content (placeholder) but keep input
+        const placeholder = slot.querySelector(".slot-placeholder");
+        if (placeholder) placeholder.style.display = 'none';
+
+        // Remove existing img/btn if replacing
+        const existingImg = slot.querySelector("img");
+        const existingBtn = slot.querySelector(".remove-img-btn");
+        if (existingImg) existingImg.remove();
+        if (existingBtn) existingBtn.remove();
+
+        slot.appendChild(img);
+        slot.appendChild(removeBtn);
+
+      } catch (err) {
+        console.error("Error reading file:", err);
+      }
+    });
+  });
+}
+
+function clearSlot(index) {
+  const slot = imageUploadGrid.querySelector(`.image-slot[data-index="${index}"]`);
+  if (!slot) return;
+
+  productImages[index] = null;
+  slot.classList.remove("has-image");
+
+  const img = slot.querySelector("img");
+  const btn = slot.querySelector(".remove-img-btn");
+  if (img) img.remove();
+  if (btn) btn.remove();
+
+  const placeholder = slot.querySelector(".slot-placeholder");
+  if (placeholder) placeholder.style.display = 'block';
+
+  const input = slot.querySelector("input[type='file']");
+  if (input) input.value = ''; // Reset input
+}
+
+function resetImageGrid() {
+  productImages = [null, null, null, null];
+  const slots = imageUploadGrid.querySelectorAll(".image-slot");
+  slots.forEach((slot, index) => {
+    clearSlot(index);
+  });
 }
 
 function readImageAsBase64(file) {
@@ -798,13 +849,64 @@ checkoutButton.addEventListener("click", () => {
   }
 });
 
+// Add product logic
+addProductForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
+  const formData = new FormData(addProductForm);
+  const productData = {
+    name: formData.get("name"),
+    brand: formData.get("brand"),
+    category: formData.get("category"),
+    price: Number(formData.get("price")),
+    tag: formData.get("tag"),
+    use: formData.get("use"),
+    stock: Number(formData.get("stock")),
+    barcode: formData.get("barcode"), // New field
+    images: productImages.filter(img => img !== null) // Send non-null images
+  };
 
-cancelAddProduct.addEventListener("click", () => {
-  addProductForm.reset();
-  imagePreview.innerHTML = '<div class="preview-placeholder"><span class="icon">🖼️</span><p>Previsualización de imagen</p></div>';
-  closeAddProductModal();
+  if (productData.images.length === 0) {
+    alert("Debes subir al menos una imagen principal.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/products.php`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // "Authorization": `Bearer ${localStorage.getItem('token')}` // Uncomment if token logic is strict
+      },
+      body: JSON.stringify(productData)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert("Producto agregado correctamente ✅");
+      closeAddProductModal();
+      addProductForm.reset();
+      resetImageGrid();
+      await fetchProducts(); // Reload from server
+      renderProducts();
+    } else {
+      alert("Error al guardar: " + (result.message || "Desconocido"));
+    }
+  } catch (err) {
+    console.error("Error saving product:", err);
+    alert("Error de conexión al guardar producto.");
+  }
 });
+
+const cancelAddProduct = document.getElementById("cancelAddProduct");
+if (cancelAddProduct) {
+  cancelAddProduct.addEventListener("click", () => {
+    addProductForm.reset();
+    resetImageGrid();
+    closeAddProductModal();
+  });
+}
 
 // Restore Session
 async function initSession() {

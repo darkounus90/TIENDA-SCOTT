@@ -1505,3 +1505,67 @@ a {
     height: auto;
   }
 }
+/* --- MULTI IMAGE UPLOAD GRID --- */
+.image-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 150px);
+  gap: 1rem;
+}
+
+.image-slot {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f8fafc;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-slot:hover {
+  border-color: var(--color-primary);
+  background: #f0f9ff;
+}
+
+.image-slot input[type="file"] {
+  display: none;
+}
+
+.image-slot .slot-placeholder {
+  text-align: center;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.image-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Changed to contain to show full bike */
+  background: #fff;
+}
+
+.image-slot .remove-img-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  z-index: 5;
+}
+
+.image-slot.has-image .slot-placeholder {
+  display: none;
+}
