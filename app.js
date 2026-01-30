@@ -27,9 +27,11 @@ function openAccountModal(initialTab = "info") {
   if (initialTab === "addresses") renderAddresses();
 
   accountModal.classList.add("cart-modal--open");
-  // Reset scroll position to top
-  const content = accountModal.querySelector('.cart-modal__content');
-  if (content) content.scrollTop = 0;
+  // Reset scroll position to top with delay to ensure layout paint
+  setTimeout(() => {
+    const content = accountModal.querySelector('.cart-modal__content');
+    if (content) content.scrollTop = 0;
+  }, 50);
 }
 
 function closeAccountModal() {
@@ -59,7 +61,11 @@ accountTabs.forEach(tab => {
     // Data Fetching
     if (tabName === "info") renderAccountInfo();
     if (tabName === "orders") renderOrders();
-    if (tabName === "addresses") renderAddresses(); // Placeholder
+    if (tabName === "addresses") renderAddresses();
+
+    // Reset scroll when switching tabs too
+    const content = accountModal.querySelector('.cart-modal__content');
+    if (content) content.scrollTop = 0;
   });
 });
 
@@ -86,6 +92,9 @@ function renderAccountInfo() {
       </label>
       <div style="margin-top: 1rem;">
         <button type="submit" class="btn-primary" style="width: 100%;">💾 Guardar Cambios</button>
+      </div>
+      <div style="margin-top: 0.5rem;">
+        <button type="button" class="btn-secondary" onclick="closeAccountModal()" style="width: 100%;">✖ Cerrar Ventana</button>
       </div>
     </form>
   `;
