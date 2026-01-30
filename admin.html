@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.2.3">
+    <link rel="stylesheet" href="style.css?v=4.2.4">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -241,8 +241,8 @@
                     document.getElementById('adminUsername').textContent = data.user.username;
                     loadDashboard();
                 } else {
-                    console.warn("Acceso denegado:", data);
-                    alert("Acceso denegado: No tienes permisos de administrador o tu sesión ha expirado.");
+                    console.warn("Acceso denegado. Datos recibidos:", JSON.stringify(data));
+                    alert("Acceso denegado: El servidor dice que no eres admin. Datos: " + JSON.stringify(data.user));
                     window.location.href = 'index.html';
                 }
             } catch (e) {
