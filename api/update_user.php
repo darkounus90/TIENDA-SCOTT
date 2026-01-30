@@ -21,13 +21,25 @@ if (!$username) {
 
 $data = json_decode(file_get_contents('php://input'), true);
 $email = $conn->real_escape_string($data['email'] ?? '');
-if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo json_encode(["success" => false, "message" => "Email inválido"]);
+$phone = $conn->real_escape_string($data['phone'] ?? '');
+
+$updates = [];
+if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $updates[] = "email='$email'";
+}
+if ($phone) {
+    $updates[] = "phone='$phone'";
+}
+
+if (empty($updates)) {
+    echo json_encode(["success" => false, "message" => "No hay datos para actualizar"]);
     exit;
 }
 
-if ($conn->query("UPDATE users SET email='$email' WHERE username='$username'")) {
-    echo json_encode(["success" => true, "message" => "Email actualizado"]);
+$sql = "UPDATE users SET " . implode(', ', $updates) . " WHERE username='$username'";
+
+if ($conn->query($sql)) {
+    echo json_encode(["success" => true, "message" => "Datos actualizados"]);
 } else {
     echo json_encode(["success" => false, "message" => "Error al actualizar"]);
 }

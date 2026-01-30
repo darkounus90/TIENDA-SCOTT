@@ -75,7 +75,20 @@ function renderAccountInfo() {
     return;
   }
 
-  // Premium Form Design
+  // Parse existing phone
+  let currentPhone = currentUser.phone || "";
+  let currentCode = "+57";
+  const commonCodes = ["+57", "+1", "+52", "+34", "+54", "+56", "+51"];
+
+  for (let code of commonCodes) {
+    if (currentPhone.startsWith(code)) {
+      currentCode = code;
+      currentPhone = currentPhone.substring(code.length);
+      break;
+    }
+  }
+
+  // Premium Form Design with Phone and Flag
   accountInfoTab.innerHTML = `
     <form id="accountInfoForm" class="account-form">
       <label>
@@ -85,6 +98,21 @@ function renderAccountInfo() {
       <label>
         <span>✉️ Correo electrónico</span>
         <input type="email" name="email" value="${currentUser.email || ''}" required placeholder="ejemplo@email.com" />
+      </label>
+      <label>
+        <span>📱 Teléfono móvil</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <select id="countryCodeSelect" style="width: 110px; padding: 0.8rem 0.5rem; border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; font-size: 1rem;">
+             <option value="+57" ${currentCode === '+57' ? 'selected' : ''}>🇨🇴 +57</option>
+             <option value="+1" ${currentCode === '+1' ? 'selected' : ''}>🇺🇸 +1</option>
+             <option value="+52" ${currentCode === '+52' ? 'selected' : ''}>🇲🇽 +52</option>
+             <option value="+34" ${currentCode === '+34' ? 'selected' : ''}>🇪🇸 +34</option>
+             <option value="+54" ${currentCode === '+54' ? 'selected' : ''}>🇦🇷 +54</option>
+             <option value="+56" ${currentCode === '+56' ? 'selected' : ''}>🇨🇱 +56</option>
+             <option value="+51" ${currentCode === '+51' ? 'selected' : ''}>🇵🇪 +51</option>
+          </select>
+          <input type="tel" name="phoneBody" value="${currentPhone}" placeholder="300 123 4567" style="flex:1; margin-bottom: 0;" />
+        </div>
       </label>
       <label>
         <span>🔑 Rol de usuario</span>
@@ -103,15 +131,25 @@ function renderAccountInfo() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = form.email.value.trim();
+    const phoneBody = form.phoneBody.value.trim();
+    const code = document.getElementById('countryCodeSelect').value;
+
+    // Validate minimal phone length if present
+    let fullPhone = "";
+    if (phoneBody) {
+      fullPhone = code + phoneBody;
+    }
+
     if (!email) {
       alert('El email no puede estar vacío.');
       return;
     }
-    const res = await updateUserInfo({ email });
+
+    const res = await updateUserInfo({ email, phone: fullPhone });
     if (res && res.success) {
       currentUser.email = email;
+      currentUser.phone = fullPhone;
       alert('✅ Datos actualizados correctamente.');
-      // Update local storage if needed or just memory
     } else {
       alert(res && res.message ? res.message : 'Error al actualizar.');
     }
