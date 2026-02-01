@@ -880,11 +880,41 @@ a {
 .cart-modal__content {
   background: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 12px;
   position: relative;
-  max-width: 90%;
+  width: 100%;
+  max-width: 500px;
+  /* Por defecto */
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  animation: modalPop 0.3s ease-out;
+}
+
+/* Estilo específico para Login/Registro (Rectangular y Centrado) */
+.cart-modal__content.login-modal {
+  max-width: 400px;
+  padding: 2.5rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.cart-modal__content.add-product-modal,
+.cart-modal__content.account-modal {
+  max-width: 800px;
+  /* Más ancho para contenido complejo */
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .cart-item__name {
