@@ -766,6 +766,7 @@ closeRegister.addEventListener("click", closeRegisterModal);
 closeAddProduct.addEventListener("click", closeAddProductModal);
 
 // Reactivar cierre por clic fuera (Ahora seguro con CSS limpio)
+/*
 loginModal.addEventListener("click", e => {
   if (e.target === loginModal) closeLoginModal();
 });
@@ -777,6 +778,7 @@ registerModal.addEventListener("click", e => {
 addProductModal.addEventListener("click", e => {
   if (e.target === addProductModal) closeAddProductModal();
 });
+*/
 
 showRegister.addEventListener("click", e => {
   e.preventDefault();
