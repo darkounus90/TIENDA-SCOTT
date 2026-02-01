@@ -1,0 +1,28 @@
+# Deshabilitar caché para desarrollo/actualizaciones frecuentes
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|htm|js|css|php)$">
+        FileETag None
+        Header unset ETag
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+    </FilesMatch>
+</IfModule>
+
+# Configuración básica de reescritura si es necesaria para router (opcional)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # RewriteBase /
+</IfModule>
+
+# Proteger archivos sensibles
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Permitir .htaccess pero proteger .git, .env, etc.
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
