@@ -1,22 +1,32 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
+// api/update_users_table.php
+header('Content-Type: text/plain');
 require 'db.php';
 
-// Añadir columna phone si no existe
-$sql = "SHOW COLUMNS FROM users LIKE 'phone'";
-$result = $conn->query($sql);
+// Array of columns to add
+$columns_to_add = [
+    "phone" => "VARCHAR(20) DEFAULT NULL",
+    "department" => "VARCHAR(100) DEFAULT NULL",
+    "city" => "VARCHAR(100) DEFAULT NULL",
+    "address" => "VARCHAR(255) DEFAULT NULL"
+];
 
-if ($result && $result->num_rows === 0) {
-    // La columna no existe, la creamos
-    $alter = "ALTER TABLE users ADD COLUMN phone VARCHAR(20) DEFAULT NULL";
-    if ($conn->query($alter)) {
-        echo "<h2 style='color:green'>Columna 'phone' añadida correctamente a la tabla 'users'.</h2>";
+echo "Updating users table...\n";
+
+foreach ($columns_to_add as $col => $def) {
+    // Check if column exists
+    $check = $conn->query("SHOW COLUMNS FROM users LIKE '$col'");
+    if ($check->num_rows == 0) {
+        $sql = "ALTER TABLE users ADD COLUMN $col $def";
+        if ($conn->query($sql) === TRUE) {
+            echo "✅ Column '$col' added successfully.\n";
+        } else {
+            echo "❌ Error adding column '$col': " . $conn->error . "\n";
+        }
     } else {
-        echo "<h2 style='color:red'>Error añadiendo columna 'phone': " . $conn->error . "</h2>";
+        echo "ℹ️ Column '$col' already exists.\n";
     }
-} else {
-    echo "<h2 style='color:orange'>La columna 'phone' ya existe. Todo OK.</h2>";
 }
+
+echo "Done.";
 ?>
