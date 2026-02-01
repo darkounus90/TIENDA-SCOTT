@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.3.0">
+    <link rel="stylesheet" href="style.css?v=4.3.1">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -202,25 +202,76 @@
         </main>
     </div>
 
-    <!-- Modal Add Product (Reused) -->
+    <!-- Modal Add Product Full -->
     <div class="cart-modal" id="addProductModal">
-        <div class="cart-modal__content add-product-modal">
-            <button class="cart-modal__close" id="closeAddProduct">✕</button>
+        <div class="cart-modal__content add-product-modal" style="max-width: 800px; width: 90%;">
+            <button class="cart-modal__close" onclick="closeAddProduct()">✕</button>
             <h2>Agregar Nuevo Producto</h2>
-            <form id="addProductForm" class="product-form">
-                <!-- Shortened for brevity, JS handles population if needed or just copy full structure -->
-                <div class="form-grid">
+            <form id="addProductForm" class="product-form" onsubmit="submitProduct(event)">
+                <div class="form-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
                     <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" name="name" required>
+                        <label>Nombre del Producto</label>
+                        <input type="text" name="name" required
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Marca</label>
+                        <input type="text" name="brand" required
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select name="category" required
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="bicicletas">Bicicletas</option>
+                            <option value="accesorios">Accesorios</option>
+                            <option value="repuestos">Repuestos</option>
+                            <option value="ropa">Ropa</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>Precio</label>
-                        <input type="number" name="price" required>
+                        <input type="number" name="price" required
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
-                    <!-- Add full fields later visually or reusing CSS -->
+                    <div class="form-group">
+                        <label>Stock (Cantidad)</label>
+                        <input type="number" name="stock" required
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Uso (Ruta, Montaña, etc)</label>
+                        <input type="text" name="use" required
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Etiqueta (Nuevo, Oferta)</label>
+                        <input type="text" name="tag"
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Código de Barras</label>
+                        <input type="text" name="barcode"
+                            style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
                 </div>
-                <button type="submit" class="btn-primary">Guardar</button>
+
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Imágenes (Máx 3)</label>
+                    <input type="file" id="productImages" multiple accept="image/*" onchange="handleImagePreview(this)"
+                        style="margin-top:0.5rem;">
+                    <div id="imagePreviewGrid" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: right;">
+                    <button type="button" onclick="closeAddProduct()"
+                        style="padding: 0.5rem 1rem; margin-right: 1rem; cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="btn-primary"
+                        style="padding: 0.5rem 2rem; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer;">Guardar
+                        Producto</button>
+                </div>
             </form>
         </div>
     </div>
@@ -228,6 +279,90 @@
     <script>
         // ADMIN LOGIC ISOLATED
         const API_BASE = 'api';
+
+        // --- Product Management ---
+        function openAddProduct() {
+            document.getElementById('addProductModal').classList.add('active');
+        }
+
+        function closeAddProduct() {
+            document.getElementById('addProductModal').classList.remove('active');
+            document.getElementById('addProductForm').reset();
+            document.getElementById('imagePreviewGrid').innerHTML = '';
+            productImagesBase64 = [];
+        }
+
+        let productImagesBase64 = [];
+
+        async function handleImagePreview(input) {
+            const files = Array.from(input.files).slice(0, 3);
+            const grid = document.getElementById('imagePreviewGrid');
+            grid.innerHTML = '';
+            productImagesBase64 = [];
+
+            for (const file of files) {
+                const base64 = await toBase64(file);
+                productImagesBase64.push(base64);
+
+                const img = document.createElement('img');
+                img.src = base64;
+                img.style.width = '80px';
+                img.style.height = '80px';
+                img.style.objectFit = 'cover';
+                img.style.borderRadius = '4px';
+                grid.appendChild(img);
+            }
+        }
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        async function submitProduct(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            const payload = {
+                name: formData.get('name'),
+                brand: formData.get('brand'),
+                category: formData.get('category'),
+                price: parseFloat(formData.get('price')),
+                stock: parseInt(formData.get('stock')),
+                use: formData.get('use'),
+                tag: formData.get('tag'),
+                barcode: formData.get('barcode'),
+                images: productImagesBase64
+            };
+
+            const token = localStorage.getItem('token');
+
+            try {
+                const res = await fetch(`${API_BASE}/products.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert('Producto creado exitosamente');
+                    closeAddProduct();
+                    loadDashboard(); // Recargar inventario
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error de conexión');
+            }
+        }
 
         async function checkAdmin() {
             const token = localStorage.getItem('token');

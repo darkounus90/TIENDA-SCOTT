@@ -45,6 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             // Compatibilidad con frontend antiguo que espera 'image' simple
             $row['image'] = !empty($row['images'][0]) ? $row['images'][0] : null;
             
+            // Compatibilidad use -> use_type (Frontend espera .use)
+            if (!isset($row['use'])) {
+                 $row['use'] = $row['use_type'] ?? ''; 
+            }
+
             $products[] = $row;
         }
     }

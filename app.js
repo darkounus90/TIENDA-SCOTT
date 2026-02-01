@@ -577,8 +577,12 @@ function renderProducts() {
       searchTerm.trim() === "" ||
       p.name.toLowerCase().includes(searchTerm) ||
       p.brand.toLowerCase().includes(searchTerm) ||
-      p.use.toLowerCase().includes(searchTerm);
-    return matchCategory && matchSearch;
+      (p.use ? p.use.toLowerCase() : '').includes(searchTerm);
+
+    // Filtro Stock: Mostrar solo si > 0
+    const matchStock = p.stock > 0;
+
+    return matchCategory && matchSearch && matchStock;
   });
 
   if (filtered.length === 0) {
