@@ -717,18 +717,11 @@ function updateLoginButton() {
 
     // Restore default login behavior
     // Restore default login behavior
-    // Restore default login behavior
+    // Restaurar comportamiento de login
     loginButton.onclick = (e) => {
       e.preventDefault();
       e.stopPropagation();
-      // Retrasar apertura para evitar conflictos inmediatos
-      setTimeout(() => {
-        const modal = document.getElementById("loginModal");
-        if (modal) {
-          modal.classList.add("active");
-          modal.classList.add("cart-modal--open");
-        }
-      }, 100);
+      openLogin();
     };
 
     const adminBtn = document.getElementById("menuAdmin");
@@ -736,12 +729,10 @@ function updateLoginButton() {
   }
 }
 
-// Login/Register functions updated
+// Funciones de Modales (Sin retardos)
 function openLogin() {
-  setTimeout(() => {
-    loginModal.classList.add("active");
-    loginModal.classList.add("cart-modal--open");
-  }, 50);
+  loginModal.classList.add("active");
+  loginModal.classList.add("cart-modal--open");
 }
 
 function closeLoginModal() {
@@ -750,10 +741,8 @@ function closeLoginModal() {
 }
 
 function openRegister() {
-  setTimeout(() => {
-    registerModal.classList.add("active");
-    registerModal.classList.add("cart-modal--open");
-  }, 50);
+  registerModal.classList.add("active");
+  registerModal.classList.add("cart-modal--open");
 }
 
 function closeRegisterModal() {
@@ -762,10 +751,8 @@ function closeRegisterModal() {
 }
 
 function openAddProduct() {
-  setTimeout(() => {
-    addProductModal.classList.add("active");
-    addProductModal.classList.add("cart-modal--open");
-  }, 50);
+  addProductModal.classList.add("active");
+  addProductModal.classList.add("cart-modal--open");
 }
 
 function closeAddProductModal() {
@@ -773,12 +760,12 @@ function closeAddProductModal() {
   addProductModal.classList.remove("cart-modal--open");
 }
 
-// Listeners de cierre - External click DISABLED for debugging
+// Listeners de cierre
 closeLogin.addEventListener("click", closeLoginModal);
 closeRegister.addEventListener("click", closeRegisterModal);
 closeAddProduct.addEventListener("click", closeAddProductModal);
 
-/* TEMPORALMENTE DESHABILITADO: Cierre por clic fuera
+// Reactivar cierre por clic fuera (Ahora seguro con CSS limpio)
 loginModal.addEventListener("click", e => {
   if (e.target === loginModal) closeLoginModal();
 });
@@ -790,7 +777,6 @@ registerModal.addEventListener("click", e => {
 addProductModal.addEventListener("click", e => {
   if (e.target === addProductModal) closeAddProductModal();
 });
-*/
 
 showRegister.addEventListener("click", e => {
   e.preventDefault();
