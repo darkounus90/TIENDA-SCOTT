@@ -10,6 +10,21 @@ header("Pragma: no-cache");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
 
+// Habilitar reporte de errores como JSON para depuración
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
+function json_shutdown_handler() {
+    $error = error_get_last();
+    if ($error && ($error['type'] === E_ERROR || $error['type'] === E_PARSE || $error['type'] === E_CORE_ERROR)) {
+        http_response_code(500);
+        header('Content-Type: application/json');
+        echo json_encode(["success" => false, "message" => "Fatal Error: " . $error['message'] . " in line " . $error['line']]);
+        exit;
+    }
+}
+register_shutdown_function('json_shutdown_handler');
+
 require 'db.php';
 
 function getAuthHeader() {
