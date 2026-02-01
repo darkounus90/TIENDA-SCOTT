@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.4.2">
+    <link rel="stylesheet" href="style.css?v=4.4.3">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -203,8 +203,8 @@
     </div>
 
     <!-- Modal Add Product Full -->
-    <div class="cart-modal" id="addProductModal">
-        <div class="cart-modal__content add-product-modal">
+    <div class="cart-modal" id="addProductModal" onclick="closeAddProduct()">
+        <div class="cart-modal__content add-product-modal" onclick="event.stopPropagation()">
             <button class="cart-modal__close" onclick="closeAddProduct()">✕</button>
             <h2>Agregar Nuevo Producto</h2>
             <form id="addProductForm" class="product-form" onsubmit="submitProduct(event)">
@@ -282,7 +282,9 @@
 
         // --- Product Management ---
         function openAddProduct() {
-            document.getElementById('addProductModal').classList.add('active');
+            const modal = document.getElementById('addProductModal');
+            modal.classList.add('active');
+            modal.classList.add('cart-modal--open'); // Asegurar consistencia con CSS
         }
 
         function closeAddProduct() {
