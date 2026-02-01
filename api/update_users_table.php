@@ -8,10 +8,11 @@ $columns_to_add = [
     "phone" => "VARCHAR(20) DEFAULT NULL",
     "department" => "VARCHAR(100) DEFAULT NULL",
     "city" => "VARCHAR(100) DEFAULT NULL",
-    "address" => "VARCHAR(255) DEFAULT NULL"
+    "address" => "VARCHAR(255) DEFAULT NULL",
+    "isAdmin" => "TINYINT(1) NOT NULL DEFAULT 0"
 ];
 
-echo "Updating users table...\n";
+echo "Iniciando revisión de columnas en la tabla 'users'...\n";
 
 foreach ($columns_to_add as $col => $def) {
     // Check if column exists
