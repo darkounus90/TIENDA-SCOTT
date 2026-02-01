@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.2.8">
+    <link rel="stylesheet" href="style.css?v=4.2.9">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -244,7 +244,20 @@
                 });
 
                 if (!res.ok) {
-                    throw new Error(`Error del servidor: ${res.status}`);
+                    let errorMessage = `Error del servidor: ${res.status}`;
+                    try {
+                        const errorData = await res.json(); // Intentar leer JSON del shutdown handler
+                        console.error("Error JSON del servidor:", errorData);
+                        if (errorData.message) errorMessage += ` - ${errorData.message}`;
+                    } catch (jsonErr) {
+                        // Si no es JSON, leer texto
+                        try {
+                            const textError = await res.text();
+                            console.error("Error Texto del servidor:", textError);
+                            errorMessage += ` - ${textError.substring(0, 100)}`;
+                        } catch (e) { }
+                    }
+                    throw new Error(errorMessage);
                 }
 
                 const data = await res.json();
