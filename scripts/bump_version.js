@@ -27,6 +27,13 @@ function bumpVersion(content) {
         minor = parseInt(match[2]);
         patch = parseInt(match[3]);
         patch++; // Increment patch
+
+        // Logic: if patch > 9, increment minor and reset patch
+        if (patch > 9) {
+            minor++;
+            patch = 0;
+        }
+
         newVersion = `${major}.${minor}.${patch}`;
         console.log(`Bumping version to: ${newVersion}`);
     } else {
