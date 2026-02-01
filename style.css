@@ -852,9 +852,23 @@ a {
   z-index: 99999;
 }
 
-.cart-modal.active {
-  opacity: 1;
-  visibility: visible;
+/* CSS Robusto para Modales */
+.cart-modal.active,
+.cart-modal.cart-modal--open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* Estado base oculto */
+.cart-modal {
+  /* ... propiedades anteriores ... */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  z-index: 99999;
+  pointer-events: none;
+  /* Evitar clics fantasmas */
 }
 
 .cart-modal__content {

@@ -716,9 +716,19 @@ function updateLoginButton() {
     userDropdown.classList.remove("active");
 
     // Restore default login behavior
+    // Restore default login behavior
     loginButton.onclick = (e) => {
       e.preventDefault();
-      openLogin();
+      e.stopPropagation(); // Evitar burbujeo
+      // Forzar apertura directa para debug
+      const modal = document.getElementById("loginModal");
+      if (modal) {
+        modal.classList.add("active");
+        modal.style.visibility = "visible"; // Backup
+        modal.style.opacity = "1"; // Backup
+      } else {
+        console.error("Login Modal not found");
+      }
     };
 
     const adminBtn = document.getElementById("menuAdmin");
