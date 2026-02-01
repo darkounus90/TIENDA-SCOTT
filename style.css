@@ -208,12 +208,35 @@ a {
   background: var(--color-primary);
   color: white;
   box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(2, 132, 199, 0.45);
 }
 
 .btn-secondary {
-  background: rgba(108, 117, 125, 0.1);
+  background: white;
   color: var(--color-text);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #cbd5e1;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+}
+
+/* Contenedor de botones de formulario */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
 }
 
 .btn-full {
