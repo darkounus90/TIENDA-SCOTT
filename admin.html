@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.2.5">
+    <link rel="stylesheet" href="style.css?v=4.2.6">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -254,8 +254,8 @@
                     document.getElementById('adminUsername').textContent = data.user.username;
                     loadDashboard();
                 } else {
-                    console.warn("Acceso denegado. Datos recibidos:", JSON.stringify(data));
-                    alert("Acceso denegado: El servidor dice que no eres admin. Datos: " + JSON.stringify(data.user));
+                    console.warn("Acceso denegado. Respuesta completa:", data);
+                    alert("Acceso denegado. Respuesta del servidor: " + JSON.stringify(data, null, 2));
                     window.location.href = 'index.html';
                 }
             } catch (e) {
