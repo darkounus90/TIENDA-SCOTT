@@ -62,7 +62,7 @@ if ($result && $row = $result->fetch_assoc()) {
         'department' => $row['department'],
         'city' => $row['city'],
         'address' => $row['address'],
-        'isAdmin' => ($row['isAdmin'] == 1)
+        'isAdmin' => (int)$row['isAdmin']
     ];
     echo json_encode(['success' => true, 'user' => $user]);
 } else {

@@ -395,9 +395,47 @@ if (addAddressBtn) {
   });
 }
 // Usuarios y productos desde API
+const API_BASE = 'api'; // Path relativo para producción y desarrollo
 let products = [];
 let currentUser = null;
-const API_BASE = 'api'; // Path relativo para producción y desarrollo
+
+// Restaurar sesión y validar estado fresco
+async function checkSession() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    try {
+      const res = await fetch(`${API_BASE}/me.php`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.success) {
+        currentUser = data.user;
+        // Guardar datos frescos
+        localStorage.setItem('user', JSON.stringify(currentUser));
+        updateLoginButton();
+      } else {
+        // Token inválido o expirado
+        logout();
+      }
+    } catch (err) {
+      console.error("Error validando sesión:", err);
+      // Fallback a localStorage si no hay conexión, pero intentar actualizar UI
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        currentUser = JSON.parse(storedUser);
+        updateLoginButton();
+      }
+    }
+  }
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  currentUser = null;
+  updateLoginButton();
+  window.location.reload();
+}
 
 // Función para obtener productos
 async function fetchProducts() {
@@ -409,6 +447,16 @@ async function fetchProducts() {
     products = [];
   }
 }
+
+// Inicialización
+document.addEventListener("DOMContentLoaded", () => {
+  checkSession();
+  fetchProducts().then(() => {
+    renderProducts();
+    // Restaurar carrito si existiera (opcional, por ahora solo memoria)
+  });
+});
+
 
 // Función para register
 async function registerUser(username, email, phone, password, addressData = {}) {
@@ -639,7 +687,8 @@ function updateLoginButton() {
       userDropdown.classList.toggle("active");
     };
 
-    if (currentUser.isAdmin) {
+    // Check for admin privileges (handling int, string "1", or boolean true)
+    if (currentUser.isAdmin == 1 || currentUser.isAdmin === true || currentUser.isAdmin === '1') {
       if (!document.getElementById("menuAdmin")) {
         const btn = document.createElement("button");
         btn.id = "menuAdmin";
