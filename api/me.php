@@ -28,12 +28,19 @@ function getAuthHeader() {
 
 // Get Token
 $auth = getAuthHeader();
-if (!$auth) {
-    echo json_encode(['success' => false, 'message' => 'No token provided']);
+$token = null;
+
+if ($auth) {
+    $token = str_replace('Bearer ', '', $auth);
+} elseif (isset($_GET['token'])) {
+    $token = $_GET['token'];
+}
+
+if (!$token) {
+    echo json_encode(['success' => false, 'message' => 'No token provided (Headers or URL)']);
     exit;
 }
 
-$token = str_replace('Bearer ', '', $auth);
 // Decode simulated token
 $parts = explode('.', $token);
 if (count($parts) < 2) {

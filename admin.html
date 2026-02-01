@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.2.6">
+    <link rel="stylesheet" href="style.css?v=4.2.7">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -238,8 +238,8 @@
             }
 
             try {
-                // Check against API with Bearer prefix
-                const res = await fetch(`${API_BASE}/me.php`, {
+                // Check against API with Bearer prefix AND query param backup + Cache Buster
+                const res = await fetch(`${API_BASE}/me.php?token=${token}&_t=${Date.now()}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
