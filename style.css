@@ -326,21 +326,11 @@ a {
 }
 
 /* MODALES PREMIUM */
+/* MODALES PREMIUM - Definición unificada al final del archivo 
 .cart-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: none;
-  /* align-items: center; <-- REMOVED to prevent top cut-off */
-  /* justify-content: center; <-- REMOVED */
-  z-index: 100;
-  padding: 1rem;
-  transition: opacity 0.3s ease;
-  overflow-y: auto;
-  /* Enable scroll on the overlay wrapper */
-}
+  DEPRECATED - Ver líneas 850+
+} 
+*/
 
 .cart-modal--open {
   display: flex !important;
