@@ -717,18 +717,18 @@ function updateLoginButton() {
 
     // Restore default login behavior
     // Restore default login behavior
+    // Restore default login behavior
     loginButton.onclick = (e) => {
       e.preventDefault();
-      e.stopPropagation(); // Evitar burbujeo
-      // Forzar apertura directa para debug
-      const modal = document.getElementById("loginModal");
-      if (modal) {
-        modal.classList.add("active");
-        modal.style.visibility = "visible"; // Backup
-        modal.style.opacity = "1"; // Backup
-      } else {
-        console.error("Login Modal not found");
-      }
+      e.stopPropagation();
+      // Retrasar apertura para evitar conflictos inmediatos
+      setTimeout(() => {
+        const modal = document.getElementById("loginModal");
+        if (modal) {
+          modal.classList.add("active");
+          modal.classList.add("cart-modal--open");
+        }
+      }, 100);
     };
 
     const adminBtn = document.getElementById("menuAdmin");
@@ -736,37 +736,49 @@ function updateLoginButton() {
   }
 }
 
-// Login/Register
-// Login/Register
+// Login/Register functions updated
 function openLogin() {
-  loginModal.classList.add("cart-modal--open");
+  setTimeout(() => {
+    loginModal.classList.add("active");
+    loginModal.classList.add("cart-modal--open");
+  }, 50);
 }
 
 function closeLoginModal() {
+  loginModal.classList.remove("active");
   loginModal.classList.remove("cart-modal--open");
 }
 
 function openRegister() {
-  registerModal.classList.add("cart-modal--open");
+  setTimeout(() => {
+    registerModal.classList.add("active");
+    registerModal.classList.add("cart-modal--open");
+  }, 50);
 }
 
 function closeRegisterModal() {
+  registerModal.classList.remove("active");
   registerModal.classList.remove("cart-modal--open");
 }
 
 function openAddProduct() {
-  addProductModal.classList.add("cart-modal--open");
+  setTimeout(() => {
+    addProductModal.classList.add("active");
+    addProductModal.classList.add("cart-modal--open");
+  }, 50);
 }
 
 function closeAddProductModal() {
+  addProductModal.classList.remove("active");
   addProductModal.classList.remove("cart-modal--open");
 }
 
-// loginButton listener is now handled in updateLoginButton
+// Listeners de cierre - External click DISABLED for debugging
 closeLogin.addEventListener("click", closeLoginModal);
 closeRegister.addEventListener("click", closeRegisterModal);
 closeAddProduct.addEventListener("click", closeAddProductModal);
 
+/* TEMPORALMENTE DESHABILITADO: Cierre por clic fuera
 loginModal.addEventListener("click", e => {
   if (e.target === loginModal) closeLoginModal();
 });
@@ -778,6 +790,7 @@ registerModal.addEventListener("click", e => {
 addProductModal.addEventListener("click", e => {
   if (e.target === addProductModal) closeAddProductModal();
 });
+*/
 
 showRegister.addEventListener("click", e => {
   e.preventDefault();
