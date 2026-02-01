@@ -2101,3 +2101,114 @@ a {
 .account-btn-admin:hover {
   background: #dbeafe !important;
 }
+
+/* --- MODERN FORM STYLES (Admin Add Product) --- */
+
+.product-form {
+  margin-top: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-left: 0.2rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background-color: #f8fafc;
+  font-size: 0.95rem;
+  color: #1e293b;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Custom File Upload */
+.file-upload-wrapper {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  background-color: #f8fafc;
+  transition: all 0.2s;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.file-upload-wrapper:hover {
+  border-color: var(--color-primary);
+  background-color: #f0f9ff;
+}
+
+.file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.file-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #64748b;
+  z-index: 1;
+}
+
+.file-cta .icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.image-preview-grid img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
