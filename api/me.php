@@ -71,7 +71,7 @@ if (!$username) {
 }
 
 // Fetch fresh data
-$sql = "SELECT id, username, email, phone, department, city, address, isAdmin FROM users WHERE username = '$username'";
+$sql = "SELECT * FROM users WHERE username = '$username'";
 $result = $conn->query($sql);
 
 if ($result && $row = $result->fetch_assoc()) {
@@ -80,11 +80,11 @@ if ($result && $row = $result->fetch_assoc()) {
         'id' => $row['id'],
         'username' => $row['username'],
         'email' => $row['email'],
-        'phone' => $row['phone'],
-        'department' => $row['department'],
-        'city' => $row['city'],
-        'address' => $row['address'],
-        'isAdmin' => (int)$row['isAdmin']
+        'phone' => $row['phone'] ?? '',
+        'department' => $row['department'] ?? '',
+        'city' => $row['city'] ?? '',
+        'address' => $row['address'] ?? '',
+        'isAdmin' => (int)($row['isAdmin'] ?? 0)
     ];
     echo json_encode(['success' => true, 'user' => $user]);
 } else {
