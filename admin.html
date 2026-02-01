@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.4.8">
+    <link rel="stylesheet" href="style.css?v=4.4.9">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -377,20 +377,7 @@
                 });
 
                 if (!res.ok) {
-                    let errorMessage = `Error del servidor: ${res.status}`;
-                    try {
-                        const errorData = await res.json(); // Intentar leer JSON del shutdown handler
-                        console.error("Error JSON del servidor:", errorData);
-                        if (errorData.message) errorMessage += ` - ${errorData.message}`;
-                    } catch (jsonErr) {
-                        // Si no es JSON, leer texto
-                        try {
-                            const textError = await res.text();
-                            console.error("Error Texto del servidor:", textError);
-                            errorMessage += ` - ${textError.substring(0, 100)}`;
-                        } catch (e) { }
-                    }
-                    throw new Error(errorMessage);
+                    throw new Error(`Error del servidor (${res.status}). Intenta recargar.`);
                 }
 
                 const data = await res.json();
@@ -400,14 +387,22 @@
                     document.getElementById('adminUsername').textContent = data.user.username;
                     loadDashboard();
                 } else {
-                    console.warn("Acceso denegado. Respuesta completa:", data);
-                    alert("Acceso denegado. Respuesta del servidor: " + JSON.stringify(data, null, 2));
+                    // Solo redirigir si la API dice explícitamente que no es válido
+                    console.warn("Acceso denegado:", data);
+                    alert("Tu sesión ha expirado o no tienes permisos. Por favor ingresa nuevamente.");
+                    localStorage.removeItem('token'); // Limpiar token inválido
                     window.location.href = 'index.html';
                 }
             } catch (e) {
                 console.error("Admin check error:", e);
-                alert("Error al verificar credenciales: " + e.message);
-                window.location.href = 'index.html';
+                // Si es error de conexión o parseo, NO redirigir automáticamente, dar opción al usuario
+                const retry = confirm("Error de conexión con el servidor:\n" + e.message + "\n\n¿Deseas reintentar?");
+                if (retry) {
+                    location.reload();
+                } else {
+                    // Opcional: Ir al inicio si el usuario desiste
+                    // window.location.href = 'index.html';
+                }
             }
         }
 
