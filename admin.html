@@ -177,14 +177,27 @@
                 </div>
 
                 <!-- Tab: Users -->
+
                 <div id="tab-users" class="view-section">
                     <div class="table-card">
                         <div class="table-header">
-                            <h3>Usuarios</h3>
+                            <h3>Usuarios Registrados</h3>
                         </div>
-                        <div style="padding:2rem;text-align:center;">Próximamente</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Rol</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody"></tbody>
+                        </table>
                     </div>
                 </div>
+
             </div>
         </main>
     </div>
@@ -279,11 +292,23 @@
                 renderStats(data.orders);
             }
 
+
             // Fetch Products
             const prodRes = await fetch(`${API_BASE}/products.php`);
             const products = await prodRes.json();
             renderInventory(products);
             document.getElementById('statTotalProducts').textContent = products.length;
+
+            // Fetch Users
+            try {
+                const userRes = await fetch(`${API_BASE}/users.php`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const users = await userRes.json();
+                if (Array.isArray(users)) {
+                    renderUsers(users);
+                    document.getElementById('statTotalUsers').textContent = users.length;
+                }
+            } catch (e) { console.error("Error loading users", e); }
+
         }
 
         function renderStats(orders) {
@@ -318,6 +343,7 @@
     `).join('');
         }
 
+
         function renderInventory(products) {
             document.getElementById('inventoryTable').innerHTML = products.map(p => `
         <tr>
@@ -328,6 +354,45 @@
             <td><button>✏️</button></td>
         </tr>
     `).join('');
+        }
+
+        function renderUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.id}</td>
+                    <td>${u.username}</td>
+                    <td>${u.email}</td>
+                    <td>${u.phone || '-'}</td>
+                    <td>
+                        <select onchange="changeRole(${u.id}, this.value)" style="padding:0.2rem; border-radius:4px; border:1px solid #ccc;">
+                            <option value="0" ${u.isAdmin == 0 ? 'selected' : ''}>Usuario</option>
+                            <option value="1" ${u.isAdmin == 1 ? 'selected' : ''}>Admin</option>
+                        </select>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function changeRole(id, val) {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`${API_BASE}/update_role.php`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ id: id, isAdmin: val })
+                });
+                const data = await res.json();
+                alert(data.message);
+                // Reload dashboard to reflect changes if necessary
+            } catch (e) {
+                console.error(e);
+                alert("Error al actualizar rol");
+            }
         }
 
         checkAdmin();
