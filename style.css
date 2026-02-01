@@ -899,10 +899,15 @@ a {
   text-align: center;
 }
 
+/* Modal de Productos y Cuenta: Más ancho pero igual de Premium */
 .cart-modal__content.add-product-modal,
 .cart-modal__content.account-modal {
-  max-width: 800px;
-  /* Más ancho para contenido complejo */
+  max-width: 700px;
+  width: 95%;
+  /* Responsive */
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 @keyframes modalPop {
