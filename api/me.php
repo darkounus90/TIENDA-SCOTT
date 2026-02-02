@@ -49,6 +49,11 @@ if ($auth) {
     $token = str_replace('Bearer ', '', $auth);
 } elseif (isset($_GET['token'])) {
     $token = $_GET['token'];
+    // Fix: Si el token viene por GET y PHP convirtió '+' en espacios, restaurarlos
+    // Un token Base64 válido no tiene espacios.
+    if (strpos($token, ' ') !== false) {
+        $token = str_replace(' ', '+', $token);
+    }
 }
 
 if (!$token) {
