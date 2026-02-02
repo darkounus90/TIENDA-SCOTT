@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.5.2">
+    <link rel="stylesheet" href="style.css?v=4.5.3">
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -389,7 +389,7 @@
                 } else {
                     // Solo redirigir si la API dice explícitamente que no es válido
                     console.warn("Acceso denegado:", data);
-                    alert("Tu sesión ha expirado o no tienes permisos. Por favor ingresa nuevamente.");
+                    alert("Sesión cerrada por el servidor:\n" + (data.message || "Token inválido/caducado"));
                     localStorage.removeItem('token'); // Limpiar token inválido
                     window.location.href = 'index.html';
                 }
