@@ -9,6 +9,7 @@ $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
     die('<h2 style="color:red">Error de conexión a MySQL</h2>');
 }
+$conn->set_charset("utf8mb4");
 if (basename($_SERVER['SCRIPT_FILENAME']) === basename(__FILE__)) {
     echo '<h2 style="color:green">Conexión exitosa a la base de datos MySQL</h2>';
 }
