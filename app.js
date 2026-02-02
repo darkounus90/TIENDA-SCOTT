@@ -404,7 +404,8 @@ async function checkSession() {
   const token = localStorage.getItem('token');
   if (token) {
     try {
-      const res = await fetch(`${API_BASE}/me.php`, {
+      // Enviar token tanto en Header como en URL para redundancia máxima
+      const res = await fetch(`${API_BASE}/me.php?token=${encodeURIComponent(token)}&_t=${Date.now()}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -414,7 +415,8 @@ async function checkSession() {
         localStorage.setItem('user', JSON.stringify(currentUser));
         updateLoginButton();
       } else {
-        // Token inválido o expirado
+        console.warn("Sesión inválida:", data);
+        // Token inválido o expirado real
         logout();
       }
     } catch (err) {
