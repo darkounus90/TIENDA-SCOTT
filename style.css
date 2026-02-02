@@ -923,14 +923,74 @@ a {
 }
 
 /* Modal de Productos y Cuenta: Más ancho pero igual de Premium */
-.cart-modal__content.add-product-modal,
+/* Modal de Cuenta */
 .cart-modal__content.account-modal {
   max-width: 700px;
   width: 95%;
-  /* Responsive */
   padding: 2rem;
   border-radius: 20px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Modal de Productos (Diseño Avanzado con Sticky Footer) */
+.cart-modal__content.add-product-modal {
+  max-width: 800px;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  /* Un poco menos para asegurar que cabe */
+  padding: 0;
+  /* Padding manejado internamente */
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  /* Importante para el radio de borde */
+}
+
+/* Header del modal fijo */
+.cart-modal__content.add-product-modal h2 {
+  padding: 1.5rem 2rem;
+  margin: 0;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+  z-index: 10;
+}
+
+/* Cuerpo con scroll */
+.cart-modal__content.add-product-modal .product-form {
+  padding: 2rem;
+  overflow-y: auto;
+  flex-grow: 1;
+  margin: 0;
+}
+
+/* Botones fijos abajo */
+.cart-modal__content.add-product-modal .form-actions {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding: 1.5rem 2rem;
+  margin: 0;
+  /* Reset margin */
+  border-top: 1px solid #f1f5f9;
+  z-index: 20;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Botón de cerrar ajustado */
+.cart-modal__content.add-product-modal .cart-modal__close {
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 30;
+  background: #f1f5f9;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes modalPop {

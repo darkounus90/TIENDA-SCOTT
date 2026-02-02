@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.5.4">
+    <link rel="stylesheet" href="style.css?v=4.5.5">
+    <!-- SheetJS for Excel Import -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <style>
         /* Specific overrides for standalone admin page */
         body {
@@ -159,7 +161,13 @@
                     <div class="table-card">
                         <div class="table-header">
                             <h3>Inventario</h3>
-                            <button class="btn-primary" onclick="openAddProduct()">+ Producto</button>
+                            <div style="display:flex; gap:10px;">
+                                <input type="file" id="excelInput" accept=".xlsx, .xls" style="display:none;"
+                                    onchange="handleExcelUpload(this)">
+                                <button class="btn-secondary" onclick="document.getElementById('excelInput').click()">📥
+                                    Importar Excel</button>
+                                <button class="btn-primary" onclick="openAddProduct()">+ Producto</button>
+                            </div>
                         </div>
                         <table class="data-table">
                             <thead>
@@ -318,6 +326,93 @@
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
         });
+
+        // --- EXCEL IMPORT LOGIC ---
+        async function handleExcelUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (!confirm(`¿Deseas importar productos desde "${file.name}"?`)) {
+                input.value = ''; // Reset
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.SheetNames[0];
+                    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
+
+                    if (rows.length === 0) {
+                        alert("El archivo Excel parece vacío.");
+                        return;
+                    }
+
+                    let successCount = 0;
+                    let errorCount = 0;
+                    const token = localStorage.getItem('token');
+
+                    // Show visual feedback
+                    const btn = document.querySelector('.btn-secondary[onclick*="excelInput"]');
+                    const originalText = btn.innerText;
+                    btn.innerText = "⏳ Procesando...";
+                    btn.disabled = true;
+
+                    for (const row of rows) {
+                        // Flexible Mapping
+                        const priceRaw = row['Precio'] || row['Price'] || row['Valor'] || row['Costo'] || 0;
+                        const stockRaw = row['Stock'] || row['Cantidad'] || row['Unidades'] || 0;
+
+                        // Clean data
+                        const payload = {
+                            name: row['Nombre'] || row['Producto'] || row['Name'] || row['Item'],
+                            brand: row['Marca'] || row['Brand'] || 'Genérico',
+                            category: row['Categoria'] || row['Categoría'] || row['Category'] || 'General',
+                            price: parseFloat(String(priceRaw).replace(/[^0-9.]/g, '')),
+                            stock: parseInt(String(stockRaw).replace(/[^0-9]/g, '')) || 0,
+                            use: row['Uso'] || row['Use'] || 'General',
+                            tag: row['Etiqueta'] || row['Tag'] || '',
+                            barcode: row['Codigo'] || row['Código'] || row['Barcode'] || '',
+                            images: [] // No images from Excel usually unless URL
+                        };
+
+                        if (!payload.name) continue; // Skip empty rows
+
+                        try {
+                            const res = await fetch(`${API_BASE}/products.php`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${token}`
+                                },
+                                body: JSON.stringify(payload)
+                            });
+                            const json = await res.json();
+                            if (json.success) successCount++;
+                            else errorCount++;
+                        } catch (err) {
+                            errorCount++;
+                            console.error("Error importando fila:", row, err);
+                        }
+                    }
+
+                    alert(`Importación completada:\n✅ ${successCount} productos creados.\n❌ ${errorCount} errores.`);
+                    loadDashboard(); // Refresh inventory
+
+                    // Reset UI
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    input.value = '';
+
+                } catch (err) {
+                    console.error("Error parsing Excel:", err);
+                    alert("Error al leer el archivo Excel. Asegúrate de que sea válido.");
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
 
         async function submitProduct(e) {
             e.preventDefault();
