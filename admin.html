@@ -256,16 +256,15 @@
                         </div>
                         <div class="form-group">
                             <label>Marca</label>
-                            <input type="text" name="brand" required class="form-input" placeholder="Ej: Scott">
+                            <input type="text" name="brand" required class="form-input" placeholder="Ej: Scott"
+                                list="brandsList" autocomplete="off">
+                            <datalist id="brandsList"></datalist>
                         </div>
                         <div class="form-group">
                             <label>Categoría</label>
-                            <select name="category" required class="form-input">
-                                <option value="bicicletas">Bicicletas</option>
-                                <option value="accesorios">Accesorios</option>
-                                <option value="repuestos">Repuestos</option>
-                                <option value="ropa">Ropa</option>
-                            </select>
+                            <input type="text" name="category" required class="form-input"
+                                placeholder="Selecciona o escribe nueva..." list="categoriesList" autocomplete="off">
+                            <datalist id="categoriesList"></datalist>
                         </div>
                         <div class="form-group">
                             <label>Precio</label>
@@ -394,7 +393,37 @@
             const modal = document.getElementById('addProductModal');
             modal.classList.add('active');
             modal.classList.add('cart-modal--open'); // Asegurar consistencia con CSS
+            loadProductMetadata();
         }
+
+
+
+        async function loadProductMetadata() {
+            try {
+                const res = await fetch(`${API_BASE}/products.php?action=metadata`);
+                const data = await res.json();
+
+                if (data.success) {
+                    // Brands
+                    const bList = document.getElementById('brandsList');
+                    const bInput = document.querySelector('input[name="brand"]');
+                    if (bList && data.brands) {
+                        bList.innerHTML = data.brands.map(b => `<option value="${b}">`).join('');
+                    }
+
+                    // Categories
+                    const cList = document.getElementById('categoriesList');
+                    const cInput = document.querySelector('input[name="category"]');
+                    if (cList && data.categories) {
+                        // Add default/common categories if empty or just mix them
+                        const defaults = ['Bicicletas', 'Accesorios', 'Repuestos', 'Ropa', 'Cascos', 'Zapatillas'];
+                        const allCats = [...new Set([...defaults, ...data.categories])];
+                        cList.innerHTML = allCats.map(c => `<option value="${c}">`).join('');
+                    }
+                }
+            } catch (e) { console.error("Error loading metadata", e); }
+        }
+
 
         function closeAddProduct() {
             const modal = document.getElementById('addProductModal');
@@ -646,7 +675,9 @@
 
             // Fetch Users
             try {
-                const uRes = await fetch(`${API_BASE}/api_admin.php?action=users`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const uRes = await fetch(`${API_BASE}/api_admin.php?action=users`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
                 const uData = await uRes.json();
                 if (uData.success) {
                     renderUsers(uData.users);
@@ -741,23 +772,24 @@
             const tbody = document.getElementById('servicesTableBody');
             if (!tbody) return;
             tbody.innerHTML = services.map(s => `
-                <tr>
-                    <td>${s.id}</td>
-                    <td>${s.username} <br><small>${s.email}</small></td>
-                    <td>${s.bike_model}</td>
-                    <td>${s.service_type}</td>
-                    <td>
-                        <select onchange="updateServiceStatus(${s.id}, this.value)" style="padding:4px; border-radius:4px; border:1px solid #ddd; bg:${getStatusColor(s.status)}">
-                            <option value="recibido" ${s.status == 'recibido' ? 'selected' : ''}>Recibido</option>
-                            <option value="en_proceso" ${s.status == 'en_proceso' ? 'selected' : ''}>En Proceso</option>
-                            <option value="listo" ${s.status == 'listo' ? 'selected' : ''}>Listo</option>
-                            <option value="entregado" ${s.status == 'entregado' ? 'selected' : ''}>Entregado</option>
-                        </select>
-                    </td>
-                    <td>${new Date(s.entry_date).toLocaleDateString()}</td>
-                    <td><button onclick="alert('Ver detalles no implementado en admin aún')">👁️</button></td>
-                </tr>
-            `).join('');
+    <tr>
+        <td>${s.id}</td>
+        <td>${s.username} <br><small>${s.email}</small></td>
+        <td>${s.bike_model}</td>
+        <td>${s.service_type}</td>
+        <td>
+            <select onchange="updateServiceStatus(${s.id}, this.value)"
+                style="padding:4px; border-radius:4px; border:1px solid #ddd; bg:${getStatusColor(s.status)}">
+                <option value="recibido" ${s.status == 'recibido' ? 'selected' : ''}>Recibido</option>
+                <option value="en_proceso" ${s.status == 'en_proceso' ? 'selected' : ''}>En Proceso</option>
+                <option value="listo" ${s.status == 'listo' ? 'selected' : ''}>Listo</option>
+                <option value="entregado" ${s.status == 'entregado' ? 'selected' : ''}>Entregado</option>
+            </select>
+        </td>
+        <td>${new Date(s.entry_date).toLocaleDateString()}</td>
+        <td><button onclick="alert('Ver detalles no implementado en admin aún')">👁️</button></td>
+    </tr>
+    `).join('');
         }
 
         async function updateServiceStatus(id, newStatus) {
@@ -783,46 +815,50 @@
 
         function renderStats(orders) {
             const total = orders.filter(o => o.status !== 'cancelled').reduce((acc, o) => acc + Number(o.total), 0);
-            document.getElementById('statTotalSales').innerText = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(total);
-            document.getElementById('statOrdersToday').innerText = orders.filter(o => o.created_at.startsWith(new Date().toISOString().split('T')[0])).length;
+            document.getElementById('statTotalSales').innerText = new Intl.NumberFormat('es-CO', {
+                style: 'currency', currency:
+                    'COP'
+            }).format(total);
+            document.getElementById('statOrdersToday').innerText = orders.filter(o => o.created_at.startsWith(new
+                Date().toISOString().split('T')[0])).length;
         }
 
         function renderOrders(orders) {
             const tbody = document.getElementById('allOrdersTable');
             tbody.innerHTML = orders.map(o => `
-        <tr>
-            <td>${o.id}</td>
-            <td>${o.reference || '-'}</td>
-            <td>${o.user_name}</td>
-            <td>${o.items.length}</td>
-            <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(o.total)}</td>
-            <td>${o.status}</td>
-            <td><button>Ver</button></td>
-        </tr>
+    <tr>
+        <td>${o.id}</td>
+        <td>${o.reference || '-'}</td>
+        <td>${o.user_name}</td>
+        <td>${o.items.length}</td>
+        <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(o.total)}</td>
+        <td>${o.status}</td>
+        <td><button>Ver</button></td>
+    </tr>
     `).join('');
 
             // Recent
             document.getElementById('recentOrdersTable').innerHTML = orders.slice(0, 5).map(o => `
-        <tr>
-            <td>${o.reference}</td>
-            <td>${o.user_name}</td>
-            <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(o.total)}</td>
-            <td>${o.status}</td>
-            <td>${o.created_at}</td>
-        </tr>
+    <tr>
+        <td>${o.reference}</td>
+        <td>${o.user_name}</td>
+        <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(o.total)}</td>
+        <td>${o.status}</td>
+        <td>${o.created_at}</td>
+    </tr>
     `).join('');
         }
 
 
         function renderInventory(products) {
             document.getElementById('inventoryTable').innerHTML = products.map(p => `
-        <tr>
-            <td><img src="${p.image || p.images[0]}" width="30"></td>
-            <td>${p.name}</td>
-            <td>${p.stock}</td>
-            <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(p.price)}</td>
-            <td><button>✏️</button></td>
-        </tr>
+    <tr>
+        <td><img src="${p.image || p.images[0]}" width="30"></td>
+        <td>${p.name}</td>
+        <td>${p.stock}</td>
+        <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(p.price)}</td>
+        <td><button>✏️</button></td>
+    </tr>
     `).join('');
         }
 
@@ -830,19 +866,20 @@
             const tbody = document.getElementById('usersTableBody');
             if (!tbody) return;
             tbody.innerHTML = users.map(u => `
-                <tr>
-                    <td>${u.id}</td>
-                    <td>${u.username}</td>
-                    <td>${u.email}</td>
-                    <td>${u.phone || '-'}</td>
-                    <td>
-                        <select onchange="changeRole(${u.id}, this.value)" style="padding:0.2rem; border-radius:4px; border:1px solid #ccc;">
-                            <option value="0" ${u.isAdmin == 0 ? 'selected' : ''}>Usuario</option>
-                            <option value="1" ${u.isAdmin == 1 ? 'selected' : ''}>Admin</option>
-                        </select>
-                    </td>
-                </tr>
-            `).join('');
+    <tr>
+        <td>${u.id}</td>
+        <td>${u.username}</td>
+        <td>${u.email}</td>
+        <td>${u.phone || '-'}</td>
+        <td>
+            <select onchange="changeRole(${u.id}, this.value)"
+                style="padding:0.2rem; border-radius:4px; border:1px solid #ccc;">
+                <option value="0" ${u.isAdmin == 0 ? 'selected' : ''}>Usuario</option>
+                <option value="1" ${u.isAdmin == 1 ? 'selected' : ''}>Admin</option>
+            </select>
+        </td>
+    </tr>
+    `).join('');
         }
 
         async function changeRole(id, val) {

@@ -14,6 +14,21 @@ require 'db.php';
 
 // --- GET: Listar productos ---
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Endpoint Metadata para Datalists
+    if (isset($_GET['action']) && $_GET['action'] === 'metadata') {
+        $brands = [];
+        $cats = [];
+        
+        $resB = $conn->query("SELECT DISTINCT brand FROM products WHERE brand != '' ORDER BY brand ASC");
+        while($r = $resB->fetch_assoc()) $brands[] = $r['brand'];
+        
+        $resC = $conn->query("SELECT DISTINCT category FROM products WHERE category != '' ORDER BY category ASC");
+        while($r = $resC->fetch_assoc()) $cats[] = $r['category'];
+        
+        echo json_encode(['success' => true, 'brands' => $brands, 'categories' => $cats]);
+        exit;
+    }
+
     $category = $conn->real_escape_string($_GET['category'] ?? '');
     $search = $conn->real_escape_string($_GET['search'] ?? '');
     
