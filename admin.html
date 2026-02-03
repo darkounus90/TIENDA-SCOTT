@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css?v=4.5.5">
+    <link rel="stylesheet" href="style.css?v=4.5.6">
     <!-- SheetJS for Excel Import -->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <style>
@@ -216,66 +216,67 @@
             <button class="cart-modal__close" onclick="closeAddProduct()">✕</button>
             <h2>Agregar Nuevo Producto</h2>
             <form id="addProductForm" class="product-form" onsubmit="submitProduct(event)">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Nombre del Producto</label>
-                        <input type="text" name="name" required class="form-input" placeholder="Ej: Scott Spark RC">
+                <div class="form-body">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre del Producto</label>
+                            <input type="text" name="name" required class="form-input" placeholder="Ej: Scott Spark RC">
+                        </div>
+                        <div class="form-group">
+                            <label>Marca</label>
+                            <input type="text" name="brand" required class="form-input" placeholder="Ej: Scott">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoría</label>
+                            <select name="category" required class="form-input">
+                                <option value="bicicletas">Bicicletas</option>
+                                <option value="accesorios">Accesorios</option>
+                                <option value="repuestos">Repuestos</option>
+                                <option value="ropa">Ropa</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="number" name="price" required class="form-input" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="number" name="stock" required class="form-input" placeholder="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Uso</label>
+                            <input type="text" name="use" required class="form-input" placeholder="Ej: Montaña, Ruta">
+                        </div>
+                        <div class="form-group">
+                            <label>Etiqueta</label>
+                            <input type="text" name="tag" class="form-input" placeholder="Ej: Nuevo">
+                        </div>
+                        <div class="form-group">
+                            <label>Código de Barras</label>
+                            <input type="text" name="barcode" class="form-input" placeholder="Opcional">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Marca</label>
-                        <input type="text" name="brand" required class="form-input" placeholder="Ej: Scott">
-                    </div>
-                    <div class="form-group">
-                        <label>Categoría</label>
-                        <select name="category" required class="form-input">
-                            <option value="bicicletas">Bicicletas</option>
-                            <option value="accesorios">Accesorios</option>
-                            <option value="repuestos">Repuestos</option>
-                            <option value="ropa">Ropa</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Precio</label>
-                        <input type="number" name="price" required class="form-input" placeholder="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Stock</label>
-                        <input type="number" name="stock" required class="form-input" placeholder="1">
-                    </div>
-                    <div class="form-group">
-                        <label>Uso</label>
-                        <input type="text" name="use" required class="form-input" placeholder="Ej: Montaña, Ruta">
-                    </div>
-                    <div class="form-group">
-                        <label>Etiqueta</label>
-                        <input type="text" name="tag" class="form-input" placeholder="Ej: Nuevo">
-                    </div>
-                    <div class="form-group">
-                        <label>Código de Barras</label>
-                        <input type="text" name="barcode" class="form-input" placeholder="Opcional">
+
+                    <div class="form-group full-width" style="margin-top: 1.5rem;">
+                        <label>Imágenes del Producto</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="productImages" multiple accept="image/*"
+                                onchange="handleImagePreview(this)" class="file-input">
+                            <div class="file-cta">
+                                <span class="icon">📷</span>
+                                <span>Seleccionar imágenes (Máx 3)</span>
+                            </div>
+                        </div>
+                        <div id="imagePreviewGrid" class="image-preview-grid"></div>
                     </div>
                 </div>
 
-                <div class="form-group full-width" style="margin-top: 1.5rem;">
-                    <label>Imágenes del Producto</label>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="productImages" multiple accept="image/*"
-                            onchange="handleImagePreview(this)" class="file-input">
-                        <div class="file-cta">
-                            <span class="icon">📷</span>
-                            <span>Seleccionar imágenes (Máx 3)</span>
-                        </div>
-                    </div>
-                    <div id="imagePreviewGrid" class="image-preview-grid"></div>
-                </div> <!-- Cierre form-group full-width -->
-        </div> <!-- Cierre form-grid -->
-
-        <div class="form-actions">
-            <button type="button" class="btn-secondary" onclick="closeAddProduct()">Cancelar</button>
-            <button type="submit" class="btn-primary">Guardar Producto</button>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAddProduct()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Producto</button>
+                </div>
+            </form>
         </div>
-        </form>
-    </div>
     </div>
 
     <script>
