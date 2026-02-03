@@ -965,8 +965,10 @@ a {
   padding: 0;
   overflow: hidden;
   /* El form contenedor NO scrollea */
-  height: 100%;
-  /* Ocupa todo el modal content */
+  flex-grow: 1;
+  /* Ocupa el espacio restante real */
+  min-height: 0;
+  /* Necesario para que el scroll anidado funcione en flex */
 }
 
 /* Área scrollable para inputs */
