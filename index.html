@@ -208,6 +208,7 @@
         <button class="account-tab active" data-tab="info">Información</button>
         <button class="account-tab" data-tab="orders">Pedidos</button>
         <button class="account-tab" data-tab="addresses">Direcciones</button>
+        <button class="account-tab" data-tab="services">Taller 🛠️</button>
       </div>
       <div class="account-content" id="accountInfoTab">
         <!-- JS inyecta info de usuario aquí -->
@@ -220,6 +221,10 @@
         <h3>Direcciones de envío</h3>
         <div id="addressesList">Cargando...</div>
         <button class="btn-secondary" id="addAddressBtn">Agregar dirección</button>
+      </div>
+      <div class="account-content" id="accountServicesTab" style="display:none;">
+        <h3>Historial de Taller</h3>
+        <div id="servicesList">Cargando...</div>
       </div>
     </div>
   </div>
@@ -475,6 +480,38 @@
   </div>
 
   <!-- Admin Dashboard removed (Moved to admin.html) -->
+
+  <!-- WhatsApp Button -->
+  <a href="https://wa.me/573000000000" class="whatsapp-float" target="_blank" title="Contactar por WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  </a>
+  <style>
+    .whatsapp-float {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #25D366;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
+
+    .whatsapp-float img {
+      width: 35px;
+      height: 35px;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+  </style>
 
   <script src="app.js"></script>
 </body>

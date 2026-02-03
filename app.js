@@ -6,6 +6,7 @@ const accountTabs = document.querySelectorAll(".account-tab");
 const accountInfoTab = document.getElementById("accountInfoTab");
 const accountOrdersTab = document.getElementById("accountOrdersTab");
 const accountAddressesTab = document.getElementById("accountAddressesTab");
+const accountServicesTab = document.getElementById("accountServicesTab"); // New Tab
 const ordersList = document.getElementById("ordersList");
 const addressesList = document.getElementById("addressesList");
 const addAddressBtn = document.getElementById("addAddressBtn");
@@ -17,14 +18,16 @@ function openAccountModal(initialTab = "info") {
   if (targetTabBtn) targetTabBtn.classList.add("active");
 
   // Show correct content
-  accountInfoTab.style.display = initialTab === "info" ? "block" : "none";
-  accountOrdersTab.style.display = initialTab === "orders" ? "block" : "none";
-  accountAddressesTab.style.display = initialTab === "addresses" ? "block" : "none";
+  if (accountInfoTab) accountInfoTab.style.display = initialTab === "info" ? "block" : "none";
+  if (accountOrdersTab) accountOrdersTab.style.display = initialTab === "orders" ? "block" : "none";
+  if (accountAddressesTab) accountAddressesTab.style.display = initialTab === "addresses" ? "block" : "none";
+  if (accountServicesTab) accountServicesTab.style.display = initialTab === "services" ? "block" : "none";
 
   // Render content
   if (initialTab === "info") renderAccountInfo();
   if (initialTab === "orders") renderOrders();
   if (initialTab === "addresses") renderAddresses();
+  if (initialTab === "services") renderUserServices();
 
   accountModal.classList.add("cart-modal--open");
   // Reset scroll position to top with delay to ensure layout paint
@@ -54,14 +57,16 @@ accountTabs.forEach(tab => {
     accountTabs.forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
 
-    accountInfoTab.style.display = tabName === "info" ? "block" : "none";
-    accountOrdersTab.style.display = tabName === "orders" ? "block" : "none";
-    accountAddressesTab.style.display = tabName === "addresses" ? "block" : "none";
+    if (accountInfoTab) accountInfoTab.style.display = tabName === "info" ? "block" : "none";
+    if (accountOrdersTab) accountOrdersTab.style.display = tabName === "orders" ? "block" : "none";
+    if (accountAddressesTab) accountAddressesTab.style.display = tabName === "addresses" ? "block" : "none";
+    if (accountServicesTab) accountServicesTab.style.display = tabName === "services" ? "block" : "none";
 
     // Data Fetching
     if (tabName === "info") renderAccountInfo();
     if (tabName === "orders") renderOrders();
     if (tabName === "addresses") renderAddresses();
+    if (tabName === "services") renderUserServices();
 
     // Reset scroll when switching tabs too
     const content = accountModal.querySelector('.cart-modal__content');
@@ -1551,4 +1556,83 @@ function renderAddresses() {
       alert("Error de conexión");
     }
   });
+}
+
+/* --- TALLER LOGIC (Client) --- */
+async function renderUserServices() {
+    const container = document.getElementById('servicesList');
+    if (!currentUser) {
+        container.innerHTML = '<div class="account-empty">Inicia sesión para ver tu historial de taller.</div>';
+        return;
+    }
+    
+    container.innerHTML = '<div style="text-align:center; padding:2rem;">Cargando historial...</div>';
+    
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        const res = await fetch(`${API_BASE}/services.php`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        
+        if (!data.success || !data.services || data.services.length === 0) {
+            container.innerHTML = `
+                <div class="account-empty">
+                    <span style="font-size:2rem; display:block; margin-bottom:0.5rem;">🚲</span>
+                    Aún no has traído tu bici a nuestro taller.
+                    <br><small>¡Agenda tu cita ahora!</small>
+                </div>`;
+            return;
+        }
+        
+        container.innerHTML = data.services.map(svc => `
+            <div class="order-card" onclick="toggleServiceDetail(${svc.id})" style="cursor:pointer;">
+                <div class="order-header">
+                    <div>
+                        <h4 style="margin:0; font-size:1rem;">${svc.service_type}</h4>
+                        <span style="font-size:0.85rem; color:#64748b;">${svc.bike_model}</span>
+                    </div>
+                    <div style="text-align:right;">
+                        <span class="status-badge status-${svc.status}">${svc.status.replace('_', ' ').toUpperCase()}</span>
+                        <div style="font-size:0.75rem; color:#94a3b8; margin-top:0.2rem;">${new Date(svc.entry_date).toLocaleDateString()}</div>
+                    </div>
+                </div>
+                
+                <div id="svc-detail-${svc.id}" style="display:none; margin-top:1rem; padding-top:1rem; border-top:1px solid #f1f5f9; animation: fadeIn 0.3s ease;">
+                    <p style="color:#475569; font-size:0.9rem; margin-bottom:0.5rem;">
+                        <strong>🛠️ Trabajo realizado:</strong><br>
+                        ${svc.description || 'Mantenimiento estándar según protocolo.'}
+                    </p>
+                    
+                    ${svc.cost > 0 ? `<p style="font-size:0.9rem;"><strong>💰 Costo:</strong> ${currencyFormat(svc.cost)}</p>` : ''}
+                    
+                    ${svc.images && svc.images.length > 0 ? `
+                        <div style="margin-top:1rem;">
+                            <strong style="display:block; margin-bottom:0.5rem; font-size:0.85rem;">📸 Registro Fotográfico:</strong>
+                            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap:8px;">
+                                ${svc.images.map(img => `
+                                    <img src="${img}" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; cursor:zoom-in; border:1px solid #eee;" 
+                                         onclick="event.stopPropagation(); window.open(this.src)">
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `).join('');
+        
+    } catch (e) {
+        console.error(e);
+        container.innerHTML = '<div class="account-empty">Error cargando conexión.</div>';
+    }
+}
+
+function toggleServiceDetail(id) {
+    const el = document.getElementById(`svc-detail-${id}`);
+    if(el) {
+        const isHidden = el.style.display === 'none';
+        el.style.display = isHidden ? 'block' : 'none';
+    }
 }

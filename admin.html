@@ -58,6 +58,9 @@
                 <button class="admin-tab-btn" data-tab="tab-inventory">
                     <span class="icon">🚲</span> <span>Inventario</span>
                 </button>
+                <button class="admin-tab-btn" data-tab="tab-services">
+                    <span class="icon">🛠️</span> <span>Taller</span>
+                </button>
                 <button class="admin-tab-btn" data-tab="tab-users">
                     <span class="icon">👥</span> <span>Usuarios</span>
                 </button>
@@ -65,6 +68,11 @@
                     <span class="icon">🚪</span> <span>Salir</span>
                 </button>
             </nav>
+        </aside>
+
+        <!-- ... (contenido omitido, el replace buscará el bloque nav y footer) ... -->
+        <!-- NO, replace_file_content no funciona así. Tengo que hacer dos reemplazos separados o ser muy preciso. -->
+        <!-- Haré primero el sidebar y luego el modal. -->
         </aside>
 
         <!-- Main Content -->
@@ -184,6 +192,30 @@
                     </div>
                 </div>
 
+                <!-- Tab: Taller / Services -->
+                <div id="tab-services" class="view-section">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>Servicios Taller</h3>
+                            <button class="btn-primary" onclick="openAddService()">+ Nuevo Servicio</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Bicicleta</th>
+                                    <th>Servicio</th>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="servicesTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <!-- Tab: Users -->
 
                 <div id="tab-users" class="view-section">
@@ -274,6 +306,80 @@
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" onclick="closeAddProduct()">Cancelar</button>
                     <button type="submit" class="btn-primary">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Add Service -->
+    <div class="cart-modal" id="addServiceModal" onclick="closeAddService()">
+        <div class="cart-modal__content add-product-modal" onclick="event.stopPropagation()">
+            <button class="cart-modal__close" onclick="closeAddService()">✕</button>
+            <h2>Registrar Servicio Taller</h2>
+            <form id="addServiceForm" class="product-form" onsubmit="submitService(event)">
+                <div class="form-body">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Usuario (ID de Cliente)</label>
+                            <div style="display:flex; gap:10px;">
+                                <input type="number" name="user_id" id="serviceUserId" required class="form-input"
+                                    placeholder="ID de usuario">
+                                <!-- Podríamos añadir búsqueda aquí luego -->
+                            </div>
+                            <small style="color:#666;">Ingresa el ID del usuario registrado.</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Bicicleta</label>
+                            <input type="text" name="bike" required class="form-input" placeholder="Ej: Scott Spark RC">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo Servicio</label>
+                            <select name="type" required class="form-input">
+                                <option value="Mantenimiento General">Mantenimiento General</option>
+                                <option value="Ajuste Frenos">Ajuste Frenos</option>
+                                <option value="Ajuste Cambios">Ajuste Cambios</option>
+                                <option value="Lavado Especial">Lavado Especial</option>
+                                <option value="Suspensión">Suspensión</option>
+                                <option value="Garantía">Garantía</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Descripción / Notas</label>
+                            <textarea name="description" class="form-input" rows="3"
+                                placeholder="Detalles del trabajo..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select name="status" class="form-input">
+                                <option value="recibido">Recibido</option>
+                                <option value="en_proceso">En Proceso</option>
+                                <option value="listo">Listo</option>
+                                <option value="entregado">Entregado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Costo Estimado</label>
+                            <input type="number" name="cost" class="form-input" placeholder="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width" style="margin-top: 1.5rem;">
+                        <label>Fotos del Proceso</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="serviceImages" multiple accept="image/*"
+                                onchange="handleServiceImagePreview(this)" class="file-input">
+                            <div class="file-cta">
+                                <span class="icon">📷</span>
+                                <span>Subir Fotos</span>
+                            </div>
+                        </div>
+                        <div id="serviceImagePreviewGrid" class="image-preview-grid"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeAddService()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Registro</button>
                 </div>
             </form>
         </div>
@@ -532,20 +638,147 @@
 
             // Fetch Products
             const prodRes = await fetch(`${API_BASE}/products.php`);
-            const products = await prodRes.json();
-            renderInventory(products);
-            document.getElementById('statTotalProducts').textContent = products.length;
+            const prodData = await prodRes.json();
+            if (prodData.success) {
+                renderInventory(prodData.products);
+                document.getElementById('statTotalProducts').textContent = prodData.products.length;
+            }
 
             // Fetch Users
             try {
-                const userRes = await fetch(`${API_BASE}/users.php`, { headers: { 'Authorization': `Bearer ${token}` } });
-                const users = await userRes.json();
-                if (Array.isArray(users)) {
-                    renderUsers(users);
-                    document.getElementById('statTotalUsers').textContent = users.length;
+                const uRes = await fetch(`${API_BASE}/api_admin.php?action=users`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const uData = await uRes.json();
+                if (uData.success) {
+                    renderUsers(uData.users);
+                    document.getElementById('statTotalUsers').textContent = uData.users.length;
                 }
             } catch (e) { console.error("Error loading users", e); }
 
+            // Fetch Services
+            loadServices();
+
+        }
+
+        // --- SERVICES LOGIC ---
+        function openAddService() {
+            document.getElementById('addServiceModal').classList.add('active');
+            document.getElementById('addServiceModal').classList.add('cart-modal--open');
+        }
+        function closeAddService() {
+            const m = document.getElementById('addServiceModal');
+            m.classList.remove('active');
+            m.classList.remove('cart-modal--open');
+            document.getElementById('addServiceForm').reset();
+            document.getElementById('serviceImagePreviewGrid').innerHTML = '';
+            serviceImagesBase64 = [];
+        }
+
+        let serviceImagesBase64 = [];
+        async function handleServiceImagePreview(input) {
+            const files = Array.from(input.files).slice(0, 5);
+            const grid = document.getElementById('serviceImagePreviewGrid');
+            grid.innerHTML = '';
+            serviceImagesBase64 = [];
+            for (const file of files) {
+                const base64 = await toBase64(file);
+                serviceImagesBase64.push(base64);
+                const img = document.createElement('img');
+                img.src = base64;
+                img.style.width = '80px'; img.style.height = '80px';
+                img.style.objectFit = 'cover'; img.style.borderRadius = '4px';
+                grid.appendChild(img);
+            }
+        }
+
+        async function submitService(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const payload = {
+                user_id: formData.get('user_id'),
+                bike: formData.get('bike'),
+                type: formData.get('type'),
+                description: formData.get('description'),
+                status: formData.get('status'),
+                cost: formData.get('cost'),
+                images: serviceImagesBase64
+            };
+
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`${API_BASE}/services.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Servicio registrado');
+                    closeAddService();
+                    loadServices();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (ex) { console.error(ex); alert('Error de conexión'); }
+        }
+
+        async function loadServices() {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`${API_BASE}/services.php`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    renderServicesTB(data.services);
+                }
+            } catch (e) {
+                console.error("Error loading services", e);
+            }
+        }
+
+        function renderServicesTB(services) {
+            const tbody = document.getElementById('servicesTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = services.map(s => `
+                <tr>
+                    <td>${s.id}</td>
+                    <td>${s.username} <br><small>${s.email}</small></td>
+                    <td>${s.bike_model}</td>
+                    <td>${s.service_type}</td>
+                    <td>
+                        <select onchange="updateServiceStatus(${s.id}, this.value)" style="padding:4px; border-radius:4px; border:1px solid #ddd; bg:${getStatusColor(s.status)}">
+                            <option value="recibido" ${s.status == 'recibido' ? 'selected' : ''}>Recibido</option>
+                            <option value="en_proceso" ${s.status == 'en_proceso' ? 'selected' : ''}>En Proceso</option>
+                            <option value="listo" ${s.status == 'listo' ? 'selected' : ''}>Listo</option>
+                            <option value="entregado" ${s.status == 'entregado' ? 'selected' : ''}>Entregado</option>
+                        </select>
+                    </td>
+                    <td>${new Date(s.entry_date).toLocaleDateString()}</td>
+                    <td><button onclick="alert('Ver detalles no implementado en admin aún')">👁️</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function updateServiceStatus(id, newStatus) {
+            const token = localStorage.getItem('token');
+            try {
+                await fetch(`${API_BASE}/services.php`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ id: id, status: newStatus })
+                });
+                // alert('Estado actualizado');
+            } catch (e) { alert('Error actualizando estado'); }
+        }
+
+        function getStatusColor(status) {
+            switch (status) {
+                case 'listo': return '#d1fae5';
+                case 'en_proceso': return '#dbeafe';
+                case 'entregado': return '#f3f4f6';
+                default: return '#fff';
+            }
         }
 
         function renderStats(orders) {
