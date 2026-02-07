@@ -163,21 +163,21 @@
                 <h2>🚀 SCOTT Admin</h2>
             </div>
             <nav class="admin-nav">
-                <button class="admin-tab-btn active" data-tab="tab-overview">
+                <a href="#overview" class="admin-tab-btn active" data-tab="tab-overview">
                     <span class="icon">📊</span> <span>Resumen</span>
-                </button>
-                <button class="admin-tab-btn" data-tab="tab-orders">
+                </a>
+                <a href="#orders" class="admin-tab-btn" data-tab="tab-orders">
                     <span class="icon">🛍️</span> <span>Ventas</span>
-                </button>
-                <button class="admin-tab-btn" data-tab="tab-inventory">
+                </a>
+                <a href="#inventory" class="admin-tab-btn" data-tab="tab-inventory">
                     <span class="icon">🚲</span> <span>Inventario</span>
-                </button>
-                <button class="admin-tab-btn" data-tab="tab-services">
+                </a>
+                <a href="#services" class="admin-tab-btn" data-tab="tab-services">
                     <span class="icon">🛠️</span> <span>Taller</span>
-                </button>
-                <button class="admin-tab-btn" data-tab="tab-users">
+                </a>
+                <a href="#users" class="admin-tab-btn" data-tab="tab-users">
                     <span class="icon">👥</span> <span>Usuarios</span>
-                </button>
+                </a>
                 <button class="admin-tab-btn" id="adminLogout">
                     <span class="icon">🚪</span> <span>Salir</span>
                 </button>
@@ -758,14 +758,36 @@
         });
 
         // Tab Logic
-        document.querySelectorAll('.admin-tab-btn[data-tab]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
-                btn.classList.add('active');
-                document.getElementById(btn.dataset.tab).classList.add('active');
-            });
-        });
+        // ROUTING LOGIC (Hash-based)
+        const tabsMap = {
+            '': 'tab-overview',
+            '#overview': 'tab-overview',
+            '#orders': 'tab-orders',
+            '#inventory': 'tab-inventory',
+            '#services': 'tab-services',
+            '#users': 'tab-users'
+        };
+
+        function handleHashChange() {
+            const hash = window.location.hash || '#overview';
+            const targetId = tabsMap[hash] || 'tab-overview';
+
+            // Remove active classes
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+
+            // Add active classes
+            const activeBtn = document.querySelector(`.admin-tab-btn[href="${hash}"]`) ||
+                document.querySelector(`.admin-tab-btn[href="#overview"]`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            const activeSection = document.getElementById(targetId);
+            if (activeSection) activeSection.classList.add('active');
+        }
+
+        // Initialize Routing
+        window.addEventListener('hashchange', handleHashChange);
+        window.addEventListener('load', handleHashChange);
 
         async function loadDashboard() {
             // Fetch data similar to app.js
