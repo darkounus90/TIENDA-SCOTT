@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Previsualización de Logo</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            gap: 2rem;
+        }
+
+        .preview-container {
+            width: 80%;
+            max-width: 800px;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .dark {
+            background: #0f172a;
+            /* Slate 900 - Tu color de fondo */
+            color: white;
+        }
+
+        .light {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            opacity: 0.7;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="preview-container dark">
+        <h2>Fondo Oscuro (Como en la web)</h2>
+        <p>Versión Header:</p>
+        <img src="logo-header.png" alt="Logo Header">
+        <p style="margin-top:2rem;">Versión Alta Resolución (Ultra):</p>
+        <img src="logo-ultra.png" alt="Logo Ultra" style="max-width: 600px;">
+    </div>
+
+    <div class="preview-container light">
+        <h2>Fondo Claro</h2>
+        <img src="logo-header.png" alt="Logo Header">
+    </div>
+</body>
+
+</html>

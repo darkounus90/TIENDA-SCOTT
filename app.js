@@ -1,4 +1,3 @@
-// --- MI CUENTA ---
 const accountButton = document.getElementById("accountButton");
 const accountModal = document.getElementById("accountModal");
 const closeAccount = document.getElementById("closeAccount");
@@ -6,7 +5,7 @@ const accountTabs = document.querySelectorAll(".account-tab");
 const accountInfoTab = document.getElementById("accountInfoTab");
 const accountOrdersTab = document.getElementById("accountOrdersTab");
 const accountAddressesTab = document.getElementById("accountAddressesTab");
-const accountServicesTab = document.getElementById("accountServicesTab"); // New Tab
+const accountServicesTab = document.getElementById("accountServicesTab");
 const ordersList = document.getElementById("ordersList");
 const addressesList = document.getElementById("addressesList");
 const addAddressBtn = document.getElementById("addAddressBtn");
@@ -41,13 +40,14 @@ function closeAccountModal() {
   accountModal.classList.remove("cart-modal--open");
 }
 
-// NOTE: event listener for accountButton removed here as it is hidden/deprecated in favor of dropdown
-// accountButton.addEventListener("click", () => openAccountModal("info")); 
-
-closeAccount.addEventListener("click", closeAccountModal);
-accountModal.addEventListener("click", e => {
-  if (e.target === accountModal) closeAccountModal();
-});
+if (closeAccount) {
+  closeAccount.addEventListener("click", closeAccountModal);
+}
+if (accountModal) {
+  accountModal.addEventListener("click", e => {
+    if (e.target === accountModal) closeAccountModal();
+  });
+}
 
 accountTabs.forEach(tab => {
   tab.addEventListener("click", () => {
@@ -772,20 +772,24 @@ closeLogin.addEventListener("click", closeLoginModal);
 closeRegister.addEventListener("click", closeRegisterModal);
 closeAddProduct.addEventListener("click", closeAddProductModal);
 
-// Reactivar cierre por clic fuera (Ahora seguro con CSS limpio)
-/*
-loginModal.addEventListener("click", e => {
-  if (e.target === loginModal) closeLoginModal();
-});
+// Reactivar cierre por clic fuera
+if (loginModal) {
+  loginModal.addEventListener("click", e => {
+    if (e.target === loginModal) closeLoginModal();
+  });
+}
 
-registerModal.addEventListener("click", e => {
-  if (e.target === registerModal) closeRegisterModal();
-});
+if (registerModal) {
+  registerModal.addEventListener("click", e => {
+    if (e.target === registerModal) closeRegisterModal();
+  });
+}
 
-addProductModal.addEventListener("click", e => {
-  if (e.target === addProductModal) closeAddProductModal();
-});
-*/
+if (addProductModal) {
+  addProductModal.addEventListener("click", e => {
+    if (e.target === addProductModal) closeAddProductModal();
+  });
+}
 
 showRegister.addEventListener("click", e => {
   e.preventDefault();
@@ -1560,34 +1564,34 @@ function renderAddresses() {
 
 /* --- TALLER LOGIC (Client) --- */
 async function renderUserServices() {
-    const container = document.getElementById('servicesList');
-    if (!currentUser) {
-        container.innerHTML = '<div class="account-empty">Inicia sesión para ver tu historial de taller.</div>';
-        return;
-    }
-    
-    container.innerHTML = '<div style="text-align:center; padding:2rem;">Cargando historial...</div>';
-    
-    try {
-        const token = localStorage.getItem('token');
-        if (!token) return;
+  const container = document.getElementById('servicesList');
+  if (!currentUser) {
+    container.innerHTML = '<div class="account-empty">Inicia sesión para ver tu historial de taller.</div>';
+    return;
+  }
 
-        const res = await fetch(`${API_BASE}/services.php`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        
-        if (!data.success || !data.services || data.services.length === 0) {
-            container.innerHTML = `
+  container.innerHTML = '<div style="text-align:center; padding:2rem;">Cargando historial...</div>';
+
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const res = await fetch(`${API_BASE}/services.php`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+
+    if (!data.success || !data.services || data.services.length === 0) {
+      container.innerHTML = `
                 <div class="account-empty">
                     <span style="font-size:2rem; display:block; margin-bottom:0.5rem;">🚲</span>
                     Aún no has traído tu bici a nuestro taller.
                     <br><small>¡Agenda tu cita ahora!</small>
                 </div>`;
-            return;
-        }
-        
-        container.innerHTML = data.services.map(svc => `
+      return;
+    }
+
+    container.innerHTML = data.services.map(svc => `
             <div class="order-card" onclick="toggleServiceDetail(${svc.id})" style="cursor:pointer;">
                 <div class="order-header">
                     <div>
@@ -1622,17 +1626,17 @@ async function renderUserServices() {
                 </div>
             </div>
         `).join('');
-        
-    } catch (e) {
-        console.error(e);
-        container.innerHTML = '<div class="account-empty">Error cargando conexión.</div>';
-    }
+
+  } catch (e) {
+    console.error(e);
+    container.innerHTML = '<div class="account-empty">Error cargando conexión.</div>';
+  }
 }
 
 function toggleServiceDetail(id) {
-    const el = document.getElementById(`svc-detail-${id}`);
-    if(el) {
-        const isHidden = el.style.display === 'none';
-        el.style.display = isHidden ? 'block' : 'none';
-    }
+  const el = document.getElementById(`svc-detail-${id}`);
+  if (el) {
+    const isHidden = el.style.display === 'none';
+    el.style.display = isHidden ? 'block' : 'none';
+  }
 }
