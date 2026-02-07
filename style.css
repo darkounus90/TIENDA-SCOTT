@@ -589,14 +589,130 @@ textarea:focus {
   gap: 3rem;
 }
 
-.footer h3 {
-  color: var(--text-main);
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+/* Responsive Design - Mobile Optimized */
+@media (max-width: 900px) {
+  .hero__content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 3rem;
+  }
+
+  .hero__text h1 {
+    font-size: 2.8rem;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .servicios__content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 
-.footer p {
-  font-size: 0.9rem;
+@media (max-width: 600px) {
+
+  /* Header Mobile */
+  .header__content {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    top: 0;
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    /* Allow wrapping */
+    gap: 1rem;
+    background: rgba(3, 0, 20, 0.95);
+    /* More solid background for readability */
+  }
+
+  /* Mobile Navigation - Horizontal Scroll */
+  .nav {
+    order: 3;
+    /* Move below logo and actions */
+    width: 100%;
+    overflow-x: auto;
+    /* Enable scroll */
+    padding-bottom: 0.5rem;
+    gap: 1.5rem;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scroll iOS */
+    scrollbar-width: none;
+    /* Hide scrollbar Firefox */
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+    /* Hide scrollbar Chrome/Safari */
+  }
+
+  .nav a {
+    white-space: nowrap;
+    /* Prevent line break */
+    font-size: 0.95rem;
+    padding: 0.25rem 0;
+  }
+
+  .header__actions {
+    margin-left: auto;
+    /* Push to right */
+  }
+
+  .header__actions input {
+    display: none;
+    /* Hide search input on tiny screens or handle differently */
+  }
+
+  /* Hero Mobile */
+  .hero {
+    padding-top: 6rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero__text h1 {
+    font-size: 2.2rem;
+  }
+
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  /* Grid Adjustments */
+  .productos__grid,
+  .categorias__grid {
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 cols on mobile usually looks best */
+    gap: 1rem;
+  }
+
+  /* If screen is VERY small */
+  @media (max-width: 400px) {
+    .productos__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .product-card__image {
+    margin: -1rem -1rem 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .card,
+  .categoria {
+    padding: 1rem;
+  }
+
+  /* Modal Mobile */
+  .cart-modal__content,
+  .login-modal {
+    padding: 1.5rem;
+    width: 95%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
 }
 
 /* Utilities */
