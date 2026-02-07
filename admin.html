@@ -6,6 +6,10 @@
     <title>Admin Dashboard - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css?v=4.5.8">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <!-- SheetJS for Excel Import -->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <style>
@@ -41,6 +45,7 @@
         .admin-sidebar-header h2 {
             font-size: 1.5rem;
             background: linear-gradient(to right, var(--accent), var(--primary));
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -151,14 +156,149 @@
             padding: 1rem;
             border-bottom: 1px solid var(--glass-border);
         }
+
+        /* Hamburger Menu Button (Hidden on Desktop) */
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Table Responsive Wrapper */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* MOBILE RESPONSIVE STYLES */
+        @media (max-width: 768px) {
+
+            /* Show hamburger menu */
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            /* Change container to single column */
+            .admin-dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            /* Sidebar: Fixed overlay on mobile */
+            .admin-sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 260px;
+                z-index: 1000;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                border-right: 1px solid var(--glass-border);
+                background: rgba(15, 23, 42, 0.98);
+            }
+
+            /* Show sidebar when active */
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+
+            /* Overlay backdrop */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            /* Adjust topbar */
+            .admin-topbar {
+                padding: 1rem;
+            }
+
+            .admin-topbar h3 {
+                font-size: 1.1rem;
+            }
+
+            /* Stats grid: 1 column on mobile */
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            /* Content area padding */
+            .admin-content-area {
+                padding: 1rem;
+            }
+
+            /* Table cards */
+            .table-card {
+                padding: 1rem;
+                margin-top: 1rem;
+            }
+
+            /* Make tables scrollable */
+            .data-table {
+                font-size: 0.85rem;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.75rem 0.5rem;
+                white-space: nowrap;
+            }
+
+            /* Form adjustments in modals */
+            .cart-modal__content,
+            .add-product-modal {
+                max-width: 95vw;
+                padding: 1.5rem;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Hide some columns on very small screens */
+            @media (max-width: 480px) {
+                .dashboard-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <div class="admin-dashboard-container" id="adminApp" style="display:none;">
+        <!-- Mobile Overlay (for closing sidebar) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- Sidebar -->
-        <aside class="admin-sidebar" style="height: 100vh;">
+        <aside class="admin-sidebar" id="adminSidebar" style="height: 100vh;">
             <div class="admin-sidebar-header">
                 <h2>🚀 SCOTT Admin</h2>
             </div>
@@ -187,7 +327,10 @@
         <!-- Main Content -->
         <main class="admin-main">
             <div class="admin-topbar">
-                <h3>Panel de Control</h3>
+                <div style="display:flex; align-items:center; gap:1rem;">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+                    <h3>Panel de Control</h3>
+                </div>
                 <div style="display:flex; gap:1rem; align-items:center;">
                     <span id="adminUsername" style="font-weight:600; color:#475569;">Admin</span>
                     <a href="/" class="btn-secondary" style="text-decoration:none; padding: 0.5rem 1rem;">Ir a
@@ -783,6 +926,38 @@
         // Initialize Routing
         window.addEventListener('hashchange', handleHashChange);
         window.addEventListener('load', handleHashChange);
+
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const adminSidebar = document.getElementById('adminSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        // Open sidebar
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', () => {
+                adminSidebar.classList.add('active');
+                sidebarOverlay.classList.add('active');
+            });
+        }
+
+        // Close sidebar when clicking overlay
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                adminSidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        // Close sidebar when clicking a menu link (mobile)
+        document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    adminSidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
 
         async function loadDashboard() {
             // Fetch data similar to app.js

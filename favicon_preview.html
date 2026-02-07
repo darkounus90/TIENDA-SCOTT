@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favicon Preview</title>
+    <style>
+        body {
+            background-color: #030014;
+            color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            gap: 2rem;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+        }
+
+        .label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Favicon Preview</h1>
+    <div class="grid">
+        <div class="card">
+            <img src="favicon.png" alt="Master Favicon (512x512)">
+            <div class="label">Master (512x512)</div>
+        </div>
+        <div class="card">
+            <img src="apple-touch-icon.png" alt="Apple Touch Icon">
+            <div class="label">Apple Touch (180x180)</div>
+        </div>
+        <div class="card">
+            <img src="favicon-32x32.png" alt="Favicon 32x32">
+            <div class="label">32x32</div>
+        </div>
+        <div class="card">
+            <img src="favicon-16x16.png" alt="Favicon 16x16">
+            <div class="label">16x16</div>
+        </div>
+        <div class="card">
+            <img src="android-chrome-192x192.png" alt="Android 192">
+            <div class="label">Android 192</div>
+        </div>
+    </div>
+</body>
+
+</html>
