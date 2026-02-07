@@ -504,7 +504,7 @@ async function loginUser(username, password) {
       currentUser = data.user;
       updateLoginButton();
       closeLoginModal();
-      alert('¡Bienvenido, ' + currentUser.username + '!');
+      // Sesión iniciada exitosamente - sin alert
     } else {
       alert(data.message || 'Usuario o contraseña incorrectos.');
     }
