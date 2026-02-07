@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <!-- Vertical Stem -->
+  <rect x="70" y="70" width="80" height="360" rx="10" fill="white" />
+  <!-- Gear Body -->
+  <path d="M 400.0 200.0 L 349.3 253.6 L 347.3 327.3 L 273.6 329.3 L 220.0 380.0 L 166.4 329.3 L 92.7 327.3 L 90.7 253.6 L 40.0 200.0 L 90.7 146.4 L 92.7 72.7 L 166.4 70.7 L 220.0 20.0 L 273.6 70.7 L 347.3 72.7 L 349.3 146.4 Z M 220 120 A 80 80 0 1 0 220 280 A 80 80 0 1 0 220 120 Z" fill="white" fill-rule="evenodd" />
+</svg>
