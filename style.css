@@ -89,6 +89,7 @@ h1 {
   font-size: 3.5rem;
   line-height: 1.1;
   background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
@@ -167,8 +168,10 @@ img {
   font-weight: 800;
   font-size: 1.2rem;
   text-transform: uppercase;
+  text-transform: uppercase;
   letter-spacing: 0.1em;
   background: linear-gradient(to right, var(--accent), var(--primary));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -587,6 +590,15 @@ textarea:focus {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 3rem;
+}
+
+.footer__bottom {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--glass-border);
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 /* Responsive Design - Mobile Optimized */
