@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <!-- Engranaje -->
+  <g id="gear">
+    <!-- Dientes del engranaje -->
+    <path d="M 200 80 L 220 80 L 220 110 L 200 110 Z" fill="white"/>
+    <path d="M 240 90 L 255 100 L 240 130 L 225 120 Z" fill="white"/>
+    <path d="M 270 120 L 280 135 L 255 160 L 245 145 Z" fill="white"/>
+    <path d="M 285 160 L 290 180 L 260 195 L 255 175 Z" fill="white"/>
+    <path d="M 290 200 L 290 220 L 260 220 L 260 200 Z" fill="white"/>
+    <path d="M 285 240 L 290 260 L 260 275 L 255 255 Z" fill="white"/>
+    <path d="M 270 280 L 280 295 L 255 320 L 245 305 Z" fill="white"/>
+    <path d="M 240 310 L 255 320 L 240 350 L 225 340 Z" fill="white"/>
+    <path d="M 200 320 L 220 320 L 220 350 L 200 350 Z" fill="white"/>
+    <path d="M 160 310 L 175 320 L 160 350 L 145 340 Z" fill="white"/>
+    <path d="M 130 280 L 145 295 L 120 320 L 105 305 Z" fill="white"/>
+    <path d="M 115 240 L 120 260 L 90 275 L 85 255 Z" fill="white"/>
+    <path d="M 110 200 L 110 220 L 80 220 L 80 200 Z" fill="white"/>
+    <path d="M 115 160 L 120 180 L 90 195 L 85 175 Z" fill="white"/>
+    <path d="M 130 120 L 145 135 L 120 160 L 105 145 Z" fill="white"/>
+    <path d="M 160 90 L 175 100 L 160 130 L 145 120 Z" fill="white"/>
+    
+    <!-- Círculo exterior del engranaje -->
+    <circle cx="200" cy="210" r="85" fill="white"/>
+    
+    <!-- Círculo interior negro -->
+    <circle cx="200" cy="210" r="60" fill="black"/>
+  </g>
+  
+  <!-- Letra P -->
+  <g id="letter-p">
+    <!-- Parte vertical de la P -->
+    <rect x="100" y="140" width="50" height="200" rx="10" fill="white"/>
+    
+    <!-- Parte superior curva de la P (llave inglesa estilo) -->
+    <ellipse cx="130" cy="140" rx="45" ry="40" fill="white"/>
+  </g>
+  
+  <!-- Texto "EL PEDALAZO" -->
+  <text x="200" y="420" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">
+    EL PEDALAZO
+  </text>
+</svg>
