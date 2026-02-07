@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 40 500 420" width="500" height="420">
   <rect x="80" y="70" width="70" height="360" rx="10" fill="white" />
   <path d="M 240.0 40.0 L 287.8 84.5 L 353.1 86.9 L 355.5 152.2 L 400.0 200.0 L 355.5 247.8 L 353.1 313.1 L 287.8 315.5 L 240.0 360.0 L 192.2 315.5 L 126.9 313.1 L 124.5 247.8 L 80.0 200.0 L 124.5 152.2 L 126.9 86.9 L 192.2 84.5 Z M 240 130 A 70 70 0 1 0 240 270 A 70 70 0 1 0 240 130 Z" fill="white" fill-rule="evenodd" />
 </svg>
