@@ -4,27 +4,33 @@
 */
 
 :root {
-  /* Color Palette - Deep Space & Neon Accents */
-  --bg-deep: #030014;
-  --bg-surface: #0f172a;
+  /* Professional Dark Theme - Slate & Royal Blue */
+  --bg-deep: #0f172a;
+  /* Slate 900 - Deep, neutral dark */
+  --bg-surface: #1e293b;
+  /* Slate 800 - Lighter for cards */
 
-  --primary: #8b5cf6;
-  /* Violet */
-  --primary-glow: #a78bfa;
-  --accent: #06b6d4;
-  /* Cyan */
-  --accent-glow: #67e8f9;
+  --primary: #3b82f6;
+  /* Blue 500 - Professional, trustworthy */
+  --primary-glow: #60a5fa;
+  /* Blue 400 */
+  --accent: #cbd5e1;
+  /* Slate 300 - Neutral accent (silver/white) */
+  --accent-glow: #f8fafc;
+  /* White glow */
 
   --text-main: #f8fafc;
+  /* Slate 50 */
   --text-muted: #94a3b8;
+  /* Slate 400 */
 
-  /* Glassmorphism Variables */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --glass-highlight: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  /* Glassmorphism Variables - Clean & Subtle */
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.05);
+  --glass-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
 
-  --card-hover-bg: rgba(255, 255, 255, 0.07);
+  --card-hover-bg: rgba(255, 255, 255, 0.03);
 
   /* Spacing & Radius */
   --radius-sm: 8px;
@@ -50,8 +56,8 @@ body {
   background-color: var(--bg-deep);
   color: var(--text-main);
   background-image:
-    radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.15) 0%, transparent 25%);
+    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(203, 213, 225, 0.03) 0%, transparent 40%);
   background-attachment: fixed;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
