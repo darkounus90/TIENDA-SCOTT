@@ -1276,3 +1276,18 @@ textarea:focus {
   font-size: 0.85rem;
   min-width: auto;
 }
+
+/* Admin Helpers */
+.btn-xs-link {
+    background: none;
+    border: none;
+    color: var(--primary-glow);
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.btn-xs-link:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}

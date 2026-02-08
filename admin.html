@@ -522,15 +522,17 @@
                             <input type="text" name="name" required class="form-input" placeholder="Ej: Scott Spark RC">
                         </div>
                         <div class="form-group">
-                            <label>Marca</label>
-                            <input type="text" name="brand" required class="form-input" placeholder="Ej: Scott"
-                                list="brandsList" autocomplete="off">
+                            <label style="display:flex; justify-content:space-between;">Marca <button type="button"
+                                    class="btn-xs-link" onclick="focusField('brand')">+ Nueva</button></label>
+                            <input type="text" name="brand" required class="form-input"
+                                placeholder="Selecciona o escribe..." list="brandsList" autocomplete="off">
                             <datalist id="brandsList"></datalist>
                         </div>
                         <div class="form-group">
-                            <label>Categoría</label>
+                            <label style="display:flex; justify-content:space-between;">Categoría <button type="button"
+                                    class="btn-xs-link" onclick="focusField('category')">+ Nueva</button></label>
                             <input type="text" name="category" required class="form-input"
-                                placeholder="Selecciona o escribe nueva..." list="categoriesList" autocomplete="off">
+                                placeholder="Selecciona o escribe..." list="categoriesList" autocomplete="off">
                             <datalist id="categoriesList"></datalist>
                         </div>
                         <div class="form-group">
@@ -661,6 +663,15 @@
             modal.classList.add('active');
             modal.classList.add('cart-modal--open'); // Asegurar consistencia con CSS
             loadProductMetadata();
+        }
+
+        function focusField(name) {
+            const input = document.querySelector(`input[name="${name}"]`);
+            if (input) {
+                input.value = ''; // Clear to type new
+                input.placeholder = `Escribe nueva ${name === 'brand' ? 'marca' : 'categoría'}...`;
+                input.focus();
+            }
         }
 
 
