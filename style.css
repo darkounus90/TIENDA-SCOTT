@@ -1269,3 +1269,10 @@ textarea:focus {
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-border);
 }
+/* Compact Login Button Override */
+#loginButton,
+#accountButton {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  min-width: auto;
+}
