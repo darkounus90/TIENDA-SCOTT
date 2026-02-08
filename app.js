@@ -1640,3 +1640,39 @@ function toggleServiceDetail(id) {
     el.style.display = isHidden ? 'block' : 'none';
   }
 }
+
+// Search Toggle Logic
+document.addEventListener('DOMContentLoaded', () => {
+  const searchToggle = document.getElementById('searchToggle');
+  const searchWrapper = document.querySelector('.search-wrapper');
+  const searchInput = document.getElementById('searchInput');
+
+  if (searchToggle && searchWrapper) {
+    searchToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      searchWrapper.classList.toggle('active');
+      if (searchWrapper.classList.contains('active')) {
+        searchInput.focus();
+      }
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!searchWrapper.contains(e.target) && searchWrapper.classList.contains('active')) {
+        searchWrapper.classList.remove('active');
+      }
+    });
+
+    // Close on 'Enter' key inside input
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchWrapper.classList.remove('active');
+                // Optional: Scroll to products
+                const prodSection = document.getElementById('productos');
+                if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+  }
+});
