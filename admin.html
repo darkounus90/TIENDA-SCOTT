@@ -522,18 +522,55 @@
                             <input type="text" name="name" required class="form-input" placeholder="Ej: Scott Spark RC">
                         </div>
                         <div class="form-group">
-                            <label style="display:flex; justify-content:space-between;">Marca <button type="button"
-                                    class="btn-xs-link" onclick="focusField('brand')">+ Nueva</button></label>
-                            <input type="text" name="brand" required class="form-input"
-                                placeholder="Selecciona o escribe..." list="brandsList" autocomplete="off">
-                            <datalist id="brandsList"></datalist>
+                            <label>Marca</label>
+                            <div class="hybrid-field" id="wrap-brand">
+                                <div class="mode-select" style="display:flex; gap:0.5rem;">
+                                    <select id="brandSelect" class="form-input"
+                                        onchange="setFinalValue('brand', this.value)">
+                                        <option value="">Selecciona...</option>
+                                    </select>
+                                    <button type="button" class="btn-hybrid-toggle"
+                                        onclick="toggleHybrid('brand', 'input')" title="Nueva Marca">
+                                        ➕
+                                    </button>
+                                </div>
+                                <div class="mode-input" style="display:none; gap:0.5rem;">
+                                    <input type="text" id="brandInput" class="form-input"
+                                        placeholder="Escribe nueva marca..."
+                                        oninput="setFinalValue('brand', this.value)">
+                                    <button type="button" class="btn-hybrid-toggle"
+                                        onclick="toggleHybrid('brand', 'select')" title="Volver a lista">
+                                        📋
+                                    </button>
+                                </div>
+                                <input type="hidden" name="brand" id="final-brand">
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <label style="display:flex; justify-content:space-between;">Categoría <button type="button"
-                                    class="btn-xs-link" onclick="focusField('category')">+ Nueva</button></label>
-                            <input type="text" name="category" required class="form-input"
-                                placeholder="Selecciona o escribe..." list="categoriesList" autocomplete="off">
-                            <datalist id="categoriesList"></datalist>
+                            <label>Categoría</label>
+                            <div class="hybrid-field" id="wrap-category">
+                                <div class="mode-select" style="display:flex; gap:0.5rem;">
+                                    <select id="categorySelect" class="form-input"
+                                        onchange="setFinalValue('category', this.value)">
+                                        <option value="">Selecciona...</option>
+                                    </select>
+                                    <button type="button" class="btn-hybrid-toggle"
+                                        onclick="toggleHybrid('category', 'input')" title="Nueva Categoría">
+                                        ➕
+                                    </button>
+                                </div>
+                                <div class="mode-input" style="display:none; gap:0.5rem;">
+                                    <input type="text" id="categoryInput" class="form-input"
+                                        placeholder="Escribe nueva categoría..."
+                                        oninput="setFinalValue('category', this.value)">
+                                    <button type="button" class="btn-hybrid-toggle"
+                                        onclick="toggleHybrid('category', 'select')" title="Volver a lista">
+                                        📋
+                                    </button>
+                                </div>
+                                <input type="hidden" name="category" id="final-category">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Precio</label>
@@ -665,16 +702,35 @@
             loadProductMetadata();
         }
 
-        function focusField(name) {
-            const input = document.querySelector(`input[name="${name}"]`);
-            if (input) {
-                input.value = ''; // Clear to type new
-                input.placeholder = `Escribe nueva ${name === 'brand' ? 'marca' : 'categoría'}...`;
-                input.focus();
+        function toggleHybrid(type, mode) {
+            const wrap = document.getElementById(`wrap-${type}`);
+            if (!wrap) return;
+            const selMode = wrap.querySelector('.mode-select');
+            const inpMode = wrap.querySelector('.mode-input');
+            const hidden = document.getElementById(`final-${type}`);
+
+            if (mode === 'input') {
+                selMode.style.display = 'none';
+                inpMode.style.display = 'flex';
+                const inp = document.getElementById(`${type}Input`);
+                if (inp) {
+                    inp.value = '';
+                    inp.focus();
+                }
+                if (hidden) hidden.value = '';
+            } else {
+                inpMode.style.display = 'none';
+                selMode.style.display = 'flex';
+                const sel = document.getElementById(`${type}Select`);
+                if (sel) sel.value = '';
+                if (hidden) hidden.value = '';
             }
         }
 
-
+        function setFinalValue(type, val) {
+            const field = document.getElementById(`final-${type}`);
+            if (field) field.value = val;
+        }
 
         async function loadProductMetadata() {
             try {
@@ -683,31 +739,33 @@
 
                 if (data.success) {
                     // Brands
-                    const bList = document.getElementById('brandsList');
-                    const bInput = document.querySelector('input[name="brand"]');
-                    if (bList && data.brands) {
-                        bList.innerHTML = data.brands.map(b => `<option value="${b}">`).join('');
+                    const bSel = document.getElementById('brandSelect');
+                    if (bSel && data.brands) {
+                        bSel.innerHTML = '<option value="">Selecciona Marca...</option>' +
+                            data.brands.map(b => `<option value="${b}">${b}</option>`).join('');
                     }
 
                     // Categories
-                    const cList = document.getElementById('categoriesList');
-                    const cInput = document.querySelector('input[name="category"]');
-                    if (cList && data.categories) {
-                        // Add default/common categories if empty or just mix them
+                    const cSel = document.getElementById('categorySelect');
+                    if (cSel && data.categories) {
                         const defaults = ['Bicicletas', 'Accesorios', 'Repuestos', 'Ropa', 'Cascos', 'Zapatillas'];
-                        const allCats = [...new Set([...defaults, ...data.categories])];
-                        cList.innerHTML = allCats.map(c => `<option value="${c}">`).join('');
+                        const allCats = [...new Set([...defaults, ...data.categories])].sort();
+                        cSel.innerHTML = '<option value="">Selecciona Categoría...</option>' +
+                            allCats.map(c => `<option value="${c}">${c}</option>`).join('');
                     }
                 }
-            } catch (e) { console.error("Error loading metadata", e); }
+            } catch (e) { console.error("Error loading Metadata", e); }
         }
-
 
         function closeAddProduct() {
             const modal = document.getElementById('addProductModal');
             modal.classList.remove('active');
             modal.classList.remove('cart-modal--open');
             document.getElementById('addProductForm').reset();
+            // Reset Hybrid Fields
+            toggleHybrid('brand', 'select');
+            toggleHybrid('category', 'select');
+
             document.getElementById('imagePreviewGrid').innerHTML = '';
             productImagesBase64 = [];
         }

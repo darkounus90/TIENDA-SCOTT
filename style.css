@@ -1357,3 +1357,40 @@ textarea:focus {
   background: var(--bg-surface);
   padding: 0 10px;
 }
+
+/* Hybrid Field Styling for Admin Panel */
+.hybrid-field {
+    width: 100%;
+}
+.mode-select, .mode-input {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+}
+.mode-select select, 
+.mode-input input {
+    flex: 1;
+}
+.btn-hybrid-toggle {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    width: 44px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+.btn-hybrid-toggle:hover {
+    background: var(--glass-bg);
+    border-color: var(--primary);
+    color: var(--primary-glow);
+    transform: scale(1.05);
+}
+.btn-hybrid-toggle .icon {
+    font-style: normal;
+}
