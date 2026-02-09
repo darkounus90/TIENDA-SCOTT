@@ -565,8 +565,8 @@ function updateLoginButton() {
   const token = localStorage.getItem('token');
   if (token && currentUser) {
     // Estado de sesión iniciada
-    loginButton.textContent = `Hola, ${currentUser.username} ▾`;
-    loginButton.style.display = "inline-block";
+    loginButton.textContent = '👤';
+    loginButton.title = `Hola, ${currentUser.username}`;
 
     // Limpiar si es necesario
     // accountButton.style.display = "none"; // Removed ref
@@ -596,8 +596,8 @@ function updateLoginButton() {
   } else {
     // Estado de sesión cerrada
     currentUser = null;
-    loginButton.textContent = "Iniciar Sesión";
-    loginButton.style.display = "inline-block";
+    loginButton.textContent = '👤';
+    loginButton.title = 'Iniciar Sesión';
     // accountButton.style.display = "none"; 
     userDropdown.classList.remove("active");
 
