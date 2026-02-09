@@ -399,8 +399,8 @@ if (addAddressBtn) {
     alert("Funcionalidad de agregar dirección próximamente.");
   });
 }
-// Importar visor 3D
-import { initBikeViewer } from './viewer/bikeViewer.js';
+// Importar visor 3D (Dinámico más adelante)
+// import { initBikeViewer } from './viewer/bikeViewer.js';
 
 // Usuarios y productos desde API
 const API_BASE = 'api'; // Path relativo para producción y desarrollo
@@ -425,12 +425,25 @@ async function checkSession() {
 
         // Inicializar Visor 3D si existe el contenedor el visor
         if (document.getElementById('bike-viewer')) {
-          initBikeViewer({
-            mountId: 'bike-viewer',
-            modelUrl: 'assets/scale-920.glb' // Ruta relativa
-          });
+          import('./viewer/bikeViewer.js')
+            .then(module => {
+              module.initBikeViewer({
+                mountId: 'bike-viewer',
+                modelUrl: 'assets/scale-920.glb'
+              });
+            })
+            .catch(err => {
+              console.error("Fallo al cargar módulo 3D:", err);
+              const container = document.getElementById('bike-viewer');
+              if (container) {
+                // Feedback visual simple en caso de error
+                const errMsg = document.createElement('div');
+                errMsg.style.cssText = "position:absolute; bottom:10px; left:10px; color:red; z-index:100; background:rgba(0,0,0,0.8); padding:5px;";
+                errMsg.innerText = "Error cargando 3D: " + err.message;
+                container.appendChild(errMsg);
+              }
+            });
         }
-
       } else {
         console.warn("Sesión inválida:", data);
         // Token inválido o expirado real
