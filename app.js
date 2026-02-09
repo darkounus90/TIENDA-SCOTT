@@ -459,7 +459,13 @@ function logout() {
 async function fetchProducts() {
   try {
     const response = await fetch(`${API_BASE}/products.php`);
-    products = await response.json();
+    const data = await response.json();
+    if (Array.isArray(data)) {
+      products = data;
+    } else {
+      console.warn("API de productos no devolvió un array:", data);
+      products = [];
+    }
   } catch (err) {
     console.error('Error fetching products:', err);
     products = [];
