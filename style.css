@@ -1654,3 +1654,203 @@ textarea:focus {
 .btn-hybrid-toggle .icon {
   font-style: normal;
 }
+/* ========================================
+   VISOR 3D (Bike Viewer)
+   ======================================== */
+#bike-viewer {
+  width: 100%;
+  height: 600px; /* Altura fija para escritorio */
+  position: relative;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  overflow: hidden;
+  margin-top: 80px; /* Espacio para el header fijo */
+}
+
+@media (max-width: 768px) {
+  #bike-viewer {
+    height: 50vh; /* Altura adaptable en móvil */
+    min-height: 400px;
+  }
+}
+
+.viewer-overlay-static {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  color: white;
+  pointer-events: none; /* Dejar pasar clicks al canvas */
+  z-index: 10;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.viewer-overlay-static h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.viewer-overlay-static p {
+  font-size: 1.2rem;
+  color: #cbd5e1;
+  max-width: 400px;
+  margin-top: 1rem;
+}
+
+/* UI del Visor Inyectada */
+.viewer-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+  z-index: 20;
+}
+
+.viewer-btn {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.viewer-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.viewer-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Hotspots */
+.hotspot {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.9); /* Azul primario */
+  border: 2px solid white;
+  cursor: pointer;
+  z-index: 15;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  transition: transform 0.2s ease, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hotspot::after {
+  content: '+';
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.hotspot:hover {
+  transform: scale(1.2);
+  background: var(--primary-glow);
+}
+
+.hotspot.active {
+  background: #ef4444; /* Rojo al seleccionar */
+  border-color: #fecaca;
+}
+
+/* Panel de Detalles */
+.viewer-details-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.95); /* Fondo oscuro casi opaco */
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px 30px;
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 30;
+  color: white;
+  overflow-y: auto;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+
+.viewer-details-panel.open {
+  transform: translateX(0);
+}
+
+.viewer-details-panel h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-glow);
+}
+
+.viewer-details-panel .detail-meta {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 1rem;
+}
+
+.viewer-details-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.viewer-details-panel li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+}
+
+.viewer-details-panel li span:first-child {
+  color: #cbd5e1;
+}
+
+.viewer-details-panel li span:last-child {
+  font-weight: 600;
+  color: white;
+  text-align: right;
+}
+
+.close-details {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.close-details:hover {
+  opacity: 1;
+}
+
+/* Loader */
+.viewer-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-family: monospace;
+  font-size: 1.2rem;
+  pointer-events: none;
+}

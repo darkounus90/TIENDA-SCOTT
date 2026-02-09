@@ -755,8 +755,6 @@ function updateLoginButton() {
     // accountButton.style.display = "none"; 
     userDropdown.classList.remove("active");
 
-    // Restore default login behavior
-    // Restore default login behavior
     // Restaurar comportamiento de login
     loginButton.onclick = (e) => {
       e.preventDefault();
