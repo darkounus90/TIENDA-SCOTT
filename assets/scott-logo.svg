@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120">
+  <defs>
+    <style>
+      .scott-text {
+        fill: white;
+        font-family: "Arial Black", "Helvetica Neue", sans-serif;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 100px;
+        letter-spacing: -4px;
+        transform: skewX(-10deg);
+      }
+    </style>
+  </defs>
+  <!-- Simulación del logo oficial de Scott -->
+  <text x="10" y="90" class="scott-text">SCOTT</text>
+</svg>
