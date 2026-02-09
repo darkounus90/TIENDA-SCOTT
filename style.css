@@ -559,14 +559,51 @@ img {
   white-space: nowrap;
 }
 
+/* Estilos para el texto real del hero */
+.hero__text {
+  width: 100%;
+  text-align: left;
+  z-index: 2;
+  margin-bottom: 1rem;
+}
+
+.hero__text h1 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: white;
+  margin: 0;
+  text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.8);
+}
+
+.hero__text span {
+  display: block;
+  font-size: 1.1em;
+  color: #fff;
+}
+
+.hero__brand {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800;
+  font-style: italic;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+
 @media (max-width: 768px) {
   .hero {
-    min-height: 60vh;
-    background-position: center 80px;
-    background-size: 100% auto;
-    /* Ancho completo */
+    min-height: 85vh;
+    /* Degradado oscuro arriba para tapar el texto original, imagen centrada en la bici */
+    background-image: linear-gradient(to bottom, #0d0d0d 45%, rgba(13, 13, 13, 0.6) 70%, transparent 100%), url('assets/HERO.png');
+    background-position: 75% center;
+    background-size: cover;
     background-repeat: no-repeat;
-    padding-top: 80px;
+    padding-top: 100px;
     padding-bottom: 2rem;
     align-items: flex-start;
     background-color: #0d0d0d;
@@ -574,37 +611,48 @@ img {
 
   .hero__content {
     width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    justify-content: flex-start;
+    /* Texto arriba */
+    padding: 0 1rem;
+  }
+
+  .hero__text {
+    margin-top: 1rem;
+    position: relative;
+    z-index: 5;
+    /* Texto HTML sobre el degradado oscuro */
   }
 
   .hero__btns {
     flex-direction: row;
-    /* Botones en fila */
     justify-content: center;
     gap: 0.75rem;
     width: 100%;
-    padding: 0 1rem;
-    /* Margen lateral para seguridad */
-    margin-top: 320px !important;
-    /* Ajustado para estar debajo de la imagen */
+    margin-top: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background: transparent;
+    /* Ya no es necesario fondo extra si el degradado cubre */
+    margin-bottom: 0;
+    margin-left: 0;
+    width: 100%;
   }
 
   .hero__btns a {
     width: auto;
     flex: 1;
-    /* Ocupar espacio equitativo */
-    max-width: 200px;
+    max-width: 180px;
     padding: 12px 10px;
-    /* Padding reducido */
-    font-size: 0.9rem;
-    /* Texto legible pero compacto */
-    background: rgba(99, 102, 241, 0.9);
+    font-size: 0.85rem;
+    background: rgba(99, 102, 241, 0.95);
     backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
 
   .hero__btns a.btn-secondary {
