@@ -544,6 +544,10 @@
                                     </button>
                                 </div>
                                 <input type="hidden" name="brand" id="final-brand">
+                                <div class="hybrid-help"
+                                    style="display:none; color: var(--primary-glow); font-size: 0.8rem; margin-top: 0.4rem;">
+                                    ✨ Se guardará automáticamente al crear el producto.
+                                </div>
                             </div>
                         </div>
 
@@ -570,6 +574,10 @@
                                     </button>
                                 </div>
                                 <input type="hidden" name="category" id="final-category">
+                                <div class="hybrid-help"
+                                    style="display:none; color: var(--primary-glow); font-size: 0.8rem; margin-top: 0.4rem;">
+                                    ✨ Se guardará automáticamente al crear el producto.
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -708,6 +716,7 @@
             const selMode = wrap.querySelector('.mode-select');
             const inpMode = wrap.querySelector('.mode-input');
             const hidden = document.getElementById(`final-${type}`);
+            const help = wrap.querySelector('.hybrid-help');
 
             if (mode === 'input') {
                 selMode.style.display = 'none';
@@ -718,12 +727,14 @@
                     inp.focus();
                 }
                 if (hidden) hidden.value = '';
+                if (help) help.style.display = 'block';
             } else {
                 inpMode.style.display = 'none';
                 selMode.style.display = 'flex';
                 const sel = document.getElementById(`${type}Select`);
                 if (sel) sel.value = '';
                 if (hidden) hidden.value = '';
+                if (help) help.style.display = 'none';
             }
         }
 
