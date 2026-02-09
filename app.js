@@ -438,8 +438,12 @@ async function checkSession() {
       if (storedUser) {
         currentUser = JSON.parse(storedUser);
         updateLoginButton();
+      } else {
+        updateLoginButton(); // Estado inicial (sin sesión)
       }
     }
+  } else {
+    updateLoginButton(); // No hay token, inicializar botón
   }
 }
 
