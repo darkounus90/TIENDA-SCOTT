@@ -11,6 +11,25 @@ const ordersList = document.getElementById("ordersList");
 const addressesList = document.getElementById("addressesList");
 const addAddressBtn = document.getElementById("addAddressBtn");
 
+// Hamburger Menu Logic
+const hamburgerMenu = document.getElementById('hamburgerMenu');
+const mainNav = document.getElementById('mainNav');
+
+if (hamburgerMenu && mainNav) {
+  hamburgerMenu.addEventListener('click', () => {
+    hamburgerMenu.classList.toggle('active');
+    mainNav.classList.toggle('active');
+  });
+
+  // Close menu when clicking a link
+  mainNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburgerMenu.classList.remove('active');
+      mainNav.classList.remove('active');
+    });
+  });
+}
+
 function openAccountModal(initialTab = "info") {
   // Activar pestaña correcta
   accountTabs.forEach(t => t.classList.remove("active"));
@@ -143,141 +162,11 @@ function renderAccountInfo() {
     // Validar longitud mínima del teléfono si está presente
     let fullPhone = "";
     if (phoneBody) {
-      // Función auxiliar para poblar ciudades
-      function populateCities(depSelect, citySelect, selectedCity = null) {
-        const dep = depSelect.value;
-        citySelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
-
-        if (dep && colombiaDeps[dep]) {
-          citySelect.disabled = false;
-          citySelect.style.background = "#fff";
-          colombiaDeps[dep].sort().forEach(city => {
-            const opt = document.createElement("option");
-            opt.value = city;
-            opt.textContent = city;
-            if (selectedCity && city === selectedCity) opt.selected = true;
-            citySelect.appendChild(opt);
-          });
-        } else {
-          citySelect.disabled = true;
-          citySelect.style.background = "#f1f5f9";
-          citySelect.innerHTML = '<option value="">Selecciona primero un departamento</option>';
-        }
+      if (phoneBody.length < 7) {
+        alert("El número de teléfono es inválido.");
+        return;
       }
-
-      function renderAddresses() {
-        if (!currentUser) {
-          accountAddressesTab.innerHTML = '<div class="account-empty">No has iniciado sesión.</div>';
-          return;
-        }
-
-        // Determinar valores actuales
-        const currentDep = currentUser.department || "";
-        const currentCity = currentUser.city || "";
-        const currentAddr = currentUser.address || "";
-
-        accountAddressesTab.innerHTML = `
-    <div class="address-card">
-      <h3>📍 Dirección Principal</h3>
-      <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Esta es la dirección que usaremos para tus envíos.</p>
-      
-      <form id="addressForm" class="account-form">
-        <label>
-          <span>🗺️ Departamento</span>
-          <select id="profileDep" name="department" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;">
-             <option value="">Selecciona...</option>
-             <!-- JS Populated -->
-          </select>
-        </label>
-        
-        <label>
-          <span>🏙️ Ciudad</span>
-          <select id="profileCity" name="city" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;" disabled>
-             <option value="">Selecciona departamento...</option>
-          </select>
-        </label>
-
-        <label>
-          <span>🏠 Dirección y Nomenclatura</span>
-          <input type="text" name="address" value="${currentAddr}" placeholder="Ej: Cra 45 # 20-10, Apto 501" required />
-        </label>
-
-        <div style="margin-top: 1rem;">
-          <button type="submit" class="btn-primary" style="width: 100%;">Actualizar Dirección</button>
-        </div>
-      </form>
-    </div>
-  `;
-
-        // Lógica de población
-        const depSelect = document.getElementById("profileDep");
-        const citySelect = document.getElementById("profileCity");
-
-        if (typeof colombiaDeps !== 'undefined') {
-          Object.keys(colombiaDeps).sort().forEach(d => {
-            const opt = document.createElement("option");
-            opt.value = d;
-            opt.textContent = d;
-            if (currentDep === d) opt.selected = true;
-            depSelect.appendChild(opt);
-          });
-
-          // Iniciar ciudades
-          if (currentDep) {
-            populateCities(depSelect, citySelect, currentCity);
-          }
-
-          // Listener de cambios
-          depSelect.addEventListener("change", () => {
-            populateCities(depSelect, citySelect);
-          });
-        }
-
-        // Manejar envío
-        document.getElementById("addressForm").addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const newDep = depSelect.value;
-          const newCity = citySelect.value;
-          const newAddr = e.target.address.value.trim();
-
-          if (!newDep || !newCity || !newAddr) {
-            alert("Por favor completa todos los campos.");
-            return;
-          }
-
-          try {
-            const res = await fetch(`${API_BASE}/update_user.php`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
-              },
-              body: JSON.stringify({
-                department: newDep,
-                city: newCity,
-                address: newAddr
-              })
-            });
-
-            const data = await res.json();
-            if (data.success) {
-              // Update local currentUser
-              currentUser.department = newDep;
-              currentUser.city = newCity;
-              currentUser.address = newAddr;
-              localStorage.setItem('user', JSON.stringify(currentUser));
-
-              alert("✅ Dirección actualizada correctamente");
-            } else {
-              alert("Error: " + data.message);
-            }
-          } catch (err) {
-            console.error(err);
-            alert("Error de conexión");
-          }
-        });
-      }
-
+      fullPhone = code + phoneBody;
     }
 
     if (!email) {
@@ -386,15 +275,7 @@ async function renderOrders() {
   }
 }
 
-function renderAddresses() {
-  // Marcador de posición
-  addressesList.innerHTML = `
-    <div class="account-empty">
-      <span class="icon">📍</span>
-      <p>No tienes direcciones guardadas.</p>
-    </div>
-  `;
-}
+
 
 if (addAddressBtn) {
   addAddressBtn.addEventListener("click", () => {
@@ -480,31 +361,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Restaurar carrito si existiera (opcional, por ahora solo memoria)
   });
 
-  // Inicializar Visor 3D (Independiente de la sesión)
-  const viewerContainer = document.getElementById('bike-viewer');
-  console.log("🔍 DOMContentLoaded: Buscando #bike-viewer:", viewerContainer);
-
-  if (viewerContainer) {
-    console.log("✅ Contenedor encontrado. Importando módulo...");
-    import('./viewer/bikeViewer.js')
-      .then(module => {
-        console.log("📦 Módulo importado (Main Flow):", module);
-        module.initBikeViewer({
-          mountId: 'bike-viewer',
-          modelUrl: 'assets/scale-920.glb'
-        });
-      })
-      .catch(err => {
-        console.error("Fallo al cargar módulo 3D:", err);
-        const container = document.getElementById('bike-viewer');
-        if (container) {
-          const debugBox = document.createElement('div');
-          debugBox.style.cssText = "position:fixed; bottom:0; left:0; width:100%; background:rgba(200,0,0,0.9); color:white; padding:10px; z-index:9999; font-family:monospace; font-size:12px; max-height:200px; overflow:auto;";
-          debugBox.innerHTML = "<h3>⚠️ Error de Carga 3D</h3><pre>" + err.stack + "\n" + err.message + "</pre>";
-          document.body.appendChild(debugBox);
-        }
-      });
-  }
 });
 
 
@@ -557,27 +413,7 @@ async function loginUser(username, password) {
   }
 }
 
-// Función para register
-async function registerUser(username, email, phone, password) {
-  try {
-    const response = await fetch(`${API_BASE}/register.php`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, phone, password })
-    });
-    const data = await response.json();
-    if (response.ok && data.success) {
-      showRegisterSuccess();
-    } else {
-      alert(data.message || 'No se pudo crear la cuenta.');
-    }
-  } catch (err) {
-    console.error('Error registering:', err);
-    alert('Error de conexión. Intenta nuevamente.');
-  }
-}
 
-// Mostrar confirmación visual de registro exitoso
 function showRegisterSuccess() {
   closeRegisterModal();
   setTimeout(() => {

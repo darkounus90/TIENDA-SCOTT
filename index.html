@@ -10,6 +10,26 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css?v=4.7.0" />
+
+  <script>
+    // GLOBAL ERROR TRAP - Para depuración en producción
+    window.onerror = function (msg, url, line, col, error) {
+      // Ignorar errores de extensiones o irrelevantes
+      if (msg.includes('extension') || msg.includes('script error')) return;
+
+      const box = document.createElement('div');
+      box.style.cssText = "position:fixed; top:0; left:0; width:100%; z-index:99999; background:red; color:white; padding:10px; font-family:monospace;";
+      box.innerHTML = "<strong>⚠️ JS ERROR:</strong> " + msg + "<br><small>" + url + ":" + line + "</small>";
+      document.body.appendChild(box);
+      return false;
+    };
+
+    window.addEventListener('unhandledrejection', function (event) {
+      console.error("Unhandled Rejection:", event.reason);
+      // Opcional: mostrar en pantalla si es crítico
+    });
+  </script>
+
 </head>
 
 <body>
@@ -20,11 +40,18 @@
         <a href="#home" style="text-decoration: none; display: flex; align-items: center;">
           <img src="logo-pedalazo-icon.svg" alt="El Pedalazo" style="height: 50px; width: auto;">
           <span
-            style="font-size: 2rem; font-weight: 800; color: white; -webkit-text-fill-color: white; margin-left: -10px; letter-spacing: -1px; font-family: 'Inter', sans-serif;">edalazo</span>
+            style="font-size: 2rem; font-weight: 800; color: white; margin-left: -10px; letter-spacing: -1px; font-family: 'Inter', sans-serif;">edalazo</span>
         </a>
       </div>
 
-      <nav class="nav">
+      <!-- HAMBURGER MENU BUTTON -->
+      <button class="hamburger-menu" id="hamburgerMenu" aria-label="Abrir menú">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+
+      <nav class="nav" id="mainNav">
         <a href="#home">Inicio</a>
         <a href="#categorias">Categorías</a>
         <a href="#productos">Productos</a>
@@ -58,12 +85,17 @@
   </header>
 
   <!-- HERO -->
-  <!-- VISOR 3D (Reemplaza Hero) -->
-  <section id="bike-viewer" class="viewer-section">
-    <!-- El canvas y UI se inyectan via JS -->
-    <div class="viewer-overlay-static">
-      <h1>Scott Scale 920 <span style="font-weight:300; opacity:0.7">| 2026</span></h1>
-      <p>Explora la ingeniería detrás de la leyenda. Interactúa con el modelo 3D.</p>
+  <section class="hero" id="home">
+    <div class="hero__content container"
+      style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+      <h1 style="text-align: center;">SCOTT<br><span
+          style="background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">2026</span>
+      </h1>
+      <p style="text-align: center; max-width: 500px;">Innovación, tecnología y diseño sin límites.</p>
+      <div class="hero__btns">
+        <a href="#productos" class="btn-primary">Ver Colección</a>
+        <a href="#contacto" class="btn-secondary">Contáctanos</a>
+      </div>
     </div>
   </section>
 
@@ -514,7 +546,7 @@
   </style>
 
   <!-- Module type for imports -->
-  <script type="module" src="app.js?v=final_fix_v2"></script>
+  <script type="module" src="app.js?v=4.9.0_hero"></script>
 </body>
 
 </html>

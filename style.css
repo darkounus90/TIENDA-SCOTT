@@ -196,7 +196,118 @@ img {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-muted);
+  /* Nav Links Hover Effect */
   position: relative;
+}
+
+.hamburger-menu {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 4px;
+  padding: 5px;
+  z-index: 200;
+}
+
+.hamburger-menu .bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger-menu.active .bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-menu.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.active .bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .header__content {
+    grid-template-columns: auto 1fr auto;
+    /* Logo - Spacer - Actions+Burger */
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+  }
+
+  /* Ocultar navegación por defecto en móvil */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: left 0.3s ease-in-out;
+    transform: none;
+    z-index: 150;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .nav.active {
+    left: 0;
+  }
+
+  .nav a {
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  /* Mostrar botón hamburguesa a la derecha */
+  .hamburger-menu {
+    display: flex;
+    order: 2;
+    /* Después de las acciones */
+    margin-left: auto;
+  }
+
+  /* Ajustar grid para layout móvil */
+  .header__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    order: 0;
+    flex-shrink: 0;
+  }
+
+  .header__actions {
+    display: flex;
+    gap: 0.5rem;
+    order: 1;
+    margin-left: auto;
+    margin-right: 0.5rem;
+  }
+
+  /* Search input hide on mobile initially if needed, or adjust */
+  .search-wrapper input {
+    width: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .search-wrapper.active input {
+    width: 120px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--glass-border);
+  }
 }
 
 .nav a:hover {
@@ -311,17 +422,87 @@ img {
 }
 
 /* Hero Section */
-/* 3D VIEWER STYLES */
-.viewer-section {
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
   position: relative;
-  width: 100%;
-  height: 90vh;
-  /* Full viewport height minus header offset if needed */
-  background: var(--bg-deep);
   overflow: hidden;
   margin-top: -80px;
-  /* Behind header */
+  padding-top: 80px;
+  background: url('assets/hero-scott-collection-2026.png') center center / cover no-repeat;
+  background-color: #0f172a;
 }
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.3) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.hero p {
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  color: #e2e8f0;
+  max-width: 600px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero__btns {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+}
+
+.hero__btns a {
+  flex: 1 1 auto;
+  min-width: 160px;
+  max-width: 220px;
+  text-align: center;
+  padding: 14px 28px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .hero__btns {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__btns a {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+/* 3D VIEWER STYLES (Legacy/Hidden) */
+.viewer-section {
+  display: none;
+  /* Hide viewer styles */
+}
+
 
 .viewer-section canvas {
   display: block;
@@ -1654,21 +1835,25 @@ textarea:focus {
 .btn-hybrid-toggle .icon {
   font-style: normal;
 }
+
 /* ========================================
    VISOR 3D (Bike Viewer)
    ======================================== */
 #bike-viewer {
   width: 100%;
-  height: 600px; /* Altura fija para escritorio */
+  height: 600px;
+  /* Altura fija para escritorio */
   position: relative;
   background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
   overflow: hidden;
-  margin-top: 80px; /* Espacio para el header fijo */
+  margin-top: 80px;
+  /* Espacio para el header fijo */
 }
 
 @media (max-width: 768px) {
   #bike-viewer {
-    height: 50vh; /* Altura adaptable en móvil */
+    height: 50vh;
+    /* Altura adaptable en móvil */
     min-height: 400px;
   }
 }
@@ -1678,9 +1863,10 @@ textarea:focus {
   top: 20%;
   left: 10%;
   color: white;
-  pointer-events: none; /* Dejar pasar clicks al canvas */
+  pointer-events: none;
+  /* Dejar pasar clicks al canvas */
   z-index: 10;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .viewer-overlay-static h1 {
@@ -1738,7 +1924,8 @@ textarea:focus {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(59, 130, 246, 0.9); /* Azul primario */
+  background: rgba(59, 130, 246, 0.9);
+  /* Azul primario */
   border: 2px solid white;
   cursor: pointer;
   z-index: 15;
@@ -1762,7 +1949,8 @@ textarea:focus {
 }
 
 .hotspot.active {
-  background: #ef4444; /* Rojo al seleccionar */
+  background: #ef4444;
+  /* Rojo al seleccionar */
   border-color: #fecaca;
 }
 
@@ -1773,7 +1961,8 @@ textarea:focus {
   right: 0;
   width: 350px;
   height: 100%;
-  background: rgba(15, 23, 42, 0.95); /* Fondo oscuro casi opaco */
+  background: rgba(15, 23, 42, 0.95);
+  /* Fondo oscuro casi opaco */
   backdrop-filter: blur(20px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   padding: 40px 30px;
@@ -1782,7 +1971,7 @@ textarea:focus {
   z-index: 30;
   color: white;
   overflow-y: auto;
-  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
 }
 
 .viewer-details-panel.open {
@@ -1801,7 +1990,7 @@ textarea:focus {
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding-bottom: 1rem;
 }
 
@@ -1812,7 +2001,7 @@ textarea:focus {
 
 .viewer-details-panel li {
   padding: 10px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   justify-content: space-between;
 }
