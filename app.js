@@ -399,6 +399,9 @@ if (addAddressBtn) {
     alert("Funcionalidad de agregar dirección próximamente.");
   });
 }
+// Importar visor 3D
+import { initBikeViewer } from './viewer/bikeViewer.js';
+
 // Usuarios y productos desde API
 const API_BASE = 'api'; // Path relativo para producción y desarrollo
 let products = [];
@@ -419,6 +422,15 @@ async function checkSession() {
         // Guardar datos frescos
         localStorage.setItem('user', JSON.stringify(currentUser));
         updateLoginButton();
+
+        // Inicializar Visor 3D si existe el contenedor el visor
+        if (document.getElementById('bike-viewer')) {
+          initBikeViewer({
+            mountId: 'bike-viewer',
+            modelUrl: 'assets/scale-920.glb' // Ruta relativa
+          });
+        }
+
       } else {
         console.warn("Sesión inválida:", data);
         // Token inválido o expirado real

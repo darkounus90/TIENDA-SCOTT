@@ -58,23 +58,12 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="container hero__content">
-      <div class="hero__text">
-        <h1>Tu pasión, nuestra meta.</h1>
-        <p>
-          Bicicletas de alto rendimiento, equipamiento profesional y servicio técnico especializado. Vive la experiencia
-          del ciclismo con Grupo Empresarial El Pedalazo.
-        </p>
-        <div class="hero__actions">
-          <a href="#productos" class="btn-primary">Ver ofertas</a>
-          <a href="#servicios" class="btn-secondary">Taller y mantenimiento</a>
-        </div>
-      </div>
-      <div class="hero__image">
-        <!-- Aquí podrías poner una imagen real -->
-        <div class="hero__badge">MTB · Ruta · Gravel · E‑Bikes</div>
-      </div>
+  <!-- VISOR 3D (Reemplaza Hero) -->
+  <section id="bike-viewer" class="viewer-section">
+    <!-- El canvas y UI se inyectan via JS -->
+    <div class="viewer-overlay-static">
+      <h1>Scott Scale 920 <span style="font-weight:300; opacity:0.7">| 2026</span></h1>
+      <p>Explora la ingeniería detrás de la leyenda. Interactúa con el modelo 3D.</p>
     </div>
   </section>
 
@@ -524,7 +513,8 @@
     }
   </style>
 
-  <script src="app.js"></script>
+  <!-- Module type for imports -->
+  <script type="module" src="app.js"></script>
 </body>
 
 </html>
