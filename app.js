@@ -1,3 +1,4 @@
+console.log("🚀 APP.JS CARGADO");
 const accountButton = document.getElementById("accountButton");
 const accountModal = document.getElementById("accountModal");
 const closeAccount = document.getElementById("closeAccount");
@@ -369,6 +370,7 @@ async function renderOrders() {
       });
 
     } else {
+
       // Estado vacío
       list.innerHTML = `
         <div class="account-empty">
@@ -423,27 +425,7 @@ async function checkSession() {
         localStorage.setItem('user', JSON.stringify(currentUser));
         updateLoginButton();
 
-        // Inicializar Visor 3D si existe el contenedor el visor
-        if (document.getElementById('bike-viewer')) {
-          import('./viewer/bikeViewer.js')
-            .then(module => {
-              module.initBikeViewer({
-                mountId: 'bike-viewer',
-                modelUrl: 'assets/scale-920.glb'
-              });
-            })
-            .catch(err => {
-              console.error("Fallo al cargar módulo 3D:", err);
-              const container = document.getElementById('bike-viewer');
-              if (container) {
-                // Feedback visual DETALLADO para depuración
-                const debugBox = document.createElement('div');
-                debugBox.style.cssText = "position:fixed; bottom:0; left:0; width:100%; background:rgba(200,0,0,0.9); color:white; padding:10px; z-index:9999; font-family:monospace; font-size:12px; max-height:200px; overflow:auto;";
-                debugBox.innerHTML = "<h3>⚠️ Error de Carga 3D</h3><pre>" + err.stack + "\n" + err.message + "</pre>";
-                document.body.appendChild(debugBox);
-              }
-            });
-        }
+        // Viewer init moved to main flow
       } else {
         console.warn("Sesión inválida:", data);
         // Token inválido o expirado real
@@ -487,6 +469,32 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProducts();
     // Restaurar carrito si existiera (opcional, por ahora solo memoria)
   });
+
+  // Inicializar Visor 3D (Independiente de la sesión)
+  const viewerContainer = document.getElementById('bike-viewer');
+  console.log("🔍 DOMContentLoaded: Buscando #bike-viewer:", viewerContainer);
+
+  if (viewerContainer) {
+    console.log("✅ Contenedor encontrado. Importando módulo...");
+    import('./viewer/bikeViewer.js')
+      .then(module => {
+        console.log("📦 Módulo importado (Main Flow):", module);
+        module.initBikeViewer({
+          mountId: 'bike-viewer',
+          modelUrl: 'assets/scale-920.glb'
+        });
+      })
+      .catch(err => {
+        console.error("Fallo al cargar módulo 3D:", err);
+        const container = document.getElementById('bike-viewer');
+        if (container) {
+          const debugBox = document.createElement('div');
+          debugBox.style.cssText = "position:fixed; bottom:0; left:0; width:100%; background:rgba(200,0,0,0.9); color:white; padding:10px; z-index:9999; font-family:monospace; font-size:12px; max-height:200px; overflow:auto;";
+          debugBox.innerHTML = "<h3>⚠️ Error de Carga 3D</h3><pre>" + err.stack + "\n" + err.message + "</pre>";
+          document.body.appendChild(debugBox);
+        }
+      });
+  }
 });
 
 

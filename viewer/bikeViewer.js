@@ -10,6 +10,7 @@ import { bikeParts } from './parts.js';
  * @param {string} config.modelUrl - URL del archivo GLB.
  */
 export function initBikeViewer({ mountId, modelUrl }) {
+    console.log("🚴 initBikeViewer INICIADO con:", { mountId, modelUrl });
     const container = document.getElementById(mountId);
     if (!container) {
         console.error(`BikeViewer: No se encontró el elemento con id "${mountId}"`);
