@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=4.7.0" />
+  <link rel="stylesheet" href="style.css?v=5.4.0" />
 
   <script>
     // GLOBAL ERROR TRAP - Para depuración en producción
@@ -44,13 +44,6 @@
         </a>
       </div>
 
-      <!-- HAMBURGER MENU BUTTON -->
-      <button class="hamburger-menu" id="hamburgerMenu" aria-label="Abrir menú">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-
       <nav class="nav" id="mainNav">
         <a href="#home">Inicio</a>
         <a href="#categorias">Categorías</a>
@@ -60,10 +53,7 @@
       </nav>
 
       <div class="header__actions">
-        <div class="search-wrapper">
-          <input type="text" id="searchInput" class="search-input" placeholder="Buscar..." />
-          <button class="btn-icon" id="searchToggle">🔍</button>
-        </div>
+        <button class="btn-icon" id="searchToggle">🔍</button>
         <button class="btn-icon" id="cartButton">
           🛒 <span id="cartCount">0</span>
         </button>
@@ -79,19 +69,26 @@
             <button id="menuLogout" class="text-danger"><span class="icon">🚪</span> Cerrar Sesión</button>
           </div>
         </div>
+
+        <!-- HAMBURGER MENU BUTTON - al final para móvil -->
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Abrir menú">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
       </div>
-      <!-- MODAL MI CUENTA MOVIDO AL FINAL -->
+
+      <!-- Search Input Hidden -->
+      <div class="search-overlay" id="searchOverlay" style="display: none;">
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos..." />
+      </div>
     </div>
   </header>
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero__content container"
-      style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-      <h1 style="text-align: center;">SCOTT<br><span
-          style="background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">2026</span>
-      </h1>
-      <p style="text-align: center; max-width: 500px;">Innovación, tecnología y diseño sin límites.</p>
+    <div class="hero__content container">
+      <!-- Los botones de acción en la parte inferior -->
       <div class="hero__btns">
         <a href="#productos" class="btn-primary">Ver Colección</a>
         <a href="#contacto" class="btn-secondary">Contáctanos</a>
@@ -546,7 +543,7 @@
   </style>
 
   <!-- Module type for imports -->
-  <script type="module" src="app.js?v=5.1.0_menu"></script>
+  <script type="module" src="app.js?v=5.3.0_mobile_v2"></script>
 </body>
 
 </html>
