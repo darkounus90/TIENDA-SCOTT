@@ -436,11 +436,11 @@ async function checkSession() {
               console.error("Fallo al cargar módulo 3D:", err);
               const container = document.getElementById('bike-viewer');
               if (container) {
-                // Feedback visual simple en caso de error
-                const errMsg = document.createElement('div');
-                errMsg.style.cssText = "position:absolute; bottom:10px; left:10px; color:red; z-index:100; background:rgba(0,0,0,0.8); padding:5px;";
-                errMsg.innerText = "Error cargando 3D: " + err.message;
-                container.appendChild(errMsg);
+                // Feedback visual DETALLADO para depuración
+                const debugBox = document.createElement('div');
+                debugBox.style.cssText = "position:fixed; bottom:0; left:0; width:100%; background:rgba(200,0,0,0.9); color:white; padding:10px; z-index:9999; font-family:monospace; font-size:12px; max-height:200px; overflow:auto;";
+                debugBox.innerHTML = "<h3>⚠️ Error de Carga 3D</h3><pre>" + err.stack + "\n" + err.message + "</pre>";
+                document.body.appendChild(debugBox);
               }
             });
         }
