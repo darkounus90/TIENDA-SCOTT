@@ -577,25 +577,34 @@ img {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    /* Asegurar flujo vertical */
   }
 
   .hero__btns {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    /* Botones en fila */
+    justify-content: center;
     gap: 0.75rem;
     width: 100%;
-    margin-top: 340px !important;
-    /* Margen para librar la imagen */
+    padding: 0 1rem;
+    /* Margen lateral para seguridad */
+    margin-top: 320px !important;
+    /* Ajustado para estar debajo de la imagen */
   }
 
   .hero__btns a {
-    width: 80%;
-    max-width: 240px;
-    padding: 12px 20px;
-    font-size: 0.95rem;
+    width: auto;
+    flex: 1;
+    /* Ocupar espacio equitativo */
+    max-width: 200px;
+    padding: 12px 10px;
+    /* Padding reducido */
+    font-size: 0.9rem;
+    /* Texto legible pero compacto */
     background: rgba(99, 102, 241, 0.9);
     backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .hero__btns a.btn-secondary {
