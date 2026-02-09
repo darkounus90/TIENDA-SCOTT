@@ -10,15 +10,15 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <!-- SheetJS for Excel Import -->
+    <!-- SheetJS para Importar Excel -->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <style>
-        /* Specific overrides for standalone admin page */
+        /* Sobrescrituras específicas para página de admin independiente */
         body {
             margin: 0;
             padding: 0;
             background: var(--bg-deep);
-            /* Use theme variable */
+            /* Usar variable de tema */
             color: var(--text-main);
             height: 100vh;
             overflow: hidden;
@@ -81,7 +81,7 @@
 
         .admin-tab-btn.active {
             background: var(--primary-glow);
-            /* Fallback */
+            /* Respaldo */
             background: linear-gradient(90deg, rgba(139, 92, 246, 0.1), transparent);
             border-left: 3px solid var(--primary);
         }
@@ -108,7 +108,7 @@
             padding: 2rem;
         }
 
-        /* Stats Cards */
+        /* Tarjetas de Estadísticas */
         .stat-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
@@ -157,7 +157,7 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
-        /* FIX: Hide overlay globally so it doesn't break Desktop Grid */
+        /* ARREGLO: Ocultar superposición globalmente para no romper Cuadrícula de Escritorio */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -169,7 +169,7 @@
             z-index: 999;
         }
 
-        /* Hamburger Menu Button (Hidden on Desktop) */
+        /* Botón de Menú Hamburguesa (Oculto en Escritorio) */
         .mobile-menu-toggle {
             display: none;
             background: transparent;
@@ -181,7 +181,7 @@
             margin-right: 1rem;
         }
 
-        /* Dashboard Grid */
+        /* Cuadrícula del Dashboard */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -189,26 +189,26 @@
             margin-bottom: 2rem;
         }
 
-        /* Table Responsive Wrapper */
+        /* Envoltorio Responsivo de Tabla */
         .table-responsive {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* MOBILE RESPONSIVE STYLES */
+        /* ESTILOS RESPONSIVOS MÓVILES */
         @media (max-width: 768px) {
 
-            /* Show hamburger menu */
+            /* Mostrar menú hamburguesa */
             .mobile-menu-toggle {
                 display: block;
             }
 
-            /* Change container to single column */
+            /* Cambiar contenedor a una sola columna */
             .admin-dashboard-container {
                 grid-template-columns: 1fr;
             }
 
-            /* Sidebar: Fixed overlay on mobile */
+            /* Barra lateral: Superposición fija en móvil */
             .admin-sidebar {
                 position: fixed;
                 top: 0;
@@ -222,12 +222,12 @@
                 background: rgba(15, 23, 42, 0.98);
             }
 
-            /* Show sidebar when active */
+            /* Mostrar barra lateral cuando está activa */
             .admin-sidebar.active {
                 transform: translateX(0);
             }
 
-            /* Overlay backdrop */
+            /* Fondo de superposición */
             .sidebar-overlay {
                 display: none;
                 position: fixed;
@@ -243,7 +243,7 @@
                 display: block;
             }
 
-            /* Adjust topbar */
+            /* Ajustar barra superior */
             .admin-topbar {
                 padding: 1rem;
             }
@@ -252,24 +252,24 @@
                 font-size: 1.1rem;
             }
 
-            /* Stats grid: 1 column on mobile */
+            /* Cuadrícula de estadísticas: 1 columna en móvil */
             .dashboard-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
 
-            /* Content area padding */
+            /* Relleno del área de contenido */
             .admin-content-area {
                 padding: 1rem;
             }
 
-            /* Table cards */
+            /* Tarjetas de tabla */
             .table-card {
                 padding: 1rem;
                 margin-top: 1rem;
             }
 
-            /* Make tables scrollable */
+            /* Hacer tablas desplazables */
             .data-table {
                 font-size: 0.85rem;
             }
@@ -280,7 +280,7 @@
                 white-space: nowrap;
             }
 
-            /* Form adjustments in modals */
+            /* Ajustes de formulario en modales */
             .cart-modal__content,
             .add-product-modal {
                 max-width: 95vw;
@@ -293,7 +293,7 @@
                 grid-template-columns: 1fr !important;
             }
 
-            /* Hide some columns on very small screens */
+            /* Ocultar algunas columnas en pantallas muy pequeñas */
             @media (max-width: 480px) {
                 .dashboard-grid {
                     grid-template-columns: 1fr;
@@ -306,10 +306,10 @@
 <body>
 
     <div class="admin-dashboard-container" id="adminApp" style="display:none;">
-        <!-- Mobile Overlay (for closing sidebar) -->
+        <!-- Superposición Móvil (para cerrar barra lateral) -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <!-- Sidebar -->
+        <!-- Barra Lateral -->
         <aside class="admin-sidebar" id="adminSidebar" style="height: 100vh;">
             <div class="admin-sidebar-header"
                 style="text-align: center; padding: 1rem; display: flex; align-items: center; justify-content: center;">
@@ -339,7 +339,7 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
+        <!-- Contenido Principal -->
         <main class="admin-main">
             <div class="admin-topbar">
                 <div style="display:flex; align-items:center; gap:1rem;">
@@ -354,7 +354,7 @@
             </div>
 
             <div class="admin-content-area">
-                <!-- Tab: Overview -->
+                <!-- Pestaña: Resumen -->
                 <div id="tab-overview" class="view-section active">
                     <div class="dashboard-grid">
                         <div class="stat-card">
@@ -406,7 +406,7 @@
                     </div>
                 </div>
 
-                <!-- Tab: Orders -->
+                <!-- Pestaña: Pedidos -->
                 <div id="tab-orders" class="view-section">
                     <div class="table-card">
                         <div class="table-header">
@@ -431,7 +431,7 @@
                     </div>
                 </div>
 
-                <!-- Tab: Inventory -->
+                <!-- Pestaña: Inventario -->
                 <div id="tab-inventory" class="view-section">
                     <div class="table-card">
                         <div class="table-header">
@@ -459,7 +459,7 @@
                     </div>
                 </div>
 
-                <!-- Tab: Taller / Services -->
+                <!-- Pestaña: Taller / Servicios -->
                 <div id="tab-services" class="view-section">
                     <div class="table-card">
                         <div class="table-header">
@@ -483,7 +483,7 @@
                     </div>
                 </div>
 
-                <!-- Tab: Users -->
+                <!-- Pestaña: Usuarios -->
 
                 <div id="tab-users" class="view-section">
                     <div class="table-card">
@@ -509,7 +509,7 @@
         </main>
     </div>
 
-    <!-- Modal Add Product Full -->
+    <!-- Modal Agregar Producto Completo -->
     <div class="cart-modal" id="addProductModal" onclick="closeAddProduct()">
         <div class="cart-modal__content add-product-modal" onclick="event.stopPropagation()">
             <button class="cart-modal__close" onclick="closeAddProduct()">✕</button>
@@ -624,7 +624,7 @@
         </div>
     </div>
 
-    <!-- Modal Add Service -->
+    <!-- Modal Agregar Servicio -->
     <div class="cart-modal" id="addServiceModal" onclick="closeAddService()">
         <div class="cart-modal__content add-product-modal" onclick="event.stopPropagation()">
             <button class="cart-modal__close" onclick="closeAddService()">✕</button>
@@ -699,10 +699,10 @@
     </div>
 
     <script>
-        // ADMIN LOGIC ISOLATED
+        // LÓGICA DE ADMIN AISLADA
         const API_BASE = 'api';
 
-        // --- Product Management ---
+        // --- Gestión de Productos ---
         function openAddProduct() {
             const modal = document.getElementById('addProductModal');
             modal.classList.add('active');
@@ -773,7 +773,7 @@
             modal.classList.remove('active');
             modal.classList.remove('cart-modal--open');
             document.getElementById('addProductForm').reset();
-            // Reset Hybrid Fields
+            // Reiniciar Campos Híbridos
             toggleHybrid('brand', 'select');
             toggleHybrid('category', 'select');
 
@@ -810,7 +810,7 @@
             reader.onerror = error => reject(error);
         });
 
-        // --- EXCEL IMPORT LOGIC ---
+        // --- LÓGICA DE IMPORTACIÓN EXCEL ---
         async function handleExcelUpload(input) {
             const file = input.files[0];
             if (!file) return;
@@ -837,18 +837,18 @@
                     let errorCount = 0;
                     const token = localStorage.getItem('token');
 
-                    // Show visual feedback
+                    // Mostrar retroalimentación visual
                     const btn = document.querySelector('.btn-secondary[onclick*="excelInput"]');
                     const originalText = btn.innerText;
                     btn.innerText = "⏳ Procesando...";
                     btn.disabled = true;
 
                     for (const row of rows) {
-                        // Flexible Mapping
+                        // Mapeo Flexible
                         const priceRaw = row['Precio'] || row['Price'] || row['Valor'] || row['Costo'] || 0;
                         const stockRaw = row['Stock'] || row['Cantidad'] || row['Unidades'] || 0;
 
-                        // Clean data
+                        // Limpiar datos
                         const payload = {
                             name: row['Nombre'] || row['Producto'] || row['Name'] || row['Item'],
                             brand: row['Marca'] || row['Brand'] || 'Genérico',
@@ -858,10 +858,10 @@
                             use: row['Uso'] || row['Use'] || 'General',
                             tag: row['Etiqueta'] || row['Tag'] || '',
                             barcode: row['Codigo'] || row['Código'] || row['Barcode'] || '',
-                            images: [] // No images from Excel usually unless URL
+                            images: [] // Usualmente sin imágenes de Excel a menos que sea URL
                         };
 
-                        if (!payload.name) continue; // Skip empty rows
+                        if (!payload.name) continue; // Saltar filas vacías
 
                         try {
                             const res = await fetch(`${API_BASE}/products.php`, {
@@ -882,9 +882,9 @@
                     }
 
                     alert(`Importación completada:\n✅ ${successCount} productos creados.\n❌ ${errorCount} errores.`);
-                    loadDashboard(); // Refresh inventory
+                    loadDashboard(); // Refrescar inventario
 
-                    // Reset UI
+                    // Reiniciar UI
                     btn.innerText = originalText;
                     btn.disabled = false;
                     input.value = '';
@@ -949,7 +949,7 @@
             }
 
             try {
-                // Check against API with Bearer prefix AND query param backup + Cache Buster
+                // Verificar contra API con prefijo Bearer Y respaldo de parámetro de consulta + Cache Buster
                 const res = await fetch(`${API_BASE}/me.php?token=${encodeURIComponent(token)}&_t=${Date.now()}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -990,8 +990,8 @@
             window.location.href = '/';
         });
 
-        // Tab Logic
-        // ROUTING LOGIC (Hash-based)
+        // Lógica de Pestañas
+        // LÓGICA DE ENRUTAMIENTO (Basada en Hash)
         const tabsMap = {
             '': 'tab-overview',
             '#overview': 'tab-overview',
@@ -1005,11 +1005,11 @@
             const hash = window.location.hash || '#overview';
             const targetId = tabsMap[hash] || 'tab-overview';
 
-            // Remove active classes
+            // Eliminar clases activas
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
 
-            // Add active classes
+            // Añadir clases activas
             const activeBtn = document.querySelector(`.admin-tab-btn[href="${hash}"]`) ||
                 document.querySelector(`.admin-tab-btn[href="#overview"]`);
             if (activeBtn) activeBtn.classList.add('active');
@@ -1018,16 +1018,16 @@
             if (activeSection) activeSection.classList.add('active');
         }
 
-        // Initialize Routing
+        // Inicializar Enrutamiento
         window.addEventListener('hashchange', handleHashChange);
         window.addEventListener('load', handleHashChange);
 
-        // Mobile Menu Toggle
+        // Alternar Menú Móvil
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const adminSidebar = document.getElementById('adminSidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-        // Open sidebar
+        // Abrir barra lateral
         if (mobileMenuToggle) {
             mobileMenuToggle.addEventListener('click', () => {
                 adminSidebar.classList.add('active');
@@ -1035,7 +1035,7 @@
             });
         }
 
-        // Close sidebar when clicking overlay
+        // Cerrar barra lateral al hacer clic en superposición
         if (sidebarOverlay) {
             sidebarOverlay.addEventListener('click', () => {
                 adminSidebar.classList.remove('active');
@@ -1043,7 +1043,7 @@
             });
         }
 
-        // Close sidebar when clicking a menu link (mobile)
+        // Cerrar barra lateral al hacer clic en un enlace del menú (móvil)
         document.querySelectorAll('.admin-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (window.innerWidth <= 768) {
@@ -1055,9 +1055,9 @@
 
 
         async function loadDashboard() {
-            // Fetch data similar to app.js
+            // Obtener datos similar a app.js
             const token = localStorage.getItem('token');
-            // Fetch Orders
+            // Obtener Pedidos
             const res = await fetch(`${API_BASE}/orders.php`, { headers: { 'Authorization': token } });
             const data = await res.json();
             if (data.success) {
@@ -1066,7 +1066,7 @@
             }
 
 
-            // Fetch Products
+            // Obtener Productos
             const prodRes = await fetch(`${API_BASE}/products.php`);
             const prodData = await prodRes.json();
             if (prodData.success) {
@@ -1074,7 +1074,7 @@
                 document.getElementById('statTotalProducts').textContent = prodData.products.length;
             }
 
-            // Fetch Users
+            // Obtener Usuarios
             try {
                 const uRes = await fetch(`${API_BASE}/api_admin.php?action=users`, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -1086,12 +1086,12 @@
                 }
             } catch (e) { console.error("Error loading users", e); }
 
-            // Fetch Services
+            // Obtener Servicios
             loadServices();
 
         }
 
-        // --- SERVICES LOGIC ---
+        // --- LÓGICA DE SERVICIOS ---
         function openAddService() {
             document.getElementById('addServiceModal').classList.add('active');
             document.getElementById('addServiceModal').classList.add('cart-modal--open');
@@ -1296,7 +1296,7 @@
                 });
                 const data = await res.json();
                 alert(data.message);
-                // Reload dashboard to reflect changes if necessary
+                // Recargar dashboard para reflejar cambios si es necesario
             } catch (e) {
                 console.error(e);
                 alert("Error al actualizar rol");

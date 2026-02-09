@@ -11,25 +11,25 @@ const addressesList = document.getElementById("addressesList");
 const addAddressBtn = document.getElementById("addAddressBtn");
 
 function openAccountModal(initialTab = "info") {
-  // Activate correct tab
+  // Activar pestaña correcta
   accountTabs.forEach(t => t.classList.remove("active"));
   const targetTabBtn = document.querySelector(`.account-tab[data-tab="${initialTab}"]`);
   if (targetTabBtn) targetTabBtn.classList.add("active");
 
-  // Show correct content
+  // Mostrar contenido correcto
   if (accountInfoTab) accountInfoTab.style.display = initialTab === "info" ? "block" : "none";
   if (accountOrdersTab) accountOrdersTab.style.display = initialTab === "orders" ? "block" : "none";
   if (accountAddressesTab) accountAddressesTab.style.display = initialTab === "addresses" ? "block" : "none";
   if (accountServicesTab) accountServicesTab.style.display = initialTab === "services" ? "block" : "none";
 
-  // Render content
+  // Renderizar contenido
   if (initialTab === "info") renderAccountInfo();
   if (initialTab === "orders") renderOrders();
   if (initialTab === "addresses") renderAddresses();
   if (initialTab === "services") renderUserServices();
 
   accountModal.classList.add("cart-modal--open");
-  // Reset scroll position to top with delay to ensure layout paint
+  // Reiniciar posición de desplazamiento con retraso para asegurar renderizado
   setTimeout(() => {
     const content = accountModal.querySelector('.cart-modal__content');
     if (content) content.scrollTop = 0;
@@ -53,7 +53,7 @@ accountTabs.forEach(tab => {
   tab.addEventListener("click", () => {
     const tabName = tab.dataset.tab;
 
-    // UI Updates
+    // Actualizaciones de UI
     accountTabs.forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
 
@@ -62,13 +62,13 @@ accountTabs.forEach(tab => {
     if (accountAddressesTab) accountAddressesTab.style.display = tabName === "addresses" ? "block" : "none";
     if (accountServicesTab) accountServicesTab.style.display = tabName === "services" ? "block" : "none";
 
-    // Data Fetching
+    // Obtención de datos
     if (tabName === "info") renderAccountInfo();
     if (tabName === "orders") renderOrders();
     if (tabName === "addresses") renderAddresses();
     if (tabName === "services") renderUserServices();
 
-    // Reset scroll when switching tabs too
+    // Reiniciar desplazamiento al cambiar pestañas
     const content = accountModal.querySelector('.cart-modal__content');
     if (content) content.scrollTop = 0;
   });
@@ -80,7 +80,7 @@ function renderAccountInfo() {
     return;
   }
 
-  // Parse existing phone
+  // Analizar teléfono existente
   let currentPhone = currentUser.phone || "";
   let currentCode = "+57";
   const commonCodes = ["+57", "+1", "+52", "+34", "+54", "+56", "+51"];
@@ -93,7 +93,7 @@ function renderAccountInfo() {
     }
   }
 
-  // Premium Form Design with Phone and Flag
+  // Diseño de formulario premium con teléfono y bandera
   accountInfoTab.innerHTML = `
     <form id="accountInfoForm" class="account-form">
       <label>
@@ -139,10 +139,10 @@ function renderAccountInfo() {
     const phoneBody = form.phoneBody.value.trim();
     const code = document.getElementById('countryCodeSelect').value;
 
-    // Validate minimal phone length if present
+    // Validar longitud mínima del teléfono si está presente
     let fullPhone = "";
     if (phoneBody) {
-      // Add helper to populate cities
+      // Función auxiliar para poblar ciudades
       function populateCities(depSelect, citySelect, selectedCity = null) {
         const dep = depSelect.value;
         citySelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
@@ -170,7 +170,7 @@ function renderAccountInfo() {
           return;
         }
 
-        // Determine current values
+        // Determinar valores actuales
         const currentDep = currentUser.department || "";
         const currentCity = currentUser.city || "";
         const currentAddr = currentUser.address || "";
@@ -208,7 +208,7 @@ function renderAccountInfo() {
     </div>
   `;
 
-        // Populate Logic
+        // Lógica de población
         const depSelect = document.getElementById("profileDep");
         const citySelect = document.getElementById("profileCity");
 
@@ -221,18 +221,18 @@ function renderAccountInfo() {
             depSelect.appendChild(opt);
           });
 
-          // Init Cities
+          // Iniciar ciudades
           if (currentDep) {
             populateCities(depSelect, citySelect, currentCity);
           }
 
-          // Change Listener
+          // Listener de cambios
           depSelect.addEventListener("change", () => {
             populateCities(depSelect, citySelect);
           });
         }
 
-        // Handle Submit
+        // Manejar envío
         document.getElementById("addressForm").addEventListener("submit", async (e) => {
           e.preventDefault();
           const newDep = depSelect.value;
@@ -295,7 +295,7 @@ function renderAccountInfo() {
   });
 }
 
-// Logic to update user info
+// Lógica para actualizar información de usuario
 async function updateUserInfo(data) {
   try {
     const token = localStorage.getItem('token');
@@ -369,7 +369,7 @@ async function renderOrders() {
       });
 
     } else {
-      // Empty State
+      // Estado vacío
       list.innerHTML = `
         <div class="account-empty">
           <span class="icon">📦</span>
@@ -385,7 +385,7 @@ async function renderOrders() {
 }
 
 function renderAddresses() {
-  // Placeholder
+  // Marcador de posición
   addressesList.innerHTML = `
     <div class="account-empty">
       <span class="icon">📍</span>
@@ -551,7 +551,7 @@ const productList = document.getElementById("productList");
 const categoryFilter = document.getElementById("categoryFilter");
 const searchInput = document.getElementById("searchInput");
 
-// Login/Register
+// Iniciar Sesión/Registro
 const loginButton = document.getElementById("loginButton");
 const loginModal = document.getElementById("loginModal");
 const closeLogin = document.getElementById("closeLogin");
@@ -649,20 +649,20 @@ if (searchInput) {
   });
 }
 
-// Dropdown logic
+// Lógica del desplegable
 const userDropdown = document.getElementById("userDropdown");
 const menuProfile = document.getElementById("menuProfile");
 const menuOrders = document.getElementById("menuOrders");
 const menuLogout = document.getElementById("menuLogout");
 
-// Close dropdown when clicking outside
+// Cerrar desplegable al hacer clic fuera
 document.addEventListener("click", (e) => {
   if (!loginButton.contains(e.target) && !userDropdown.contains(e.target)) {
     userDropdown.classList.remove("active");
   }
 });
 
-// Menu Actions
+// Acciones del menú
 menuProfile.addEventListener("click", () => {
   userDropdown.classList.remove("active");
   openAccountModal("info");
@@ -685,14 +685,14 @@ menuLogout.addEventListener("click", () => {
 function updateLoginButton() {
   const token = localStorage.getItem('token');
   if (token && currentUser) {
-    // Logged In State
+    // Estado de sesión iniciada
     loginButton.textContent = `Hola, ${currentUser.username} ▾`;
     loginButton.style.display = "inline-block";
 
-    // Clean up if needed
+    // Limpiar si es necesario
     // accountButton.style.display = "none"; // Removed ref
 
-    // Change click behavior to toggle dropdown
+    // Cambiar comportamiento de clic para alternar desplegable
     loginButton.onclick = (e) => {
       e.stopPropagation();
       userDropdown.classList.toggle("active");
@@ -715,7 +715,7 @@ function updateLoginButton() {
       }
     }
   } else {
-    // Logged Out State
+    // Estado de sesión cerrada
     currentUser = null;
     loginButton.textContent = "Iniciar Sesión";
     loginButton.style.display = "inline-block";
@@ -843,7 +843,7 @@ registerForm.addEventListener("submit", async e => {
     return;
   }
 
-  // Capture Address
+  // Capturar dirección
   const dep = document.getElementById("registerDepartment").value;
   const city = document.getElementById("registerCity").value;
   const address = document.getElementById("registerAddress").value;
@@ -865,7 +865,7 @@ registerForm.addEventListener("submit", async e => {
 
 
 
-// Toggle password visibility
+// Alternar visibilidad de contraseña
 const toggleLoginPassword = document.getElementById("toggleLoginPassword");
 const toggleRegisterPassword = document.getElementById("toggleRegisterPassword");
 
@@ -883,9 +883,9 @@ toggleRegisterPassword.addEventListener("click", () => {
   toggleRegisterPassword.querySelector(".eye-icon").textContent = type === "password" ? "👁️" : "🙈";
 });
 
-// Image upload functionality (Multi-image Grid)
+// Funcionalidad de carga de imágenes (Cuadrícula multi-imagen)
 const imageUploadGrid = document.getElementById("imageUploadGrid");
-let productImages = [null, null, null, null]; // Store Base64 strings
+let productImages = [null, null, null, null]; // Almacenar cadenas Base64
 
 if (imageUploadGrid) {
   const slots = imageUploadGrid.querySelectorAll(".image-slot");
@@ -893,15 +893,15 @@ if (imageUploadGrid) {
   slots.forEach((slot, index) => {
     const input = slot.querySelector("input[type='file']");
 
-    // Click slot to trigger input
+    // Clic en ranura para activar input
     slot.addEventListener("click", (e) => {
-      if (e.target.closest(".remove-img-btn")) return; // Ignore click on remove button
+      if (e.target.closest(".remove-img-btn")) return; // Ignorar clic en botón eliminar
       if (!productImages[index]) {
         input.click();
       }
     });
 
-    // Handle file selection
+    // Manejar selección de archivo
     input.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -915,7 +915,7 @@ if (imageUploadGrid) {
         const base64 = await readImageAsBase64(file);
         productImages[index] = base64;
 
-        // Update UI
+        // Actualizar UI
         slot.classList.add("has-image");
         const img = document.createElement("img");
         img.src = base64;
@@ -924,15 +924,15 @@ if (imageUploadGrid) {
         removeBtn.className = "remove-img-btn";
         removeBtn.innerHTML = "×";
         removeBtn.onclick = (ev) => {
-          ev.stopPropagation(); // Stop bubbling to slot click
+          ev.stopPropagation(); // Detener propagación al clic de ranura
           clearSlot(index);
         };
 
-        // Clear previous content (placeholder) but keep input
+        // Limpiar contenido anterior (marcador) pero mantener input
         const placeholder = slot.querySelector(".slot-placeholder");
         if (placeholder) placeholder.style.display = 'none';
 
-        // Remove existing img/btn if replacing
+        // Eliminar img/btn existente si se reemplaza
         const existingImg = slot.querySelector("img");
         const existingBtn = slot.querySelector(".remove-img-btn");
         if (existingImg) existingImg.remove();
@@ -964,7 +964,7 @@ function clearSlot(index) {
   if (placeholder) placeholder.style.display = 'block';
 
   const input = slot.querySelector("input[type='file']");
-  if (input) input.value = ''; // Reset input
+  if (input) input.value = ''; // Reiniciar input
 }
 
 function resetImageGrid() {
@@ -988,7 +988,7 @@ function readImageAsBase64(file) {
 const cartTotalElement = document.getElementById("cartTotal");
 const cartCountElement = document.getElementById("cartCount");
 const checkoutButton = document.getElementById("checkoutButton");
-const cartItemsContainer = document.getElementById("cartItems"); // Definition added
+const cartItemsContainer = document.getElementById("cartItems"); // Definición añadida
 
 let cart = [];
 
@@ -1078,7 +1078,7 @@ productList.addEventListener("click", e => {
   }
 });
 
-// Checkout (demo)
+// Proceso de pago (demo)
 checkoutButton.addEventListener("click", () => {
   if (cart.length === 0) {
     alert("Tu carrito está vacío.");
@@ -1096,7 +1096,7 @@ checkoutButton.addEventListener("click", () => {
   }
 });
 
-// Add product logic
+// Lógica de agregar producto
 addProductForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -1109,8 +1109,8 @@ addProductForm.addEventListener("submit", async (e) => {
     tag: formData.get("tag"),
     use: formData.get("use"),
     stock: Number(formData.get("stock")),
-    barcode: formData.get("barcode"), // New field
-    images: productImages.filter(img => img !== null) // Send non-null images
+    barcode: formData.get("barcode"), // Nuevo campo
+    images: productImages.filter(img => img !== null) // Enviar imágenes no nulas
   };
 
   if (productData.images.length === 0) {
@@ -1123,7 +1123,7 @@ addProductForm.addEventListener("submit", async (e) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // "Authorization": `Bearer ${localStorage.getItem('token')}` // Uncomment if token logic is strict
+        // "Authorization": `Bearer ${localStorage.getItem('token')}` // Descomentar si la lógica de token es estricta
       },
       body: JSON.stringify(productData)
     });
@@ -1135,7 +1135,7 @@ addProductForm.addEventListener("submit", async (e) => {
       closeAddProductModal();
       addProductForm.reset();
       resetImageGrid();
-      await fetchProducts(); // Reload from server
+      await fetchProducts(); // Recargar desde el servidor
       renderProducts();
     } else {
       alert("Error al guardar: " + (result.message || "Desconocido"));
@@ -1155,23 +1155,23 @@ if (cancelAddProduct) {
   });
 }
 
-// Restore Session
+// Restaurar Sesión
 async function initSession() {
   const token = localStorage.getItem('token');
   if (!token) return;
 
   try {
-    // Decode basic payload for UI (base64 part of fake JWT)
+    // Decodificar carga útil básica para UI (parte base64 de JWT falso)
     const payload = JSON.parse(atob(token.split('.')[0]));
     if (payload && payload.username) {
       currentUser = {
         username: payload.username,
-        email: payload.email || '', // Might be missing in old tokens
+        email: payload.email || '', // Podría faltar en tokens antiguos
         isAdmin: payload.isAdmin,
         phone: payload.phone || ''
       };
 
-      // Optional: Verify token validity with backend if needed
+      // Opcional: Verificar validez del token con backend si es necesario
       // const res = await fetch(`${API_BASE}/me.php`, { headers: { 'Authorization': token } });
     }
   } catch (e) {
@@ -1188,9 +1188,9 @@ async function initSession() {
   updateLoginButton();
 })();
 
-/* --- ADMIN DASHBOARD & ORDERS LOGIC --- */
+/* --- PANEL DE ADMIN Y LÓGICA DE PEDIDOS --- */
 
-// Render Admin Dashboard
+// Renderizar Panel de Admin
 const adminModal = document.getElementById("adminDashboardModal");
 const closeAdminDashboard = document.getElementById("closeAdminDashboard");
 const adminTabBtns = document.querySelectorAll(".admin-tab-btn");
@@ -1208,14 +1208,14 @@ if (closeAdminDashboard) {
   });
 }
 
-// Tab Switching with Animations
+// Cambio de pestañas con animaciones
 adminTabBtns.forEach(btn => {
   btn.addEventListener("click", () => {
-    // Reset active states
+    // Reiniciar estados activos
     adminTabBtns.forEach(b => b.classList.remove("active"));
     document.querySelectorAll(".view-section").forEach(s => s.classList.remove("active"));
 
-    // Set new active
+    // Establecer nuevo activo
     btn.classList.add("active");
     const targetId = btn.getAttribute("data-tab");
     document.getElementById(targetId).classList.add("active");
@@ -1225,7 +1225,7 @@ adminTabBtns.forEach(btn => {
 async function loadDashboardData() {
   try {
     const res = await fetch(`${API_BASE}/orders.php`, {
-      headers: { 'Authorization': localStorage.getItem('token') } // Simulate token
+      headers: { 'Authorization': localStorage.getItem('token') } // Simular token
     });
     const data = await res.json();
 
@@ -1248,9 +1248,9 @@ function renderOverview(orders) {
   document.getElementById("statTotalSales").textContent = currencyFormat(totalSales);
   document.getElementById("statOrdersToday").textContent = ordersToday;
   document.getElementById("statTotalProducts").textContent = products.length;
-  // Users stat needs users fetch, skipping for now
+  // Estadística de usuarios necesita fetch, omitiendo por ahora
 
-  // Recent Orders (Top 5)
+  // Pedidos recientes (Top 5)
   const recentTable = document.getElementById("recentOrdersTable");
   recentTable.innerHTML = orders.slice(0, 5).map(o => `
     <tr>
@@ -1293,7 +1293,7 @@ async function updateOrderStatus(id, status) {
       body: JSON.stringify({ id, status })
     });
     alert("Estado actualizado");
-    loadDashboardData(); // Refresh
+    loadDashboardData(); // Refrescar
   } catch (e) { alert("Error"); }
 }
 
@@ -1313,7 +1313,7 @@ function renderInventoryTable() {
   `).join('');
 }
 
-// REAL CHECKOUT (Replaces Confirm)
+// PROCESO DE PAGO REAL (Reemplaza confirmar)
 async function processCheckout() {
   if (cart.length === 0) return;
 
@@ -1321,7 +1321,7 @@ async function processCheckout() {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     if (!user.username) { alert("Inicia sesión primero"); return; }
 
-    // Create payload
+    // Crear carga útil
     const payload = {
       items: cart
     };
@@ -1342,7 +1342,7 @@ async function processCheckout() {
       cart = [];
       updateCartUI();
       closeCartModal();
-      // Here we would redirect to Wompi
+      // Aquí redirigiríamos a Wompi
       // window.location.href = "https://checkout.wompi.co/...?ref=" + data.reference;
     } else {
       alert("Error: " + data.message);
@@ -1353,7 +1353,7 @@ async function processCheckout() {
   }
 }
 
-/* --- ADDRESS & COLOMBIA DEPARTMENTS LOGIC --- */
+/* --- LÓGICA DE DIRECCIÓN Y DEPARTAMENTOS DE COLOMBIA --- */
 const colombiaDeps = {
   "Amazonas": ["Leticia", "Puerto Nariño"],
   "Antioquia": ["Medellín", "Bello", "Itagüí", "Envigado", "Apartadó", "Rionegro", "Turbo", "Caucasia"],
@@ -1393,7 +1393,7 @@ const depSelect = document.getElementById("registerDepartment");
 const citySelect = document.getElementById("registerCity");
 
 if (depSelect && citySelect) {
-  // Populate Departments
+  // Poblar Departamentos
   Object.keys(colombiaDeps).sort().forEach(dep => {
     const opt = document.createElement("option");
     opt.value = dep;
@@ -1401,7 +1401,7 @@ if (depSelect && citySelect) {
     depSelect.appendChild(opt);
   });
 
-  // Handle Change
+  // Manejar Cambio
   depSelect.addEventListener("change", () => {
     const selected = depSelect.value;
     citySelect.innerHTML = '<option value="">Selecciona una ciudad</option>';
@@ -1423,7 +1423,7 @@ if (depSelect && citySelect) {
   });
 }
 
-// --- ADDRESS MANAGEMENT (PROFILE) ---
+// --- GESTIÓN DE DIRECCIONES (PERFIL) ---
 
 function populateCities(depSelect, citySelect, selectedCity = null) {
   const dep = depSelect.value;
@@ -1493,7 +1493,7 @@ function renderAddresses() {
     </div>
   `;
 
-  // Populate Logic
+  // Lógica de población
   const depSelect = document.getElementById("profileDep");
   const citySelect = document.getElementById("profileCity");
 
@@ -1506,18 +1506,18 @@ function renderAddresses() {
       depSelect.appendChild(opt);
     });
 
-    // Init Cities
+    // Iniciar ciudades
     if (currentDep) {
       populateCities(depSelect, citySelect, currentCity);
     }
 
-    // Change Listener
+    // Listener de cambios
     depSelect.addEventListener("change", () => {
       populateCities(depSelect, citySelect);
     });
   }
 
-  // Handle Submit
+  // Manejar envío
   document.getElementById("addressForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     const newDep = depSelect.value;
@@ -1562,7 +1562,7 @@ function renderAddresses() {
   });
 }
 
-/* --- TALLER LOGIC (Client) --- */
+/* --- LÓGICA DE TALLER (Cliente) --- */
 async function renderUserServices() {
   const container = document.getElementById('servicesList');
   if (!currentUser) {
@@ -1641,7 +1641,7 @@ function toggleServiceDetail(id) {
   }
 }
 
-// Search Toggle Logic
+// Lógica de alternar búsqueda
 document.addEventListener('DOMContentLoaded', () => {
   const searchToggle = document.getElementById('searchToggle');
   const searchWrapper = document.querySelector('.search-wrapper');
@@ -1656,23 +1656,23 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Close on click outside
+    // Cerrar al hacer clic fuera
     document.addEventListener('click', (e) => {
       if (!searchWrapper.contains(e.target) && searchWrapper.classList.contains('active')) {
         searchWrapper.classList.remove('active');
       }
     });
 
-    // Close on 'Enter' key inside input
+    // Cerrar con tecla 'Enter' dentro del input
     if (searchInput) {
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchWrapper.classList.remove('active');
-                // Optional: Scroll to products
-                const prodSection = document.getElementById('productos');
-                if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          searchWrapper.classList.remove('active');
+          // Opcional: Desplazar a productos
+          const prodSection = document.getElementById('productos');
+          if (prodSection) prodSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
     }
   }
 });

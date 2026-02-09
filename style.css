@@ -1,30 +1,30 @@
 /* 
-   AI-FIRST / AWWWARDS STYLE - DARK MODE SHADER THEME 
-   Designed for Fluidity, Depth, and Engagement
+   ESTILO AI-FIRST / AWWWARDS - TEMA DARK SHADER 
+   Diseñado para Fluidez, Profundidad y Compromiso
 */
 
 :root {
-  /* Professional Dark Theme - Slate & Royal Blue */
+  /* Tema Oscuro Profesional - Pizarra y Azul Real */
   --bg-deep: #0f172a;
-  /* Slate 900 - Deep, neutral dark */
+  /* Pizarra 900 - Oscuro profundo y neutro */
   --bg-surface: #1e293b;
-  /* Slate 800 - Lighter for cards */
+  /* Pizarra 800 - Más claro para tarjetas */
 
   --primary: #3b82f6;
-  /* Blue 500 - Professional, trustworthy */
+  /* Azul 500 - Profesional, confiable */
   --primary-glow: #60a5fa;
-  /* Blue 400 */
+  /* Azul 400 */
   --accent: #cbd5e1;
-  /* Slate 300 - Neutral accent (silver/white) */
+  /* Pizarra 300 - Acento neutral (plata/blanco) */
   --accent-glow: #f8fafc;
-  /* White glow */
+  /* Brillo blanco */
 
   --text-main: #f8fafc;
-  /* Slate 50 */
+  /* Pizarra 50 */
   --text-muted: #94a3b8;
-  /* Slate 400 */
+  /* Pizarra 400 */
 
-  /* Glassmorphism Variables - Clean & Subtle */
+  /* Variables de Vidrio - Limpio y Sutil */
   --glass-bg: rgba(30, 41, 59, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-highlight: rgba(255, 255, 255, 0.05);
@@ -32,7 +32,7 @@
 
   --card-hover-bg: rgba(255, 255, 255, 0.03);
 
-  /* Spacing & Radius */
+  /* Espaciado y Radio */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
@@ -63,7 +63,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar */
+/* Barra de desplazamiento */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -81,7 +81,7 @@ body {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Typography elements */
+/* Elementos tipográficos */
 h1,
 h2,
 h3,
@@ -123,7 +123,7 @@ img {
   border-radius: var(--radius-md);
 }
 
-/* Layout */
+/* Diseño */
 .container {
   width: 100%;
   max-width: var(--max-width);
@@ -145,7 +145,7 @@ img {
   gap: 2rem;
 }
 
-/* Header - Glassmorphism Floating Pill */
+/* Cabecera - Píldora Flotante de Vidrio */
 .header {
   position: sticky;
   top: 1rem;
@@ -167,7 +167,7 @@ img {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   max-width: var(--max-width);
   margin: 0 auto;
-  /* Ensure container constraints apply but with the pill look */
+  /* Asegurar restricciones de contenedor pero con aspecto de píldora */
   width: calc(100% - 2rem);
 }
 
@@ -226,7 +226,7 @@ img {
   gap: 1rem;
 }
 
-/* SEARCH COMPONENT */
+/* COMPONENTE DE BÚSQUEDA */
 .search-wrapper {
   position: relative;
   display: flex;
@@ -305,15 +305,64 @@ img {
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
 }
 
-/* User Menu */
+/* Menú de Usuario */
 .user-menu-container {
   position: relative;
 }
 
 /* Hero Section */
+/* Sección Hero - Experiencia Cinemática */
 .hero {
-  padding-top: 8rem;
-  padding-bottom: 6rem;
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  margin-top: -80px;
+  /* Extend behind header */
+}
+
+/* Animación de Fondo (Ken Burns) */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('hero-bg.png') center center / cover no-repeat;
+  z-index: -2;
+  animation: heroZoom 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(0.85);
+  /* Ligero oscurecimiento para contraste de texto */
+}
+
+/* Superposición de Degradado */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,
+      rgba(15, 23, 42, 0.7) 0%,
+      rgba(15, 23, 42, 0.2) 40%,
+      var(--bg-deep) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes heroZoom {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.15) translate(10px, -10px);
+  }
 }
 
 .hero__content {
@@ -348,7 +397,7 @@ img {
   margin-top: 2rem;
 }
 
-/* Buttons */
+/* Botones */
 .btn-primary,
 .btn-secondary,
 .btn-full,
@@ -419,7 +468,7 @@ img {
   border-radius: var(--radius-md);
 }
 
-/* Hero Image Placeholder */
+/* Marcador de Imagen Hero */
 .hero__image {
   height: 400px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
@@ -453,7 +502,7 @@ img {
   z-index: 2;
 }
 
-/* Cards (Categories & Products) */
+/* Tarjetas (Categorías y Productos) */
 .card,
 .categoria {
   background: var(--glass-bg);
@@ -491,7 +540,7 @@ img {
   gap: 2rem;
 }
 
-/* Product Card Specifics */
+/* Estilos de Tarjeta de Producto */
 .product-card__image {
   background: rgba(0, 0, 0, 0.2);
   border-radius: var(--radius-sm);
@@ -526,7 +575,7 @@ img {
   border: 1px solid rgba(139, 92, 246, 0.3);
 }
 
-/* Forms & Inputs */
+/* Formularios e Inputs */
 input,
 select,
 textarea {
@@ -548,7 +597,7 @@ textarea:focus {
   box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
 }
 
-/* Services */
+/* Servicios */
 .servicios__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -750,15 +799,15 @@ textarea:focus {
     padding: 0 1.25rem;
   }
 
-  /* Grid Adjustments */
+  /* Ajustes de Cuadrícula */
   .productos__grid,
   .categorias__grid {
     grid-template-columns: repeat(2, 1fr);
-    /* 2 cols on mobile usually looks best */
+    /* 2 columnas en móvil suele verse mejor */
     gap: 1rem;
   }
 
-  /* If screen is VERY small */
+  /* Si la pantalla es MUY pequeña */
   @media (max-width: 400px) {
     .productos__grid {
       grid-template-columns: 1fr;
@@ -775,7 +824,7 @@ textarea:focus {
     padding: 1rem;
   }
 
-  /* Modal Mobile */
+  /* Modal Móvil */
   .cart-modal__content,
   .login-modal {
     padding: 1.5rem;
@@ -785,14 +834,14 @@ textarea:focus {
   }
 }
 
-/* Utilities */
+/* Utilidades */
 .text-center {
   text-align: center;
 }
 
-/* RECOVERED LAYOUT CLASSES FOR JS/DYNAMIC CONTENT */
+/* CLASES DE DISEÑO RECUPERADAS PARA JS/CONTENIDO DINÁMICO */
 
-/* Login/Register Forms */
+/* Formularios de Login/Registro */
 .form-group {
   margin-bottom: 1.25rem;
   position: relative;
@@ -884,7 +933,7 @@ textarea:focus {
   padding: 0;
 }
 
-/* Account & Orders Styles */
+/* Estilos de Cuenta y Pedidos */
 .account-empty {
   text-align: center;
   padding: 3rem 1rem;
@@ -941,7 +990,7 @@ textarea:focus {
   text-transform: uppercase;
 }
 
-/* Status Colors */
+/* Colores de Estado */
 .order-status.pendiente {
   background: rgba(234, 179, 8, 0.2);
   color: #fde047;
@@ -1019,7 +1068,7 @@ textarea:focus {
   border: 1px solid var(--glass-border);
 }
 
-/* Address Card */
+/* Tarjeta de Dirección */
 .address-card {
   background: rgba(0, 0, 0, 0.2);
   padding: 1.5rem;
@@ -1027,7 +1076,7 @@ textarea:focus {
   border: 1px solid var(--glass-border);
 }
 
-/* Responsive */
+/* Responsivo */
 @media (max-width: 768px) {
 
   .hero__content,
@@ -1052,9 +1101,9 @@ textarea:focus {
   }
 }
 
-/* Compatibility Fixes for Existing Structure */
+/* Arreglos de Compatibilidad para Estructura Existente */
 .header__content {
-  /* This ensures the pill shape works within the container class it also has in HTML */
+  /* Esto asegura que la forma de píldora funcione dentro de la clase container que también tiene en HTML */
   margin-top: 0;
 }
 
@@ -1069,7 +1118,7 @@ textarea:focus {
 }
 
 
-/* Premium User Dropdown */
+/* Desplegable de Usuario Premium */
 .user-dropdown {
   position: absolute;
   top: calc(100% + 12px);
@@ -1144,7 +1193,7 @@ textarea:focus {
   opacity: 1;
 }
 
-/* Specific Items */
+/* Ítems Específicos */
 .dropdown-divider {
   height: 1px;
   background: var(--glass-border);
@@ -1154,12 +1203,12 @@ textarea:focus {
 
 .user-dropdown button.text-danger:hover {
   background: rgba(239, 68, 68, 0.15);
-  /* Red tint */
+  /* Tinte rojo */
   color: #f87171;
-  /* Red text */
+  /* Texto rojo */
 }
 
-/* Admin Button Styling in Dropdown */
+/* Estilo de Botón Admin en Desplegable */
 .user-dropdown .account-btn-admin {
   background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
   border: 1px solid rgba(59, 130, 246, 0.3);
@@ -1179,10 +1228,10 @@ textarea:focus {
 }
 
 /* ========================================
-   ADMIN PANEL STYLES
+   ESTILOS DEL PANEL DE ADMIN
    ======================================== */
 
-/* View Sections - Tab Content */
+/* Secciones de Vista - Contenido de Pestaña */
 .view-section {
   display: none;
 }
@@ -1192,7 +1241,7 @@ textarea:focus {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Dashboard Grid */
+/* Cuadrícula del Dashboard */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1214,7 +1263,7 @@ textarea:focus {
   margin: 0;
 }
 
-/* Table Header */
+/* Cabecera de Tabla */
 .table-header {
   display: flex;
   justify-content: space-between;
@@ -1229,7 +1278,7 @@ textarea:focus {
   font-size: 1.3rem;
 }
 
-/* Product Form Modal */
+/* Modal de Formulario de Producto */
 .add-product-modal {
   max-width: 700px;
   max-height: 90vh;
@@ -1276,7 +1325,7 @@ textarea:focus {
   border-top: 1px solid var(--glass-border);
 }
 
-/* File Upload */
+/* Subida de Archivos */
 .file-upload-wrapper {
   position: relative;
   overflow: hidden;
@@ -1313,7 +1362,7 @@ textarea:focus {
   font-size: 1.5rem;
 }
 
-/* Image Preview Grid */
+/* Cuadrícula de Previsualización de Imagen */
 .image-preview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
@@ -1329,7 +1378,7 @@ textarea:focus {
   border: 1px solid var(--glass-border);
 }
 
-/* Compact Login Button Override */
+/* Sobrescritura de Botón de Login Compacto */
 #loginButton,
 #accountButton {
   padding: 0.6rem 1.2rem;
@@ -1337,7 +1386,7 @@ textarea:focus {
   min-width: auto;
 }
 
-/* Admin Helpers */
+/* Ayudantes de Admin */
 .btn-xs-link {
   background: none;
   border: none;
@@ -1352,45 +1401,52 @@ textarea:focus {
   color: var(--text-main);
   text-decoration: underline;
 }
-/* Restore Divider Style */
+
+/* Restaurar Estilo de Divisor */
 .divider span {
   background: var(--bg-surface);
   padding: 0 10px;
 }
 
-/* Hybrid Field Styling for Admin Panel */
+/* Estilo de Campo Híbrido para Panel de Admin */
 .hybrid-field {
-    width: 100%;
+  width: 100%;
 }
-.mode-select, .mode-input {
-    display: flex;
-    gap: 0.5rem;
-    width: 100%;
+
+.mode-select,
+.mode-input {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
 }
-.mode-select select, 
+
+.mode-select select,
 .mode-input input {
-    flex: 1;
+  flex: 1;
 }
+
 .btn-hybrid-toggle {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    color: var(--text-muted);
-    width: 44px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+  width: 44px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
+
 .btn-hybrid-toggle:hover {
-    background: var(--glass-bg);
-    border-color: var(--primary);
-    color: var(--primary-glow);
-    transform: scale(1.05);
+  background: var(--glass-bg);
+  border-color: var(--primary);
+  color: var(--primary-glow);
+  transform: scale(1.05);
 }
+
 .btn-hybrid-toggle .icon {
-    font-style: normal;
+  font-style: normal;
 }
