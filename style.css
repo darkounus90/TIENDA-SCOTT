@@ -4,44 +4,46 @@
 */
 
 :root {
-  /* Tema Oscuro Profesional - Pizarra y Azul Real */
-  --bg-deep: #0f172a;
-  /* Pizarra 900 - Oscuro profundo y neutro */
-  --bg-surface: #1e293b;
-  /* Pizarra 800 - Más claro para tarjetas */
+  /* Tema Oscuro Premium "Midnight Glass" */
+  --bg-deep: #020617;
+  /* Richer black */
+  --bg-surface: #0f172a;
+  /* Deep navy */
 
+  /* Primary with more vibrancy */
   --primary: #3b82f6;
-  /* Azul 500 - Profesional, confiable */
   --primary-glow: #60a5fa;
-  /* Azul 400 */
-  --accent: #cbd5e1;
-  /* Pizarra 300 - Acento neutral (plata/blanco) */
-  --accent-glow: #f8fafc;
-  /* Brillo blanco */
+
+  /* Neutral scale */
+  --accent: #94a3b8;
+  --accent-glow: #f1f5f9;
 
   --text-main: #f8fafc;
-  /* Pizarra 50 */
-  --text-muted: #94a3b8;
-  /* Pizarra 400 */
+  --text-muted: #cbd5e1;
+  /* Higher contrast for readability */
 
-  /* Variables de Vidrio - Limpio y Sutil */
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-highlight: rgba(255, 255, 255, 0.05);
-  --glass-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  /* Refined Glass Variables */
+  --glass-bg: rgba(15, 23, 42, 0.85);
+  /* Darker, more legible glass */
+  --glass-border: rgba(255, 255, 255, 0.08);
+  /* Thinner, subtler border */
+  --glass-highlight: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
 
   --card-hover-bg: rgba(255, 255, 255, 0.03);
 
-  /* Espaciado y Radio */
+  /* Spacing & Radius */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-pill: 9999px;
 
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Smoother "apple-like" ease */
 
-  --max-width: 1200px;
+  --max-width: 1240px;
+  /* Slightly wider for modern feel */
 }
 
 *,
@@ -55,15 +57,16 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-deep);
   color: var(--text-main);
+  /* Subtle mesh gradient background */
   background-image:
-    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 85% 30%, rgba(203, 213, 225, 0.03) 0%, transparent 40%);
+    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(148, 163, 184, 0.05) 0%, transparent 40%);
   background-attachment: fixed;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Barra de desplazamiento */
+/* Scrollbar Premium */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -73,48 +76,14 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
+  border: 2px solid var(--bg-deep);
+  /* Gap effect */
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
-}
-
-/* Elementos tipográficos */
-h1,
-h2,
-h3,
-h4 {
-  margin: 0;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-h1 {
-  font-size: 3.5rem;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-}
-
-h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-p {
-  line-height: 1.7;
-  color: var(--text-muted);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: var(--transition-fast);
 }
 
 img {
@@ -123,7 +92,7 @@ img {
   border-radius: var(--radius-md);
 }
 
-/* Diseño */
+/* Layout */
 .container {
   width: 100%;
   max-width: var(--max-width);
@@ -132,17 +101,15 @@ img {
 }
 
 .section {
-  padding: 6rem 0;
+  padding: 8rem 0;
+  /* More breathing room */
   position: relative;
-}
-
-.section--alt {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
 }
 
 .grid {
   display: grid;
-  gap: 2rem;
+  gap: 2.5rem;
+  /* More spacing */
 }
 
 /* Cabecera - Píldora Flotante de Vidrio */
