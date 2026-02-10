@@ -1001,8 +1001,8 @@ img {
   z-index: 2;
 }
 
-/* Tarjetas (Categorías y Productos) */
-* CARD SYSTEM 2.0 (Ultra Premium) */ .card {
+/* CARD SYSTEM 2.0 (Ultra Premium) */
+.card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
