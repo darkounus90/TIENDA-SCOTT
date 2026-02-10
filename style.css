@@ -646,13 +646,17 @@ img {
   /* Slight overflow for impact */
   max-width: 800px;
   height: auto;
-  filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.5));
+  /* Removed drop-shadow to hide box */
   animation: floatBike 6s ease-in-out infinite;
   transform-origin: center;
   background: none;
   /* Remove background color */
   border-radius: 0;
   /* Remove generic radius */
+  mix-blend-mode: screen;
+  /* Hides black background */
+  opacity: 0.95;
+  /* Subtle blend */
 }
 
 /* Glow effect removed */
