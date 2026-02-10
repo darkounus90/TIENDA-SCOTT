@@ -23,8 +23,18 @@ if (!$username || !$password) {
     echo json_encode(["success" => false, "message" => "Usuario/Correo y contraseña requeridos"]);
     exit;
 }
-// Check both username and email columns
-$res = $conn->query("SELECT id, username, email, phone, password, isAdmin FROM users WHERE username='$username' OR email='$username'");
+// Check both username and email columns using prepared statement
+$stmt = $conn->prepare("SELECT id, username, email, phone, password, isAdmin FROM users WHERE username=? OR email=?");
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Error de preparación de consulta"]);
+    exit;
+}
+
+$stmt->bind_param("ss", $username, $username);
+$stmt->execute();
+$res = $stmt->get_result();
+
 if ($res->num_rows === 0) {
     echo json_encode(["success" => false, "message" => "Usuario no encontrado"]);
     exit;
