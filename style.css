@@ -214,6 +214,19 @@ img {
   transform: translateY(-7px) rotate(-45deg);
 }
 
+/* Footer Logo Fix */
+.footer__content img {
+  height: auto;
+  max-height: 80px;
+  /* Increased from 60px */
+  width: auto;
+  margin-bottom: 1rem;
+  object-fit: contain;
+  /* Ensure full logo is visible */
+  display: block;
+  /* Prevent inline spacing issues */
+}
+
 @media (max-width: 768px) {
   /* Estilos del header móvil definidos más abajo */
 
