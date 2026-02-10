@@ -655,15 +655,7 @@ img {
   /* Remove generic radius */
 }
 
-.glow-effect {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
-  filter: blur(40px);
-  z-index: -1;
-  animation: pulseGlow 4s infinite alternate;
-}
+/* Glow effect removed */
 
 /* Animaciones */
 @keyframes floatBike {
@@ -967,58 +959,7 @@ img {
 }
 
 /* Sección Hero - Experiencia Cinemática */
-.hero {
-  position: relative;
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 0;
-  margin-top: -80px;
-  /* Extend behind header */
-}
-
-/* Animación de Fondo (Ken Burns) */
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('hero-bg.png') center center / cover no-repeat;
-  z-index: -2;
-  animation: heroZoom 25s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-  filter: brightness(0.85);
-  /* Ligero oscurecimiento para contraste de texto */
-}
-
-/* Superposición de Degradado */
-.hero::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg,
-      rgba(15, 23, 42, 0.7) 0%,
-      rgba(15, 23, 42, 0.2) 40%,
-      var(--bg-deep) 100%);
-  z-index: -1;
-  pointer-events: none;
-}
-
-@keyframes heroZoom {
-  0% {
-    transform: scale(1);
-  }
-
-  100% {
-    transform: scale(1.15) translate(10px, -10px);
-  }
-}
+/* Legacy Hero styles removed */
 
 .hero__content {
   display: grid;
