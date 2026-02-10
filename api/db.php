@@ -29,7 +29,8 @@ try {
 } catch (Exception $e) {
     header('Content-Type: application/json');
     http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Database connection error"]);
+    // DEBUG: Showing actual error for user to fix connection
+    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     exit;
 }
 
