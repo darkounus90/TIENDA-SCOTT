@@ -3,9 +3,9 @@
 // Database credentials
 // You can change these to match your local environment
 return [
-    'host' => 'localhost',
-    'user' => 'root',      // Default XAMPP/MAMP user
-    'pass' => '',          // Default XAMPP/MAMP password (empty)
-    'db'   => 'elpedalazo' // Local database name (adjusted from remote 'c2721903_scott')
+    'host' => 'localhost',     // Si corre en Ferozo, es 'localhost'. Si es local, pon la IP de Ferozo.
+    'user' => 'c2721903_scott',
+    'pass' => 'danida50PE',
+    'db'   => 'c2721903_scott'
 ];
 ?>
