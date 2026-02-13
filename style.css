@@ -1318,10 +1318,35 @@ textarea:focus {
   padding: 2.5rem;
   width: 100%;
   max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   color: white;
+}
+
+/* Scrollbar premium para modales */
+.cart-modal__content::-webkit-scrollbar,
+.login-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-modal__content::-webkit-scrollbar-track,
+.login-modal::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.cart-modal__content::-webkit-scrollbar-thumb,
+.login-modal::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.4);
+  border-radius: 3px;
+}
+
+.cart-modal__content::-webkit-scrollbar-thumb:hover,
+.login-modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
 }
 
 .cart-modal__close {
