@@ -348,76 +348,77 @@
           </label>
           <input type="text" id="registerUsername" name="username" required placeholder="Elige un usuario" />
         </div>
-        <label for="registerEmail">
-          <i class="icon">📧</i> Correo electrónico
-        </label>
-        <input type="email" id="registerEmail" name="email" required placeholder="Tu correo electrónico" />
-    </div>
-    <div class="form-group">
-      <label for="registerPhone">
-        <i class="icon">📱</i> Teléfono / Celular
-      </label>
-      <input type="tel" id="registerPhone" name="phone" placeholder="Ej: 3001234567" />
-    </div>
+        <div class="form-group">
+          <label for="registerEmail">
+            <i class="icon">📧</i> Correo electrónico
+          </label>
+          <input type="email" id="registerEmail" name="email" required placeholder="Tu correo electrónico" />
+        </div>
+        <div class="form-group">
+          <label for="registerPhone">
+            <i class="icon">📱</i> Teléfono / Celular
+          </label>
+          <input type="tel" id="registerPhone" name="phone" placeholder="Ej: 3001234567" />
+        </div>
 
-    <!-- Sección de Dirección -->
-    <div class="form-group">
-      <label for="registerDepartment">
-        <i class="icon">🗺️</i> Departamento
-      </label>
-      <select id="registerDepartment" name="department"
-        style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#fff">
-        <option value="">Selecciona un departamento</option>
-        <!-- JS vía colombia.json -->
-      </select>
+        <!-- Sección de Dirección -->
+        <div class="form-group">
+          <label for="registerDepartment">
+            <i class="icon">🗺️</i> Departamento
+          </label>
+          <select id="registerDepartment" name="department"
+            style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#fff">
+            <option value="">Selecciona un departamento</option>
+            <!-- JS vía colombia.json -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="registerCity">
+            <i class="icon">🏙️</i> Ciudad
+          </label>
+          <select id="registerCity" name="city" disabled
+            style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#f1f5f9">
+            <option value="">Selecciona primero un departamento</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="registerAddress">
+            <i class="icon">📍</i> Dirección de entrega
+          </label>
+          <input type="text" id="registerAddress" name="address" required placeholder="Ej: Cra 100 # 20-30" />
+        </div>
+        <div class="form-group">
+          <label for="registerPassword">
+            <i class="icon">🔒</i> Contraseña
+          </label>
+          <div class="password-input">
+            <input type="password" id="registerPassword" name="password" required placeholder="Crea una contraseña" />
+            <button type="button" class="toggle-password" id="toggleRegisterPassword">
+              <i class="eye-icon">👁️</i>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="registerConfirmPassword">
+            <i class="icon">🔒</i> Confirmar Contraseña
+          </label>
+          <input type="password" id="registerConfirmPassword" name="confirmPassword" required
+            placeholder="Repite la contraseña" />
+        </div>
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" name="terms" required />
+            <span class="checkmark"></span>
+            Acepto los <a href="#" class="terms-link">términos y condiciones</a>
+          </label>
+        </div>
+        <button type="submit" class="btn-login">Crear Cuenta</button>
+        <div class="divider">
+          <span>o</span>
+        </div>
+        <p class="register-link">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="registerCity">
-        <i class="icon">🏙️</i> Ciudad
-      </label>
-      <select id="registerCity" name="city" disabled
-        style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#f1f5f9">
-        <option value="">Selecciona primero un departamento</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="registerAddress">
-        <i class="icon">📍</i> Dirección de entrega
-      </label>
-      <input type="text" id="registerAddress" name="address" required placeholder="Ej: Cra 100 # 20-30" />
-    </div>
-    <div class="form-group">
-      <label for="registerPassword">
-        <i class="icon">🔒</i> Contraseña
-      </label>
-      <div class="password-input">
-        <input type="password" id="registerPassword" name="password" required placeholder="Crea una contraseña" />
-        <button type="button" class="toggle-password" id="toggleRegisterPassword">
-          <i class="eye-icon">👁️</i>
-        </button>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="registerConfirmPassword">
-        <i class="icon">🔒</i> Confirmar Contraseña
-      </label>
-      <input type="password" id="registerConfirmPassword" name="confirmPassword" required
-        placeholder="Repite la contraseña" />
-    </div>
-    <div class="form-options">
-      <label class="checkbox-label">
-        <input type="checkbox" name="terms" required />
-        <span class="checkmark"></span>
-        Acepto los <a href="#" class="terms-link">términos y condiciones</a>
-      </label>
-    </div>
-    <button type="submit" class="btn-login">Crear Cuenta</button>
-    <div class="divider">
-      <span>o</span>
-    </div>
-    <p class="register-link">¿Ya tienes cuenta? <a href="#" id="showLogin">Inicia sesión</a></p>
-    </form>
-  </div>
   </div>
 
   <!-- MODAL AGREGAR PRODUCTO (solo para admins) -->
