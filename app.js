@@ -1418,12 +1418,13 @@ function renderInventoryTable() {
       <td>${p.stock}</td>
       <td>${currencyFormat(p.price)}</td>
       <td>
-        <button class="btn-icon-sm" onclick="editProduct(${p.id})">✏️</button>
-        <button class="btn-icon-sm text-danger" onclick="deleteProduct(${p.id})">🗑️</button>
+        <button class="btn-icon-sm" onclick="editProduct(${p.id})"><i data-lucide="edit-2" style="width:16px;height:16px;"></i></button>
+        <button class="btn-icon-sm text-danger" onclick="deleteProduct(${p.id})"><i data-lucide="trash-2" style="width:16px;height:16px;"></i></button>
       </td>
     </tr>
   `;
   }).join('');
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 // PROCESO DE PAGO REAL (Reemplaza confirmar)
