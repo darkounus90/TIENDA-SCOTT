@@ -566,16 +566,18 @@ function initGoogleSignIn() {
   // Botón de Google en Login
   const googleLoginBtn = document.getElementById('googleLoginBtn');
   if (googleLoginBtn) {
-    googleLoginBtn.addEventListener('click', () => {
+    // Eliminar listeners antiguos clonando el nodo? No, mejor solo añadir nuevo y que haga log
+    // Para simplificar, asumimos que no hay listeners previos conflictuando gravemente, o el usuario recarga
+    googleLoginBtn.onclick = () => { // Usar onclick para sobreescribir anteriores si los hubo en hot-reload
       console.log('Click en Google Login');
       // Resetear estado de cool-down de Google para forzar el prompt
-      document.cookie = "g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
+      document.cookie = "g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT"; // Reset cooldown
       google.accounts.id.prompt((notification) => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
           console.warn('Google prompt no se mostró:', notification.getNotDisplayedReason());
         }
       });
-    });
+    };
   }
 
   // Botón de Google en Registro
