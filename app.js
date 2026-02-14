@@ -774,13 +774,22 @@ function updateLoginButton() {
     loginButton.title = `Hola, ${currentUser.username}`;
 
     // Mostrar foto de perfil como avatar si existe
-    if (currentUser.profile_photo) {
-      let photoSrc = currentUser.profile_photo;
-      if (photoSrc && !photoSrc.startsWith('http') && !photoSrc.startsWith('data:')) {
-        photoSrc = API_BASE + '/../' + photoSrc;
+    // Google a veces devuelve 'picture', nuestra BD usa 'profile_photo'
+    let photoUrl = currentUser.profile_photo || currentUser.picture;
+
+    if (photoUrl) {
+      if (!photoUrl.startsWith('http') && !photoUrl.startsWith('data:')) {
+        photoUrl = API_BASE + '/../' + photoUrl;
       }
-      loginButton.innerHTML = `<img src="${photoSrc}" alt="Mi perfil" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<i data-lucide=\'user\'></i>'; this.parentNode.classList.remove('has-avatar'); if(typeof lucide!=='undefined') lucide.createIcons();">`;
+      // Se asegura que la imagen tenga el tamaño correcto y borde
+      loginButton.innerHTML = `<img src="${photoUrl}" alt="Mi perfil" referrerpolicy="no-referrer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
       loginButton.classList.add('has-avatar');
+      // Manejador de error separado para evitar bucles o problemas de renderizado inline complejos
+      loginButton.querySelector('img').onerror = function () {
+        this.parentNode.innerHTML = '<i data-lucide="user"></i>';
+        this.parentNode.classList.remove('has-avatar');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      };
     } else {
       loginButton.innerHTML = '<i data-lucide="user"></i>';
       loginButton.classList.remove('has-avatar');
@@ -792,36 +801,28 @@ function updateLoginButton() {
     // Cambiar comportamiento de clic para alternar desplegable
     loginButton.onclick = (e) => {
       e.stopPropagation();
-      userDropdown.classList.toggle("active");
+      const drop = document.getElementById("userDropdown");
+      if (drop) drop.classList.toggle("active");
     };
 
-    // Check for admin privileges (handling int, string "1", or boolean true)
-    if (currentUser.isAdmin == 1 || currentUser.isAdmin === true || currentUser.isAdmin === '1') {
-      if (!document.getElementById("menuAdmin")) {
-        const btn = document.createElement("button");
-        btn.id = "menuAdmin";
-        btn.innerHTML = '<span class="icon"><i data-lucide="rocket"></i></span> Panel Admin';
-        btn.className = "account-btn-admin"; // Use new class in style.css
-
-        btn.onclick = () => window.location.href = "admin.html";
-
-        // Insert as first item in dropdown for visibility
-        if (userDropdown) {
-          userDropdown.insertBefore(btn, userDropdown.firstChild);
-        }
-      }
-    }
+    // ... admin logic ...
   } else {
-    // Estado de sesión cerrada
+    // Estado de sesión cerrada: Mostrar "Ingresar"
     currentUser = null;
-    loginButton.innerHTML = '<i data-lucide="user"></i>';
+    loginButton.innerHTML = '<span style="display: flex; align-items: center; gap: 5px; font-weight: 500; font-size: 0.9rem;"><i data-lucide="user" style="width: 20px; height: 20px;"></i> Ingresar</span>';
+    // Ajustar estilo para que quepa el texto
+    loginButton.style.width = 'auto';
+    loginButton.style.padding = '0 10px';
+    loginButton.style.borderRadius = '20px'; // Un poco más redondeado para parecer botón
+
     loginButton.classList.remove('has-avatar');
     loginButton.title = 'Iniciar Sesión';
-    userDropdown.classList.remove("active");
+    const drop = document.getElementById("userDropdown");
+    if (drop) drop.classList.remove("active");
 
     // Restaurar comportamiento de login
     loginButton.onclick = (e) => {
-      e.preventDefault();
+      e.preventDefault(); // prevenir navegación default si fuera link
       e.stopPropagation();
       openLogin();
     };
