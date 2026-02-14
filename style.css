@@ -2556,3 +2556,37 @@ a {
 .hero-pov-img:hover {
   transform: scale(1.02);
 }
+
+/* Responsive adjustments for small screens (Mobile) */
+@media (max-width: 480px) {
+  .login-modal {
+    padding: 1.5rem !important;
+    width: 90% !important;
+  }
+
+  .login-logo img {
+    height: 50px !important;
+    /* Adjust logo size */
+  }
+
+  .login-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .login-header p {
+    font-size: 0.85rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .btn-login,
+  .btn-google {
+    padding: 0.7rem;
+  }
+}
