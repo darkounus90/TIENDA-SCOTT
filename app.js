@@ -436,6 +436,85 @@ async function loginUser(username, password) {
   }
 }
 
+// ===== GOOGLE SIGN-IN =====
+// ⚠️ REEMPLAZA este valor con tu Google Client ID real de Google Cloud Console
+const GOOGLE_CLIENT_ID = 'TU_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+
+// Manejar respuesta de Google
+async function handleGoogleCredential(credential) {
+  try {
+    const response = await fetch(`${API_BASE}/google_login.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential })
+    });
+    const data = await response.json();
+    if (data.success && data.token && data.user) {
+      localStorage.setItem('token', data.token);
+      currentUser = data.user;
+      updateLoginButton();
+      closeLoginModal();
+      closeRegisterModal();
+    } else {
+      alert(data.message || 'Error al iniciar sesión con Google.');
+    }
+  } catch (err) {
+    console.error('Error con Google Sign-In:', err);
+    alert('Error de conexión al procesar login con Google.');
+  }
+}
+
+// Inicializar Google Identity Services
+function initGoogleSignIn() {
+  if (typeof google === 'undefined' || !google.accounts) {
+    console.warn('Google Identity Services no cargado aún.');
+    return;
+  }
+
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: (response) => {
+      if (response.credential) {
+        handleGoogleCredential(response.credential);
+      }
+    },
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+
+  // Botón de Google en Login
+  const googleLoginBtn = document.getElementById('googleLoginBtn');
+  if (googleLoginBtn) {
+    googleLoginBtn.addEventListener('click', () => {
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          // Si el popup no se muestra, usar flujo alternativo
+          google.accounts.id.prompt();
+        }
+      });
+    });
+  }
+
+  // Botón de Google en Registro (mismo comportamiento)
+  const googleRegisterBtn = document.getElementById('googleRegisterBtn');
+  if (googleRegisterBtn) {
+    googleRegisterBtn.addEventListener('click', () => {
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          google.accounts.id.prompt();
+        }
+      });
+    });
+  }
+}
+
+// Esperar a que Google cargue e inicializar
+window.addEventListener('load', () => {
+  // Dar tiempo para que el script de Google cargue
+  setTimeout(initGoogleSignIn, 500);
+});
+// ===== FIN GOOGLE SIGN-IN =====
+
 
 function showRegisterSuccess() {
   closeRegisterModal();
