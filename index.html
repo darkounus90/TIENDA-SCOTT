@@ -293,10 +293,10 @@
   <!-- MODAL LOGIN -->
   <div class="cart-modal" id="loginModal">
     <div class="cart-modal__content login-modal">
-      <button class="cart-modal__close" id="closeLogin">✕</button>
+      <button class="cart-modal__close" id="closeLogin"><i data-lucide="x"></i></button>
       <div class="login-header">
-        <div class="login-logo">
-          <span class="logo-text">El Pedalazo</span>
+        <div class="login-logo" style="display: flex; justify-content: center; margin-bottom: 1rem;">
+          <img src="logo-pedalazo-completo.svg" alt="El Pedalazo" style="height: 80px; width: auto;">
         </div>
         <h2>Iniciar Sesión</h2>
         <p>Accede a tu cuenta para gestionar productos</p>
@@ -304,18 +304,18 @@
       <form id="loginForm" class="login-form">
         <div class="form-group">
           <label for="loginUsername">
-            <i class="icon">👤</i> Usuario
+            <i class="icon" data-lucide="user"></i> Usuario
           </label>
           <input type="text" id="loginUsername" name="username" required placeholder="Usuario o Correo" />
         </div>
         <div class="form-group">
           <label for="loginPassword">
-            <i class="icon">🔒</i> Contraseña
+            <i class="icon" data-lucide="lock"></i> Contraseña
           </label>
           <div class="password-input">
             <input type="password" id="loginPassword" name="password" required placeholder="Ingresa tu contraseña" />
             <button type="button" class="toggle-password" id="toggleLoginPassword">
-              <i class="eye-icon">👁️</i>
+              <i class="eye-icon" data-lucide="eye"></i>
             </button>
           </div>
         </div>
@@ -340,10 +340,10 @@
   <!-- MODAL REGISTRO -->
   <div class="cart-modal" id="registerModal">
     <div class="cart-modal__content login-modal">
-      <button class="cart-modal__close" id="closeRegister">✕</button>
+      <button class="cart-modal__close" id="closeRegister"><i data-lucide="x"></i></button>
       <div class="login-header">
-        <div class="login-logo">
-          <span class="logo-text">El Pedalazo</span>
+        <div class="login-logo" style="display: flex; justify-content: center; margin-bottom: 1rem;">
+          <img src="logo-pedalazo-completo.svg" alt="El Pedalazo" style="height: 80px; width: auto;">
         </div>
         <h2>Crear Cuenta</h2>
         <p>Únete a Grupo Empresarial El Pedalazo y comienza a vender</p>
@@ -351,19 +351,19 @@
       <form id="registerForm" class="login-form">
         <div class="form-group">
           <label for="registerUsername">
-            <i class="icon">👤</i> Usuario
+            <i class="icon" data-lucide="user"></i> Usuario
           </label>
           <input type="text" id="registerUsername" name="username" required placeholder="Elige un usuario" />
         </div>
         <div class="form-group">
           <label for="registerEmail">
-            <i class="icon">📧</i> Correo electrónico
+            <i class="icon" data-lucide="mail"></i> Correo electrónico
           </label>
           <input type="email" id="registerEmail" name="email" required placeholder="Tu correo electrónico" />
         </div>
         <div class="form-group">
           <label for="registerPhone">
-            <i class="icon">📱</i> Teléfono / Celular
+            <i class="icon" data-lucide="smartphone"></i> Teléfono / Celular
           </label>
           <input type="tel" id="registerPhone" name="phone" placeholder="Ej: 3001234567" />
         </div>

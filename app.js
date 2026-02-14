@@ -1749,6 +1749,7 @@ function toggleServiceDetail(id) {
 
 // Lógica de alternar búsqueda
 document.addEventListener('DOMContentLoaded', () => {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
   const searchToggle = document.getElementById('searchToggle');
   const searchWrapper = document.querySelector('.search-wrapper');
   const searchInput = document.getElementById('searchInput');
