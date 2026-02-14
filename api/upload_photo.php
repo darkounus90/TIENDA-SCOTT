@@ -9,18 +9,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
 
 require 'db.php';
 
-// Autenticación por token
-$auth = null;
-if (function_exists('apache_request_headers')) {
-    $headers = apache_request_headers();
-    if (isset($headers['Authorization'])) $auth = $headers['Authorization'];
-    if (isset($headers['authorization'])) $auth = $headers['authorization'];
+// Autenticación robusta
+function getAuthHeader() {
+    $headers = null;
+    if (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        if (isset($headers['Authorization'])) return $headers['Authorization'];
+        if (isset($headers['authorization'])) return $headers['authorization'];
+    }
+    if (isset($_SERVER['HTTP_AUTHORIZATION'])) return $_SERVER['HTTP_AUTHORIZATION'];
+    if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) return $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    return null;
 }
-if (!$auth && isset($_SERVER['HTTP_AUTHORIZATION'])) $auth = $_SERVER['HTTP_AUTHORIZATION'];
-if (!$auth && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
 
-if (!$auth || !preg_match('/Bearer (.+)/', $auth, $matches)) {
-    echo json_encode(["success" => false, "message" => "No autorizado"]);
+$auth = getAuthHeader();
+if (!$auth || !preg_match('/Bearer\s+(.*)$/i', $auth, $matches)) {
+    echo json_encode(["success" => false, "message" => "No autorizado (Token faltante o inválido)"]);
     exit;
 }
 $token = $matches[1];

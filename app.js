@@ -137,8 +137,13 @@ function renderAccountInfo() {
   }
 
   // Foto de perfil actual
-  const photoHtml = currentUser.profile_photo
-    ? `<img src="${currentUser.profile_photo}" alt="Mi foto">`
+  let photoSrc = currentUser.profile_photo;
+  if (photoSrc && !photoSrc.startsWith('http') && !photoSrc.startsWith('data:')) {
+    photoSrc = API_BASE + '/../' + photoSrc;
+  }
+
+  const photoHtml = photoSrc
+    ? `<img src="${photoSrc}" alt="Mi foto" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNENTQ4MzkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMTkgMjF2LTJhNCA0IDAgMCAwLTQtNEg5YSA0IDAgMCAwLTQtNHYyIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSI3IiByPSI0Ii8+PC9zdmc+'">`
     : `<div class="photo-placeholder"><i data-lucide="user" style="width: 40px; height: 40px;"></i></div>`;
 
   // Diseño de formulario premium con foto de perfil
@@ -545,6 +550,8 @@ function initGoogleSignIn() {
     return;
   }
 
+  console.log('Inicializando Google Sign-In...');
+
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: (response) => {
@@ -560,22 +567,26 @@ function initGoogleSignIn() {
   const googleLoginBtn = document.getElementById('googleLoginBtn');
   if (googleLoginBtn) {
     googleLoginBtn.addEventListener('click', () => {
+      console.log('Click en Google Login');
+      // Resetear estado de cool-down de Google para forzar el prompt
+      document.cookie = "g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
       google.accounts.id.prompt((notification) => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          // Si el popup no se muestra, usar flujo alternativo
-          google.accounts.id.prompt();
+          console.warn('Google prompt no se mostró:', notification.getNotDisplayedReason());
         }
       });
     });
   }
 
-  // Botón de Google en Registro (mismo comportamiento)
+  // Botón de Google en Registro
   const googleRegisterBtn = document.getElementById('googleRegisterBtn');
   if (googleRegisterBtn) {
     googleRegisterBtn.addEventListener('click', () => {
+      console.log('Click en Google Register');
+      document.cookie = "g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
       google.accounts.id.prompt((notification) => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          google.accounts.id.prompt();
+          console.warn('Google prompt no se mostró:', notification.getNotDisplayedReason());
         }
       });
     });
@@ -758,8 +769,11 @@ function updateLoginButton() {
 
     // Mostrar foto de perfil como avatar si existe
     if (currentUser.profile_photo) {
-      // Add error handling: if image fails, revert to default icon
-      loginButton.innerHTML = `<img src="${currentUser.profile_photo}" alt="Mi perfil" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='👤'; this.parentNode.classList.remove('has-avatar');">`;
+      let photoSrc = currentUser.profile_photo;
+      if (photoSrc && !photoSrc.startsWith('http') && !photoSrc.startsWith('data:')) {
+        photoSrc = API_BASE + '/../' + photoSrc;
+      }
+      loginButton.innerHTML = `<img src="${photoSrc}" alt="Mi perfil" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='<i data-lucide=\'user\'></i>'; this.parentNode.classList.remove('has-avatar'); if(typeof lucide!=='undefined') lucide.createIcons();">`;
       loginButton.classList.add('has-avatar');
     } else {
       loginButton.innerHTML = '<i data-lucide="user"></i>';
