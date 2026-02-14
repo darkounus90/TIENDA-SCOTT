@@ -22,8 +22,7 @@
       if (msg.includes('extension') || msg.includes('script error')) return;
 
       const box = document.createElement('div');
-      box.style.cssText = "position:fixed; top:0; left:0; width:100%; z-index:99999; background:red; color:white;
-      padding: 10px; font - family: monospace; ";
+      box.style.cssText = "position:fixed; top:0; left:0; width:100%; z-index:99999; background:red; color:white; padding:10px; font-family:monospace;";
       box.innerHTML = "<strong>⚠️ JS ERROR:</strong> " + msg + "<br><small>" + url + ":" + line + "</small>";
       document.body.appendChild(box);
       return false;
