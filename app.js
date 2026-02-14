@@ -745,7 +745,7 @@ function updateLoginButton() {
 
     // Mostrar foto de perfil como avatar si existe
     if (currentUser.profile_photo) {
-      loginButton.innerHTML = `<img src="${currentUser.profile_photo}" alt="Mi perfil">`;
+      loginButton.innerHTML = `<img src="${currentUser.profile_photo}" alt="Mi perfil" referrerpolicy="no-referrer">`;
       loginButton.classList.add('has-avatar');
     } else {
       loginButton.textContent = '👤';

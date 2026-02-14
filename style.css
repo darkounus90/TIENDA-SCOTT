@@ -480,6 +480,8 @@ img {
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  display: block;
+  /* Ensure no inline spacing issues */
 }
 
 /* Profile Photo Upload Section */
