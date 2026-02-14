@@ -512,7 +512,7 @@ async function loginUser(username, password) {
 
 // ===== GOOGLE SIGN-IN =====
 // ⚠️ REEMPLAZA este valor con tu Google Client ID real de Google Cloud Console
-const GOOGLE_CLIENT_ID = 'TU_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = '207356479439-qh0fvgbvvddk5o3dbb6bprm13bi2gc35s.apps.googleusercontent.com';
 
 // Manejar respuesta de Google
 async function handleGoogleCredential(credential) {
