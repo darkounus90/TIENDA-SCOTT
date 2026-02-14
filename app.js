@@ -1556,12 +1556,12 @@ function renderAddresses() {
 
   accountAddressesTab.innerHTML = `
     <div class="address-card">
-      <h3>📍 Dirección Principal</h3>
+      <h3><i data-lucide="map-pin" style="display:inline; width:20px; height:20px;"></i> Dirección Principal</h3>
       <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Esta es la dirección que usaremos para tus envíos.</p>
       
       <form id="addressForm" class="account-form">
         <label>
-          <span>🗺️ Departamento</span>
+          <span><i data-lucide="map" style="display:inline; width:16px; height:16px;"></i> Departamento</span>
           <select id="profileDep" name="department" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;">
              <option value="">Selecciona...</option>
              <!-- JS Populated -->
@@ -1569,23 +1569,24 @@ function renderAddresses() {
         </label>
         
         <label>
-          <span>🏙️ Ciudad</span>
+          <span><i data-lucide="building-2" style="display:inline; width:16px; height:16px;"></i> Ciudad</span>
           <select id="profileCity" name="city" style="width:100%; padding:0.8rem; border-radius:12px; border:1px solid #cbd5e1;" disabled>
              <option value="">Selecciona departamento...</option>
           </select>
         </label>
 
         <label>
-          <span>🏠 Dirección y Nomenclatura</span>
+          <span><i data-lucide="home" style="display:inline; width:16px; height:16px;"></i> Dirección y Nomenclatura</span>
           <input type="text" name="address" value="${currentAddr}" placeholder="Ej: Cra 45 # 20-10, Apto 501" required />
         </label>
 
         <div style="margin-top: 1rem;">
-          <button type="submit" class="btn-primary" style="width: 100%;">Actualizar Dirección</button>
+          <button type="submit" class="btn-primary" style="width: 100%;"><i data-lucide="refresh-cw"></i> Actualizar Dirección</button>
         </div>
       </form>
     </div>
   `;
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 
   // Lógica de población
   const depSelect = document.getElementById("profileDep");
