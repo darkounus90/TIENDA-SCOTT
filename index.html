@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=13.1.0" />
+  <link rel="stylesheet" href="style.css?v=14.0.0" />
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Google Identity Services -->
@@ -18,20 +18,24 @@
   <script>
     // GLOBAL ERROR TRAP - Para depuración en producción
     window.onerror = function (msg, url, line, col, error) {
-      // Ignorar errores de extensiones o irrelevantes
-      if (msg.includes('extension') || msg.includes('script error')) return;
+...
+      <!-- Module type for imports -->
+      <script type="module" src="app.js?v=7.0.0"></script>
+  // Ignorar errores de extensiones o irrelevantes
+  if (msg.includes('extension') || msg.includes('script error')) return;
 
-      const box = document.createElement('div');
-      box.style.cssText = "position:fixed; top:0; left:0; width:100%; z-index:99999; background:red; color:white; padding:10px; font-family:monospace;";
-      box.innerHTML = "<strong>⚠️ JS ERROR:</strong> " + msg + "<br><small>" + url + ":" + line + "</small>";
-      document.body.appendChild(box);
-      return false;
-    };
+  const box = document.createElement('div');
+  box.style.cssText = "position:fixed; top:0; left:0; width:100%; z-index:99999; background:red; color:white;
+  padding:10px; font-family:monospace;";
+  box.innerHTML = "<strong>⚠️ JS ERROR:</strong> " + msg + "<br><small>" + url + ":" + line + "</small>";
+  document.body.appendChild(box);
+  return false;
+  };
 
-    window.addEventListener('unhandledrejection', function (event) {
-      console.error("Unhandled Rejection:", event.reason);
-      // Opcional: mostrar en pantalla si es crítico
-    });
+  window.addEventListener('unhandledrejection', function (event) {
+  console.error("Unhandled Rejection:", event.reason);
+  // Opcional: mostrar en pantalla si es crítico
+  });
   </script>
 
 </head>
