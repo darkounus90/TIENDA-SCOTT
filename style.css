@@ -2589,4 +2589,33 @@ a {
   .btn-google {
     padding: 0.7rem;
   }
+
+  /* Ocultar texto de "Ingresar" en móvil para ahorrar espacio */
+  .btn-with-text .login-button-text span {
+    display: none !important;
+  }
+
+  .btn-with-text {
+    width: 40px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+}
+
+/* Estilos base para botón con texto (Desktop) */
+.btn-with-text {
+  width: auto !important;
+  padding: 0 12px !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.1);
+  /* Fondo sutil para destacar */
+}
+
+.login-button-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: white;
 }
