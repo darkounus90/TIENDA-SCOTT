@@ -57,9 +57,9 @@
       </nav>
 
       <div class="header__actions">
-        <button class="btn-icon" id="searchToggle">🔍</button>
+        <button class="btn-icon" id="searchToggle"><i data-lucide="search"></i></button>
         <button class="btn-icon" id="cartButton">
-          🛒 <span id="cartCount">0</span>
+          <i data-lucide="shopping-bag"></i> <span id="cartCount">0</span>
         </button>
         <div class="user-menu-container">
           <button class="btn-icon" id="loginButton" title="Iniciar Sesión"><i data-lucide="user"></i></button>
@@ -383,7 +383,7 @@
         <!-- Sección de Dirección -->
         <div class="form-group">
           <label for="registerDepartment">
-            <i class="icon">🗺️</i> Departamento
+            <i class="icon" data-lucide="map"></i> Departamento
           </label>
           <select id="registerDepartment" name="department"
             style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#fff">
@@ -393,7 +393,7 @@
         </div>
         <div class="form-group">
           <label for="registerCity">
-            <i class="icon">🏙️</i> Ciudad
+            <i class="icon" data-lucide="building-2"></i> Ciudad
           </label>
           <select id="registerCity" name="city" disabled
             style="width:100%; padding: 0.75rem; border-radius:10px; border:1px solid #cbd5e1; background:#f1f5f9">
@@ -402,24 +402,24 @@
         </div>
         <div class="form-group">
           <label for="registerAddress">
-            <i class="icon">📍</i> Dirección de entrega
+            <i class="icon" data-lucide="map-pin"></i> Dirección de entrega
           </label>
           <input type="text" id="registerAddress" name="address" required placeholder="Ej: Cra 100 # 20-30" />
         </div>
         <div class="form-group">
           <label for="registerPassword">
-            <i class="icon">🔒</i> Contraseña
+            <i class="icon" data-lucide="lock"></i> Contraseña
           </label>
           <div class="password-input">
             <input type="password" id="registerPassword" name="password" required placeholder="Crea una contraseña" />
             <button type="button" class="toggle-password" id="toggleRegisterPassword">
-              <i class="eye-icon">👁️</i>
+              <i class="eye-icon" data-lucide="eye"></i>
             </button>
           </div>
         </div>
         <div class="form-group">
           <label for="registerConfirmPassword">
-            <i class="icon">🔒</i> Confirmar Contraseña
+            <i class="icon" data-lucide="lock"></i> Confirmar Contraseña
           </label>
           <input type="password" id="registerConfirmPassword" name="confirmPassword" required
             placeholder="Repite la contraseña" />
@@ -456,22 +456,22 @@
   <!-- MODAL AGREGAR PRODUCTO (solo para admins) -->
   <div class="cart-modal" id="addProductModal">
     <div class="cart-modal__content add-product-modal">
-      <button class="cart-modal__close" id="closeAddProduct">✕</button>
+      <button class="cart-modal__close" id="closeAddProduct"><i data-lucide="x"></i></button>
       <h2>Agregar Nuevo Producto</h2>
       <form id="addProductForm" class="product-form">
         <div class="form-section">
           <h3>Información Básica</h3>
           <div class="form-grid">
             <div class="form-group">
-              <label for="productName"><span class="icon">🏷️</span> Nombre del Producto</label>
+              <label for="productName"><span class="icon" data-lucide="tag"></span> Nombre del Producto</label>
               <input type="text" id="productName" name="name" required placeholder="Ej: MTB Aluminio 29">
             </div>
             <div class="form-group">
-              <label for="productBrand"><span class="icon">🏢</span> Marca</label>
+              <label for="productBrand"><span class="icon" data-lucide="building"></span> Marca</label>
               <input type="text" id="productBrand" name="brand" required placeholder="Ej: Marca X">
             </div>
             <div class="form-group">
-              <label for="productCategory"><span class="icon">📂</span> Categoría</label>
+              <label for="productCategory"><span class="icon" data-lucide="folder"></span> Categoría</label>
               <select id="productCategory" name="category" required>
                 <option value="">Seleccionar categoría</option>
                 <option value="mtb">MTB</option>
@@ -483,7 +483,7 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="productPrice"><span class="icon">💰</span> Precio (COP)</label>
+              <label for="productPrice"><span class="icon" data-lucide="dollar-sign"></span> Precio (COP)</label>
               <input type="number" id="productPrice" name="price" required placeholder="Ej: 3500000">
             </div>
           </div>
@@ -493,52 +493,52 @@
           <h3>Detalles Adicionales</h3>
           <div class="form-grid">
             <div class="form-group">
-              <label for="productTag"><span class="icon">🏷️</span> Etiqueta</label>
+              <label for="productTag"><span class="icon" data-lucide="tag"></span> Etiqueta</label>
               <input type="text" id="productTag" name="tag" required placeholder="Ej: Novedad">
             </div>
             <div class="form-group">
-              <label for="productUse"><span class="icon">🚴</span> Uso</label>
+              <label for="productUse"><span class="icon" data-lucide="bike"></span> Uso</label>
               <input type="text" id="productUse" name="use" required placeholder="Ej: Montaña">
             </div>
             <div class="form-group">
-              <label for="productStock"><span class="icon">📦</span> Stock Inicial</label>
+              <label for="productStock"><span class="icon" data-lucide="package"></span> Stock Inicial</label>
               <input type="number" id="productStock" name="stock" required placeholder="Ej: 10">
             </div>
           </div>
           <!-- Campo de Código de Barras -->
           <div class="form-group" style="margin-top: 1rem;">
-            <label for="productBarcode"><span class="icon">📟</span> Código de Barras</label>
+            <label for="productBarcode"><span class="icon" data-lucide="barcode"></span> Código de Barras</label>
             <input type="text" id="productBarcode" name="barcode" placeholder="Escanea o escribe el código">
           </div>
         </div>
 
         <div class="form-section">
-          <h3><span class="icon">�️</span> Imágenes del Producto (Máx 4)</h3>
+          <h3><span class="icon" data-lucide="image"></span> Imágenes del Producto (Máx 4)</h3>
           <div class="image-upload-grid" id="imageUploadGrid">
             <!-- Espacios generados por JS -->
             <div class="image-slot" data-index="0">
               <input type="file" accept="image/*">
               <div class="slot-placeholder">
-                <span style="font-size: 1.5rem">�</span>
+                <i data-lucide="image-plus" style="width:24px; height:24px;"></i>
                 <p style="font-size: 0.8rem">Principal</p>
               </div>
             </div>
             <div class="image-slot" data-index="1">
               <input type="file" accept="image/*">
               <div class="slot-placeholder">
-                <span style="font-size: 1.5rem">➕</span>
+                <i data-lucide="plus" style="width:24px; height:24px;"></i>
               </div>
             </div>
             <div class="image-slot" data-index="2">
               <input type="file" accept="image/*">
               <div class="slot-placeholder">
-                <span style="font-size: 1.5rem">➕</span>
+                <i data-lucide="plus" style="width:24px; height:24px;"></i>
               </div>
             </div>
             <div class="image-slot" data-index="3">
               <input type="file" accept="image/*">
               <div class="slot-placeholder">
-                <span style="font-size: 1.5rem">➕</span>
+                <i data-lucide="plus" style="width:24px; height:24px;"></i>
               </div>
             </div>
           </div>

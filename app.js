@@ -152,21 +152,21 @@ function renderAccountInfo() {
       <div class="profile-photo-section">
         <div class="profile-photo-wrapper" id="profilePhotoWrapper" title="Cambiar foto de perfil">
           ${photoHtml}
-          <div class="photo-overlay">📷 Cambiar</div>
+          <div class="photo-overlay"><i data-lucide="camera"></i> Cambiar</div>
         </div>
         <input type="file" id="profilePhotoInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
         <span style="font-size: 0.8rem; color: var(--text-muted);">Haz clic para cambiar tu foto</span>
       </div>
       <label>
-        <span>👤 Nombre de usuario</span>
+        <span><i data-lucide="user" style="width:16px; height:16px; display:inline;"></i> Nombre de usuario</span>
         <input type="text" name="username" value="${currentUser.username}" disabled />
       </label>
       <label>
-        <span>✉️ Correo electrónico</span>
+        <span><i data-lucide="mail" style="width:16px; height:16px; display:inline;"></i> Correo electrónico</span>
         <input type="email" name="email" value="${currentUser.email || ''}" required placeholder="ejemplo@email.com" />
       </label>
       <label>
-        <span>📱 Teléfono móvil</span>
+        <span><i data-lucide="smartphone" style="width:16px; height:16px; display:inline;"></i> Teléfono móvil</span>
         <div style="display: flex; gap: 0.5rem;">
           <select id="countryCodeSelect" style="width: 110px; padding: 0.8rem 0.5rem; border-radius: 12px; border: 1px solid #e2e8f0; background: #fff; font-size: 1rem;">
              <option value="+57" ${currentCode === '+57' ? 'selected' : ''}>🇨🇴 +57</option>
@@ -181,17 +181,18 @@ function renderAccountInfo() {
         </div>
       </label>
       <label>
-        <span>🔑 Rol de usuario</span>
+        <span><i data-lucide="key" style="width:16px; height:16px; display:inline;"></i> Rol de usuario</span>
         <input type="text" value="${currentUser.isAdmin ? 'Administrador' : 'Cliente Registrado'}" disabled />
       </label>
       <div style="margin-top: 1rem;">
-        <button type="submit" class="btn-primary" style="width: 100%;">💾 Guardar Cambios</button>
+        <button type="submit" class="btn-primary" style="width: 100%;"><i data-lucide="save"></i> Guardar Cambios</button>
       </div>
       <div style="margin-top: 0.5rem;">
-        <button type="button" class="btn-secondary" onclick="closeAccountModal()" style="width: 100%;">✖ Cerrar Ventana</button>
+        <button type="button" class="btn-secondary" onclick="closeAccountModal()" style="width: 100%;"><i data-lucide="x"></i> Cerrar Ventana</button>
       </div>
     </form>
   `;
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 
   // Lógica de subida de foto de perfil
   const photoWrapper = document.getElementById('profilePhotoWrapper');
@@ -239,7 +240,8 @@ function renderAccountInfo() {
           currentUser.profile_photo = data.photo_url;
           localStorage.setItem('user', JSON.stringify(currentUser));
           updateLoginButton(); // Actualizar avatar en header
-          photoWrapper.innerHTML = `<img src="${data.photo_url}" alt="Mi foto"><div class="photo-overlay">📷 Cambiar</div>`;
+          photoWrapper.innerHTML = `<img src="${data.photo_url}" alt="Mi foto"><div class="photo-overlay"><i data-lucide="camera"></i> Cambiar</div>`;
+          if (typeof lucide !== 'undefined') lucide.createIcons();
         } else {
           alert(data.message || 'Error al subir la foto.');
           // Restaurar estado anterior
@@ -365,11 +367,12 @@ async function renderOrders() {
       // Estado vacío
       list.innerHTML = `
         <div class="account-empty">
-          <span class="icon">📦</span>
+          <span class="icon"><i data-lucide="package" style="width: 48px; height: 48px;"></i></span>
           <p>No tienes pedidos realizados aún.</p>
           <button class="btn-secondary" onclick="closeAccountModal(); window.location.href='#productos'">Ir a comprar</button>
         </div>
       `;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
   } catch (err) {
     console.error(err);
