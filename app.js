@@ -136,9 +136,22 @@ function renderAccountInfo() {
     }
   }
 
-  // Diseño de formulario premium con teléfono y bandera
+  // Foto de perfil actual
+  const photoHtml = currentUser.profile_photo
+    ? `<img src="${currentUser.profile_photo}" alt="Mi foto">`
+    : `<div class="photo-placeholder">👤</div>`;
+
+  // Diseño de formulario premium con foto de perfil
   accountInfoTab.innerHTML = `
     <form id="accountInfoForm" class="account-form">
+      <div class="profile-photo-section">
+        <div class="profile-photo-wrapper" id="profilePhotoWrapper" title="Cambiar foto de perfil">
+          ${photoHtml}
+          <div class="photo-overlay">📷 Cambiar</div>
+        </div>
+        <input type="file" id="profilePhotoInput" accept="image/jpeg,image/png,image/webp" style="display:none;">
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Haz clic para cambiar tu foto</span>
+      </div>
       <label>
         <span>👤 Nombre de usuario</span>
         <input type="text" name="username" value="${currentUser.username}" disabled />
@@ -174,6 +187,67 @@ function renderAccountInfo() {
       </div>
     </form>
   `;
+
+  // Lógica de subida de foto de perfil
+  const photoWrapper = document.getElementById('profilePhotoWrapper');
+  const photoInput = document.getElementById('profilePhotoInput');
+
+  photoWrapper.addEventListener('click', () => photoInput.click());
+
+  photoInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Validar tamaño (2MB max)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('La imagen no debe superar 2MB.');
+      return;
+    }
+
+    // Validar tipo
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      alert('Solo se permiten imágenes JPG, PNG o WebP.');
+      return;
+    }
+
+    // Convertir a Base64
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = reader.result;
+
+      // Mostrar preview inmediato
+      photoWrapper.innerHTML = `<img src="${base64}" alt="Preview"><div class="photo-overlay">Subiendo...</div>`;
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_BASE}/upload_photo.php`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ photo: base64 })
+        });
+        const data = await response.json();
+
+        if (data.success && data.photo_url) {
+          currentUser.profile_photo = data.photo_url;
+          localStorage.setItem('user', JSON.stringify(currentUser));
+          updateLoginButton(); // Actualizar avatar en header
+          photoWrapper.innerHTML = `<img src="${data.photo_url}" alt="Mi foto"><div class="photo-overlay">📷 Cambiar</div>`;
+        } else {
+          alert(data.message || 'Error al subir la foto.');
+          // Restaurar estado anterior
+          renderAccountInfo();
+        }
+      } catch (err) {
+        console.error('Error subiendo foto:', err);
+        alert('Error de conexión al subir la foto.');
+        renderAccountInfo();
+      }
+    };
+    reader.readAsDataURL(file);
+  });
 
   const form = document.getElementById('accountInfoForm');
   form.addEventListener('submit', async (e) => {
@@ -667,11 +741,16 @@ function updateLoginButton() {
   const token = localStorage.getItem('token');
   if (token && currentUser) {
     // Estado de sesión iniciada
-    loginButton.textContent = '👤';
     loginButton.title = `Hola, ${currentUser.username}`;
 
-    // Limpiar si es necesario
-    // accountButton.style.display = "none"; // Removed ref
+    // Mostrar foto de perfil como avatar si existe
+    if (currentUser.profile_photo) {
+      loginButton.innerHTML = `<img src="${currentUser.profile_photo}" alt="Mi perfil">`;
+      loginButton.classList.add('has-avatar');
+    } else {
+      loginButton.textContent = '👤';
+      loginButton.classList.remove('has-avatar');
+    }
 
     // Cambiar comportamiento de clic para alternar desplegable
     loginButton.onclick = (e) => {
@@ -699,8 +778,8 @@ function updateLoginButton() {
     // Estado de sesión cerrada
     currentUser = null;
     loginButton.textContent = '👤';
+    loginButton.classList.remove('has-avatar');
     loginButton.title = 'Iniciar Sesión';
-    // accountButton.style.display = "none"; 
     userDropdown.classList.remove("active");
 
     // Restaurar comportamiento de login

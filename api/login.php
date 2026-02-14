@@ -24,7 +24,7 @@ if (!$username || !$password) {
     exit;
 }
 // Check both username and email columns using prepared statement
-$stmt = $conn->prepare("SELECT id, username, email, phone, password, isAdmin FROM users WHERE username=? OR email=?");
+$stmt = $conn->prepare("SELECT id, username, email, phone, password, isAdmin, profile_photo FROM users WHERE username=? OR email=?");
 if (!$stmt) {
     http_response_code(500);
     echo json_encode(["success" => false, "message" => "Error de preparación de consulta"]);

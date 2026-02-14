@@ -89,6 +89,7 @@ if ($result && $row = $result->fetch_assoc()) {
         'department' => $row['department'] ?? '',
         'city' => $row['city'] ?? '',
         'address' => $row['address'] ?? '',
+        'profile_photo' => $row['profile_photo'] ?? '',
         'isAdmin' => (int)($row['isAdmin'] ?? 0)
     ];
     echo json_encode(['success' => true, 'user' => $user]);
