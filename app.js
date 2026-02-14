@@ -331,6 +331,16 @@ async function renderOrders() {
       data.orders.forEach(order => {
         const date = new Date(order.created_at).toLocaleDateString() + ' ' + new Date(order.created_at).toLocaleTimeString();
 
+        // Mapa de estados
+        const statusMap = {
+          'pending': 'Pendiente',
+          'processing': 'Procesando',
+          'completed': 'Completado',
+          'cancelled': 'Cancelado',
+          'shipped': 'Enviado'
+        };
+        const statusText = statusMap[order.status.toLowerCase()] || order.status;
+
         let itemsHtml = '';
         order.items.forEach(item => {
           itemsHtml += `
@@ -349,7 +359,7 @@ async function renderOrders() {
               <div class="order-id">Pedido #${order.id}</div>
               <div class="order-date">${date}</div>
             </div>
-            <div class="order-status ${order.status.toLowerCase()}">${order.status}</div>
+            <div class="order-status ${order.status.toLowerCase()}">${statusText}</div>
           </div>
           <div class="order-items">
             ${itemsHtml}
