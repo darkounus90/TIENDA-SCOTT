@@ -8,21 +8,24 @@ require 'db.php';
 
 $results = [];
 
-// 1. Agregar google_id
-$sql1 = "ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) DEFAULT NULL";
-if ($conn->query($sql1)) {
-    $results[] = "✅ Columna 'google_id' verificada/agregada.";
-} else {
-    $results[] = "❌ Error en 'google_id': " . $conn->error;
+// 1. Helper function
+function addColumn($conn, $table, $column, $definition) {
+    $check = $conn->query("SHOW COLUMNS FROM `$table` LIKE '$column'");
+    if ($check && $check->num_rows > 0) {
+        return "ℹ️ La columna '$column' ya existe.";
+    }
+    
+    $sql = "ALTER TABLE `$table` ADD COLUMN $column $definition";
+    if ($conn->query($sql)) {
+        return "✅ Columna '$column' agregada exitosamente.";
+    } else {
+        return "❌ Error agregando '$column': " . $conn->error;
+    }
 }
 
-// 2. Agregar profile_photo
-$sql2 = "ALTER TABLE users ADD COLUMN IF NOT EXISTS profile_photo VARCHAR(500) DEFAULT NULL";
-if ($conn->query($sql2)) {
-    $results[] = "✅ Columna 'profile_photo' verificada/agregada.";
-} else {
-    $results[] = "❌ Error en 'profile_photo': " . $conn->error;
-}
+// 2. Ejecutar migraciones
+$results[] = addColumn($conn, 'users', 'google_id', "VARCHAR(255) DEFAULT NULL");
+$results[] = addColumn($conn, 'users', 'profile_photo', "VARCHAR(500) DEFAULT NULL");
 
 echo json_encode([
     "success" => true,
