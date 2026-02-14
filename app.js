@@ -139,7 +139,7 @@ function renderAccountInfo() {
   // Foto de perfil actual
   const photoHtml = currentUser.profile_photo
     ? `<img src="${currentUser.profile_photo}" alt="Mi foto">`
-    : `<div class="photo-placeholder">👤</div>`;
+    : `<div class="photo-placeholder"><i data-lucide="user" style="width: 40px; height: 40px;"></i></div>`;
 
   // Diseño de formulario premium con foto de perfil
   accountInfoTab.innerHTML = `
@@ -582,10 +582,23 @@ function initGoogleSignIn() {
   }
 }
 
-// Esperar a que Google cargue e inicializar
+// Esperar a que Google cargue e inicializar con reintentos
+let googleRetries = 0;
+function checkGoogle() {
+  if (typeof google !== 'undefined' && google.accounts) {
+    initGoogleSignIn();
+  } else {
+    googleRetries++;
+    if (googleRetries < 20) {
+      setTimeout(checkGoogle, 500);
+    } else {
+      console.warn('Google Identity Services no pudo cargar después de varios intentos.');
+    }
+  }
+}
+
 window.addEventListener('load', () => {
-  // Dar tiempo para que el script de Google cargue
-  setTimeout(initGoogleSignIn, 500);
+  setTimeout(checkGoogle, 500);
 });
 // ===== FIN GOOGLE SIGN-IN =====
 
@@ -749,9 +762,12 @@ function updateLoginButton() {
       loginButton.innerHTML = `<img src="${currentUser.profile_photo}" alt="Mi perfil" referrerpolicy="no-referrer" onerror="this.parentNode.innerHTML='👤'; this.parentNode.classList.remove('has-avatar');">`;
       loginButton.classList.add('has-avatar');
     } else {
-      loginButton.textContent = '👤';
+      loginButton.innerHTML = '<i data-lucide="user"></i>';
       loginButton.classList.remove('has-avatar');
     }
+
+    // Refresh icons
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 
     // Cambiar comportamiento de clic para alternar desplegable
     loginButton.onclick = (e) => {
@@ -764,7 +780,7 @@ function updateLoginButton() {
       if (!document.getElementById("menuAdmin")) {
         const btn = document.createElement("button");
         btn.id = "menuAdmin";
-        btn.innerHTML = '<span class="icon">🚀</span> Panel Admin';
+        btn.innerHTML = '<span class="icon"><i data-lucide="rocket"></i></span> Panel Admin';
         btn.className = "account-btn-admin"; // Use new class in style.css
 
         btn.onclick = () => window.location.href = "admin.html";
@@ -778,7 +794,7 @@ function updateLoginButton() {
   } else {
     // Estado de sesión cerrada
     currentUser = null;
-    loginButton.textContent = '👤';
+    loginButton.innerHTML = '<i data-lucide="user"></i>';
     loginButton.classList.remove('has-avatar');
     loginButton.title = 'Iniciar Sesión';
     userDropdown.classList.remove("active");
@@ -1593,7 +1609,7 @@ function renderAddresses() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': localStorage.getItem('token')
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({
           department: newDep,
@@ -1735,3 +1751,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+// Initialize Lucide Icons
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+});
+
+// Re-initialize icons after dynamic content updates
+function refreshIcons() {
+  lucide.createIcons();
+}
+

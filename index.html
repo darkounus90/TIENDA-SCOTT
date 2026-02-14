@@ -10,6 +10,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="stylesheet" href="style.css?v=13.1.0" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -60,15 +62,17 @@
           🛒 <span id="cartCount">0</span>
         </button>
         <div class="user-menu-container">
-          <button class="btn-icon" id="loginButton" title="Iniciar Sesión">👤</button>
-          <button class="btn-icon" id="accountButton" style="display:none;" title="Mi Cuenta">👤</button>
+          <button class="btn-icon" id="loginButton" title="Iniciar Sesión"><i data-lucide="user"></i></button>
+          <button class="btn-icon" id="accountButton" style="display:none;" title="Mi Cuenta"><i
+              data-lucide="user"></i></button>
 
           <!-- Dropdown Menu -->
           <div class="user-dropdown" id="userDropdown">
-            <button id="menuProfile"><span class="icon"></span>👤</span> Mi Perfil</button>
-            <button id="menuOrders"><span class="icon">📦</span> Mis Pedidos</button>
+            <button id="menuProfile"><span class="icon"><i data-lucide="user"></i></span> Mi Perfil</button>
+            <button id="menuOrders"><span class="icon"><i data-lucide="package"></i></span> Mis Pedidos</button>
             <div class="dropdown-divider"></div>
-            <button id="menuLogout" class="text-danger"><span class="icon">🚪</span> Cerrar Sesión</button>
+            <button id="menuLogout" class="text-danger"><span class="icon"><i data-lucide="log-out"></i></span> Cerrar
+              Sesión</button>
           </div>
         </div>
 
