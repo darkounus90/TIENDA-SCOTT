@@ -51,13 +51,37 @@ $stmt->bind_param("ss", $email, $google_id);
 $stmt->execute();
 $res = $stmt->get_result();
 
+// ... (existing code)
+
 if ($res->num_rows > 0) {
-    // Usuario existente - actualizar google_id si no lo tiene
+    // Usuario existente - actualizar google_id y FOTO si no tiene
     $user = $res->fetch_assoc();
     
+    $updates = [];
+    $types = "";
+    $params = [];
+
     if (empty($user['google_id'])) {
-        $updateStmt = $conn->prepare("UPDATE users SET google_id=? WHERE id=?");
-        $updateStmt->bind_param("si", $google_id, $user['id']);
+        $updates[] = "google_id=?";
+        $types .= "s";
+        $params[] = $google_id;
+    }
+    
+    // Si el usuario no tiene foto manual, usamos la de Google
+    if (empty($user['profile_photo']) && !empty($picture)) {
+        $updates[] = "profile_photo=?";
+        $types .= "s";
+        $params[] = $picture;
+        $user['profile_photo'] = $picture; // Actualizar array local
+    }
+
+    if (!empty($updates)) {
+        $sql = "UPDATE users SET " . implode(', ', $updates) . " WHERE id=?";
+        $types .= "i";
+        $params[] = $user['id'];
+        
+        $updateStmt = $conn->prepare($sql);
+        $updateStmt->bind_param($types, ...$params);
         $updateStmt->execute();
     }
     
@@ -76,11 +100,12 @@ if ($res->num_rows > 0) {
         $username = $username . '_' . substr($google_id, -4);
     }
     
-    // Crear contraseña aleatoria (el usuario no la necesitará porque usa Google)
+    // Crear contraseña aleatoria
     $randomPass = password_hash(bin2hex(random_bytes(16)), PASSWORD_DEFAULT);
     
-    $insertStmt = $conn->prepare("INSERT INTO users (username, email, password, google_id, isAdmin) VALUES (?, ?, ?, ?, 0)");
-    $insertStmt->bind_param("ssss", $username, $email, $randomPass, $google_id);
+    // Insertar con foto
+    $insertStmt = $conn->prepare("INSERT INTO users (username, email, password, google_id, profile_photo, isAdmin) VALUES (?, ?, ?, ?, ?, 0)");
+    $insertStmt->bind_param("sssss", $username, $email, $randomPass, $google_id, $picture);
     
     if (!$insertStmt->execute()) {
         http_response_code(500);
@@ -93,6 +118,7 @@ if ($res->num_rows > 0) {
         'username' => $username,
         'email' => $email,
         'phone' => '',
+        'profile_photo' => $picture,
         'isAdmin' => 0
     ];
 }
