@@ -1403,18 +1403,27 @@ async function updateOrderStatus(id, status) {
 
 function renderInventoryTable() {
   const table = document.getElementById("inventoryTable");
-  table.innerHTML = products.map(p => `
+  table.innerHTML = products.map(p => {
+    const usageMap = { 'Mountain': 'Montaña', 'Road': 'Ruta', 'City': 'Ciudad', 'Gravel': 'Gravel' };
+    const usageText = usageMap[p.use] || p.use;
+    const img = p.image || (p.images && p.images[0]) || 'placeholder.jpg'; // Fallback for image
+
+    return `
     <tr>
-      <td><img src="${p.image || p.images[0]}" style="width:40px; height:40px; object-fit:contain;"></td>
-      <td>${p.name}</td>
-      <td>${p.category}</td>
+      <td><img src="${img}" width="50" height="50" style="object-fit:cover; border-radius:8px;"></td>
+      <td>
+        <div style="font-weight:600;">${p.name}</div>
+        <div style="font-size:0.8rem; color:#64748b;">${p.brand} • ${usageText}</div>
+      </td>
       <td>${p.stock}</td>
       <td>${currencyFormat(p.price)}</td>
       <td>
-         <button onclick="editProduct(${p.id})" style="border:none; background:none; cursor:pointer;">✏️</button>
+        <button class="btn-icon-sm" onclick="editProduct(${p.id})">✏️</button>
+        <button class="btn-icon-sm text-danger" onclick="deleteProduct(${p.id})">🗑️</button>
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 }
 
 // PROCESO DE PAGO REAL (Reemplaza confirmar)
