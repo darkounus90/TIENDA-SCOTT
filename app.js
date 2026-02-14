@@ -577,34 +577,25 @@ function initGoogleSignIn() {
   });
 
   // Botón de Google en Login
-  const googleLoginBtn = document.getElementById('googleLoginBtn');
-  if (googleLoginBtn) {
-    // Eliminar listeners antiguos clonando el nodo? No, mejor solo añadir nuevo y que haga log
-    // Para simplificar, asumimos que no hay listeners previos conflictuando gravemente, o el usuario recarga
-    googleLoginBtn.onclick = () => { // Usar onclick para sobreescribir anteriores si los hubo en hot-reload
-      console.log('Click en Google Login');
-      // Resetear estado de cool-down de Google para forzar el prompt
-      document.cookie = "g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT"; // Reset cooldown
-      google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          console.warn('Google prompt no se mostró:', notification.getNotDisplayedReason());
-        }
-      });
-    };
+  // Renderizar botón de Google en Login
+  const googleLoginContainer = document.getElementById('googleLoginBtn');
+  if (googleLoginContainer) {
+    // Limpiar contenido previo para evitar duplicados si se recarga
+    googleLoginContainer.innerHTML = '';
+    google.accounts.id.renderButton(
+      googleLoginContainer,
+      { theme: "outline", size: "large", width: "100%", text: "continue_with" }  // personalización
+    );
   }
 
-  // Botón de Google en Registro
-  const googleRegisterBtn = document.getElementById('googleRegisterBtn');
-  if (googleRegisterBtn) {
-    googleRegisterBtn.addEventListener('click', () => {
-      console.log('Click en Google Register');
-      document.cookie = "g_state=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT";
-      google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          console.warn('Google prompt no se mostró:', notification.getNotDisplayedReason());
-        }
-      });
-    });
+  // Renderizar botón de Google en Registro
+  const googleRegisterContainer = document.getElementById('googleRegisterBtn');
+  if (googleRegisterContainer) {
+    googleRegisterContainer.innerHTML = '';
+    google.accounts.id.renderButton(
+      googleRegisterContainer,
+      { theme: "outline", size: "large", width: "100%", text: "signup_with" }  // personalización
+    );
   }
 }
 
