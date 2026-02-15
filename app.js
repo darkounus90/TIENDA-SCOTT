@@ -836,6 +836,7 @@ function updateLoginButton() {
 function openLogin() {
   loginModal.classList.add("active");
   loginModal.classList.add("cart-modal--open");
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 function closeLoginModal() {

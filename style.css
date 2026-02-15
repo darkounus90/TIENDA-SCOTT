@@ -472,7 +472,11 @@ img {
 .btn-icon.has-avatar {
   padding: 0;
   overflow: hidden;
-  border: 2px solid var(--primary);
+  border: none;
+  /* Remove border to match Google style */
+  width: 44px;
+  /* Slightly larger to match standard avatar sizes */
+  height: 44px;
 }
 
 .btn-icon.has-avatar img {
@@ -481,7 +485,6 @@ img {
   object-fit: cover;
   border-radius: 50%;
   display: block;
-  /* Ensure no inline spacing issues */
 }
 
 /* Profile Photo Upload Section */
