@@ -808,10 +808,10 @@ function updateLoginButton() {
     // ... admin logic ...
   } else {
     // Estado de sesión cerrada: Mostrar "Ingresar"
-    loginButton.innerHTML = '<span class="login-button-text"><i data-lucide="user" style="width: 20px; height: 20px;"></i> <span>Ingresar</span></span>';
-    // Usar clases para estilos responsivos
-    loginButton.classList.add('btn-with-text');
-    loginButton.style.width = ''; // Limpiar inline si existe
+    loginButton.innerHTML = '<i data-lucide="user"></i>';
+    // Limpiar estilos inline y clases de texto
+    loginButton.classList.remove('btn-with-text');
+    loginButton.style.width = '';
     loginButton.style.padding = '';
     loginButton.style.borderRadius = '';
 
