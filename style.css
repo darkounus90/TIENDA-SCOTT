@@ -2655,4 +2655,56 @@ a {
   font-weight: 500;
   font-size: 0.9rem;
   color: white;
+}/* 
+   FIX FINAL - BOTÓN LOGIN 
+   Garantizar que el botón de login nunca se deforme y tenga el tamaño correcto.
+   Usa ID para máxima especificidad.
+*/
+#loginButton {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-sizing: border-box !important;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#loginButton:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Estado con avatar */
+#loginButton.has-avatar {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  border: 2px solid var(--glass-border) !important;
+}
+
+#loginButton.has-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+/* Icono SVG dentro del botón */
+#loginButton svg {
+  width: 20px !important;
+  height: 20px !important;
+  stroke-width: 2px !important;
+  color: var(--text-main);
+  display: block !important;
 }
