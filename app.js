@@ -834,7 +834,31 @@ function updateLoginButton() {
       if (drop) drop.classList.toggle("active");
     };
 
-    // ... admin logic ...
+    // Lógica para administradores
+    if (currentUser.role === 'admin' && !document.getElementById('menuAdmin')) {
+      const userDropdown = document.getElementById("userDropdown");
+      const divider = userDropdown.querySelector('.dropdown-divider');
+      const logoutBtn = document.getElementById("menuLogout");
+
+      const adminBtn = document.createElement("button");
+      adminBtn.id = "menuAdmin";
+      adminBtn.innerHTML = '<span class="icon"><i data-lucide="shield"></i></span> Panel Admin';
+
+      adminBtn.onclick = (e) => {
+        e.stopPropagation();
+        userDropdown.classList.remove("active");
+        if (typeof openAdmin === 'function') openAdmin();
+      };
+
+      // Insertar antes del divisor si existe, sino antes de cerrar sesión
+      if (divider) {
+        userDropdown.insertBefore(adminBtn, divider);
+      } else if (logoutBtn) {
+        userDropdown.insertBefore(adminBtn, logoutBtn);
+      } else {
+        userDropdown.appendChild(adminBtn);
+      }
+    }
   } else {
     // Estado de sesión cerrada: Mostrar "Ingresar"
     // Resetear a estado inicial
