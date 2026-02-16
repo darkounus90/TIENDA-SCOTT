@@ -1,4 +1,4 @@
-console.log("🚀 APP.JS CARGADO");
+// APP.JS - Main Logic
 const accountButton = document.getElementById("accountButton");
 const accountModal = document.getElementById("accountModal");
 const closeAccount = document.getElementById("closeAccount");
@@ -652,15 +652,17 @@ const showLogin = document.getElementById("showLogin");
 const addProductModal = document.getElementById("addProductModal");
 const closeAddProduct = document.getElementById("closeAddProduct");
 const addProductForm = document.getElementById("addProductForm");
-const imageInput = document.getElementById("imageInput");
-const imagePreview = document.getElementById("imagePreview");
+// const imageInput = document.getElementById("imageInput"); // Unused
+// const imagePreview = document.getElementById("imagePreview"); // Unused
 
 let filteredCategory = "all";
 let searchTerm = "";
+let searchDebounceTimer;
 
 // Render productos
 function renderProducts() {
   productList.innerHTML = "";
+  const fragment = document.createDocumentFragment();
 
   const filtered = products.filter(p => {
     const matchCategory =
@@ -686,9 +688,13 @@ function renderProducts() {
   filtered.forEach(product => {
     const card = document.createElement("article");
     card.className = "card product-card";
+    const imgHtml = product.image
+      ? `<img src="${product.image}" alt="${product.name}" class="product-card__img" loading="lazy">`
+      : `<div class="product-card__image-placeholder">Imagen ${product.category.toUpperCase()}</div>`;
+
     card.innerHTML = `
       <div class="product-card__image">
-        ${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-card__img">` : `<div class="product-card__image-placeholder">Imagen ${product.category.toUpperCase()}</div>`}
+        ${imgHtml}
       </div>
       <div class="product-card__brand">${product.brand}</div>
       <h3 class="product-card__title">${product.name}</h3>
@@ -705,8 +711,10 @@ function renderProducts() {
         <button class="btn-primary" data-add="${product.id}">Agregar</button>
       </div>
     `;
-    productList.appendChild(card);
+    fragment.appendChild(card);
   });
+
+  productList.appendChild(fragment);
 }
 
 // Filtro por select
@@ -726,11 +734,14 @@ document.querySelectorAll(".categoria").forEach(card => {
   });
 });
 
-// Búsqueda
+// Búsqueda con Debounce
 if (searchInput) {
   searchInput.addEventListener("input", e => {
-    searchTerm = e.target.value.toLowerCase();
-    renderProducts();
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+      searchTerm = e.target.value.toLowerCase();
+      renderProducts();
+    }, 300); // Wait 300ms before searching
   });
 }
 
@@ -782,17 +793,35 @@ function updateLoginButton() {
         photoUrl = API_BASE + '/../' + photoUrl;
       }
       // Se asegura que la imagen tenga el tamaño correcto y borde
-      loginButton.innerHTML = `<img src="${photoUrl}" alt="Mi perfil" referrerpolicy="no-referrer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+      loginButton.innerHTML = `<img src="${photoUrl}" alt="Mi perfil" referrerpolicy="no-referrer" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;">`;
       loginButton.classList.add('has-avatar');
+
+      // Force circular style directly
+      // Use CSS class .has-avatar for styling instead of inline styles
+      loginButton.removeAttribute('style'); // Clear any previous inline styles
+
+
       // Manejador de error separado para evitar bucles o problemas de renderizado inline complejos
-      loginButton.querySelector('img').onerror = function () {
+      const img = loginButton.querySelector('img');
+      img.onerror = function () {
         this.parentNode.innerHTML = '<i data-lucide="user"></i>';
         this.parentNode.classList.remove('has-avatar');
+        // Reset styles on error
+        this.parentNode.style.width = '';
+        this.parentNode.style.height = '';
+        this.parentNode.style.padding = '';
+        this.parentNode.style.overflow = '';
         if (typeof lucide !== 'undefined') lucide.createIcons();
       };
     } else {
       loginButton.innerHTML = '<i data-lucide="user"></i>';
       loginButton.classList.remove('has-avatar');
+      // Reset explicit styles if no avatar
+      loginButton.style.width = '';
+      loginButton.style.height = '';
+      loginButton.style.padding = '';
+      loginButton.style.borderRadius = '';
+      loginButton.style.overflow = '';
     }
 
     // Refresh icons
@@ -808,15 +837,12 @@ function updateLoginButton() {
     // ... admin logic ...
   } else {
     // Estado de sesión cerrada: Mostrar "Ingresar"
+    // Resetear a estado inicial
     loginButton.innerHTML = '<i data-lucide="user"></i>';
-    // Limpiar estilos inline y clases de texto
-    loginButton.classList.remove('btn-with-text');
-    loginButton.style.width = '';
-    loginButton.style.padding = '';
-    loginButton.style.borderRadius = '';
-
     loginButton.classList.remove('has-avatar');
+    loginButton.removeAttribute('style'); // Limpiar estilos inline agresivos
     loginButton.title = 'Iniciar Sesión';
+
     const drop = document.getElementById("userDropdown");
     if (drop) drop.classList.remove("active");
 
@@ -829,6 +855,9 @@ function updateLoginButton() {
 
     const adminBtn = document.getElementById("menuAdmin");
     if (adminBtn) adminBtn.remove();
+
+    // Always recreate icons to ensure visibility
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 }
 
@@ -836,7 +865,6 @@ function updateLoginButton() {
 function openLogin() {
   loginModal.classList.add("active");
   loginModal.classList.add("cart-modal--open");
-  if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 function closeLoginModal() {
@@ -1787,8 +1815,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Initialize Lucide Icons
-document.addEventListener('DOMContentLoaded', () => {
-  lucide.createIcons();
+window.addEventListener('load', () => {
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 });
 
 // Re-initialize icons after dynamic content updates
