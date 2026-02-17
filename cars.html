@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Repuestos y Accesorios de Carro - El Pedalazo</title>
+    <title>JDAUTOPARTES - Repuestos Automotrices</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -85,9 +85,9 @@
         <div class="container header__content">
             <div class="logo">
                 <a href="index.html" style="text-decoration: none; display: flex; align-items: center;">
-                    <img src="logo-pedalazo-icon.svg" alt="El Pedalazo" style="height: 50px; width: auto;">
+                    <!-- <img src="logo-pedalazo-icon.svg" alt="JDAUTOPARTES" style="height: 50px; width: auto;"> -->
                     <span
-                        style="font-size: 2rem; font-weight: 800; color: white; margin-left: -10px; letter-spacing: -1px; font-family: 'Inter', sans-serif;">edalazo</span>
+                        style="font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: -1px; font-family: 'Inter', sans-serif;">JDAUTOPARTES</span>
                 </a>
             </div>
 
@@ -189,8 +189,8 @@
     <footer class="footer">
         <div class="container footer__content">
             <div>
-                <img src="logo-pedalazo-completo.svg" alt="El Pedalazo" style="height: 60px; margin-bottom: 1rem;">
-                <p>Tu tienda de bicicletas y ahora repuestos automotrices.</p>
+                <h3 style="color:white; font-weight:800;">JDAUTOPARTES</h3>
+                <p>Expertos en repuestos y accesorios automotrices.</p>
             </div>
             <div>
                 <h4>Contacto</h4>
@@ -203,75 +203,75 @@
             </div>
         </div>
         <div class="footer__bottom">
-            <p>&copy; 2026 Grupo Empresarial El Pedalazo.</p>
+            <p>&copy; 2026 JDAUTOPARTES. Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <script>
-    lucide.createIcons();
+        lucide.createIcons();
 
-    const API_BASE = 'api/products.php'; 
-    let allCarProducts = [];
+        const API_BASE = 'api/products.php';
+        let allCarProducts = [];
 
-    // Palabras clave extendidas para Colombia
-    const carKeywords = [
-        'automotriz', 'carro', 'coche', 'vehiculo', 
-        'chevrolet', 'spark', 'sail', 'onix', 'tracker',
-        'renault', 'logan', 'sandero', 'duster', 'kwid', 'stepway',
-        'kia', 'picanto', 'rio', 'sportage',
-        'mazda', 'cx-30', 'cx-5',
-        'nissan', 'march', 'versa',
-        'taxi', 'hyundai', 'i10', 'atos', 'grand i10'
-    ];
+        // Palabras clave extendidas para Colombia
+        const carKeywords = [
+            'automotriz', 'carro', 'coche', 'vehiculo',
+            'chevrolet', 'spark', 'sail', 'onix', 'tracker',
+            'renault', 'logan', 'sandero', 'duster', 'kwid', 'stepway',
+            'kia', 'picanto', 'rio', 'sportage',
+            'mazda', 'cx-30', 'cx-5',
+            'nissan', 'march', 'versa',
+            'taxi', 'hyundai', 'i10', 'atos', 'grand i10'
+        ];
 
-    async function fetchCarProducts() {
-        const container = document.getElementById('carProductsList');
-        try {
-            const res = await fetch(API_BASE);
-            const data = await res.json();
-            
-            if (data.success && Array.isArray(data.products)) {
-                
-                allCarProducts = data.products.filter(p => {
-                    const cat = (p.category || '').toLowerCase();
-                    const name = (p.name || '').toLowerCase();
-                    const brand = (p.brand || '').toLowerCase();
-                    
-                    // Verificar si coincide con alguna keyword de carro
-                    return carKeywords.some(k => cat.includes(k) || name.includes(k) || brand.includes(k));
-                });
-                
-                renderCarProducts(allCarProducts);
-            } else {
-                 container.innerHTML = '<p class="text-muted" style="grid-column:1/-1; text-align:center;">Inventario vacio.</p>';
+        async function fetchCarProducts() {
+            const container = document.getElementById('carProductsList');
+            try {
+                const res = await fetch(API_BASE);
+                const data = await res.json();
+
+                if (data.success && Array.isArray(data.products)) {
+
+                    allCarProducts = data.products.filter(p => {
+                        const cat = (p.category || '').toLowerCase();
+                        const name = (p.name || '').toLowerCase();
+                        const brand = (p.brand || '').toLowerCase();
+
+                        // Verificar si coincide con alguna keyword de carro
+                        return carKeywords.some(k => cat.includes(k) || name.includes(k) || brand.includes(k));
+                    });
+
+                    renderCarProducts(allCarProducts);
+                } else {
+                    container.innerHTML = '<p class="text-muted" style="grid-column:1/-1; text-align:center;">Inventario vacio.</p>';
+                }
+            } catch (e) {
+                console.error("Error al cargar productos", e);
+                container.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">Error de conexión.</p>';
             }
-        } catch (e) {
-            console.error("Error al cargar productos", e);
-            container.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">Error de conexión.</p>';
-        }
-    }
-
-    function renderCarProducts(products) {
-        const container = document.getElementById('carProductsList');
-        const noMsg = document.getElementById('noProductsMsg');
-        
-        if (!products || products.length === 0) {
-            container.innerHTML = '';
-            noMsg.style.display = 'block';
-            return;
         }
 
-        noMsg.style.display = 'none';
-        container.innerHTML = products.map(p => {
-            const imagePath = (p.images && p.images.length > 0) ? p.images[0] : '';
-            const finalImg = imagePath.startsWith('http') || imagePath.startsWith('data:') ? imagePath : `api/../${imagePath}`;
+        function renderCarProducts(products) {
+            const container = document.getElementById('carProductsList');
+            const noMsg = document.getElementById('noProductsMsg');
 
-            return `
+            if (!products || products.length === 0) {
+                container.innerHTML = '';
+                noMsg.style.display = 'block';
+                return;
+            }
+
+            noMsg.style.display = 'none';
+            container.innerHTML = products.map(p => {
+                const imagePath = (p.images && p.images.length > 0) ? p.images[0] : '';
+                const finalImg = imagePath.startsWith('http') || imagePath.startsWith('data:') ? imagePath : `api/../${imagePath}`;
+
+                return `
             <article class="card product-card">
                 <div class="product-card__image">
-                    ${imagePath 
-                      ? `<img src="${finalImg}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'product-card__image-placeholder\\'>${p.name}</div>'">` 
-                      : `<div class="product-card__image-placeholder" style="background: linear-gradient(135deg, #1e293b, #334155);">${p.name}</div>`
+                    ${imagePath
+                        ? `<img src="${finalImg}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'product-card__image-placeholder\\'>${p.name}</div>'">`
+                        : `<div class="product-card__image-placeholder" style="background: linear-gradient(135deg, #1e293b, #334155);">${p.name}</div>`
                     }
                 </div>
                 <div class="product-card__brand">${p.brand || p.category || 'Repuesto'}</div>
@@ -287,55 +287,55 @@
                 </div>
             </article>
         `}).join('');
-        lucide.createIcons();
-    }
-
-    function filterLocal(term) {
-        const resetBtn = document.getElementById('resetFilterBtn');
-        const title = document.getElementById('productsTitle');
-        
-        // Highlight active card
-        document.querySelectorAll('.car-category-card').forEach(c => c.classList.remove('active'));
-        // Find card that was clicked (approximate)
-        // logic handled by UI feedback mostly, simple here.
-
-        if (!term) {
-            renderCarProducts(allCarProducts);
-            resetBtn.style.display = 'none';
-            title.textContent = "Todos los Repuestos";
-            return;
+            lucide.createIcons();
         }
 
-        title.textContent = `Repuestos para ${term}`;
-        const t = term.toLowerCase();
+        function filterLocal(term) {
+            const resetBtn = document.getElementById('resetFilterBtn');
+            const title = document.getElementById('productsTitle');
 
-        const filtered = allCarProducts.filter(p => {
-             const cat = (p.category || '').toLowerCase();
-             const name = (p.name || '').toLowerCase();
-             const brand = (p.brand || '').toLowerCase();
-             
-             // Comprobaciones específicas para "Taxi" que pueden ser varias marcas
-             if (t === 'taxi') {
-                 return cat.includes('taxi') || name.includes('taxi') || name.includes('zapatico') || name.includes('atos') || name.includes('cronos');
-             }
+            // Highlight active card
+            document.querySelectorAll('.car-category-card').forEach(c => c.classList.remove('active'));
+            // Find card that was clicked (approximate)
+            // logic handled by UI feedback mostly, simple here.
 
-             return cat.includes(t) || name.includes(t) || brand.includes(t);
-        });
-        
-        renderCarProducts(filtered);
-        resetBtn.style.display = 'block';
-        
-        document.getElementById('carProductsList').scrollIntoView({ behavior: 'smooth', block:'start' });
-    }
+            if (!term) {
+                renderCarProducts(allCarProducts);
+                resetBtn.style.display = 'none';
+                title.textContent = "Todos los Repuestos";
+                return;
+            }
 
-    function resetFilter() {
-        renderCarProducts(allCarProducts);
-        document.getElementById('resetFilterBtn').style.display = 'none';
-        document.getElementById('productsTitle').textContent = "Todos los Repuestos";
-        document.querySelectorAll('.car-category-card').forEach(c => c.classList.remove('active'));
-    }
+            title.textContent = `Repuestos para ${term}`;
+            const t = term.toLowerCase();
 
-    document.addEventListener('DOMContentLoaded', fetchCarProducts);
+            const filtered = allCarProducts.filter(p => {
+                const cat = (p.category || '').toLowerCase();
+                const name = (p.name || '').toLowerCase();
+                const brand = (p.brand || '').toLowerCase();
+
+                // Comprobaciones específicas para "Taxi" que pueden ser varias marcas
+                if (t === 'taxi') {
+                    return cat.includes('taxi') || name.includes('taxi') || name.includes('zapatico') || name.includes('atos') || name.includes('cronos');
+                }
+
+                return cat.includes(t) || name.includes(t) || brand.includes(t);
+            });
+
+            renderCarProducts(filtered);
+            resetBtn.style.display = 'block';
+
+            document.getElementById('carProductsList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function resetFilter() {
+            renderCarProducts(allCarProducts);
+            document.getElementById('resetFilterBtn').style.display = 'none';
+            document.getElementById('productsTitle').textContent = "Todos los Repuestos";
+            document.querySelectorAll('.car-category-card').forEach(c => c.classList.remove('active'));
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchCarProducts);
     </script>
 </body>
 
