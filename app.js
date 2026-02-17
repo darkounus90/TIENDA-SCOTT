@@ -1347,10 +1347,8 @@ const closeAdminDashboard = document.getElementById("closeAdminDashboard");
 const adminTabBtns = document.querySelectorAll(".admin-tab-btn");
 
 function openAdmin() {
-  if (adminModal) {
-    adminModal.classList.add("active");
-    loadDashboardData();
-  }
+  // Redirigir a la página dedicada de administración
+  window.location.href = 'admin.html';
 }
 
 if (closeAdminDashboard) {
