@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Accesorios para Carro - Grupo Empresarial El Pedalazo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="style.css?v=14.3.0" />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estilos específicos para la sección de carros */
+        .hero-car {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: -80px;
+            padding-top: 80px;
+        }
+
+        .car-category-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .car-category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+            /* Lila glow */
+            border-color: #a855f7;
+        }
+
+        .car-category-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a855f7;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- CABECERA -->
+    <header class="header">
+        <div class="container header__content">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center;">
+                    <img src="logo-pedalazo-icon.svg" alt="El Pedalazo" style="height: 50px; width: auto;">
+                    <span
+                        style="font-size: 2rem; font-weight: 800; color: white; margin-left: -10px; letter-spacing: -1px; font-family: 'Inter', sans-serif;">edalazo</span>
+                </a>
+            </div>
+
+            <nav class="nav" id="mainNav">
+                <a href="index.html">Inicio</a>
+                <a href="index.html#categorias">Bicicletas</a>
+                <a href="javascript:void(0)" class="nav-highlight active">
+                    Para tu carro!
+                    <span class="nav-badge">NEW</span>
+                </a>
+                <a href="index.html#servicios">Servicios</a>
+                <a href="index.html#contacto">Contacto</a>
+            </nav>
+
+            <div class="header__actions">
+                <button class="btn-icon" id="cartButton">
+                    <i data-lucide="shopping-bag"></i> <span id="cartCount">0</span>
+                </button>
+                <a href="index.html" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Volver a
+                    Tienda</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO CARROS -->
+    <section class="hero-car">
+        <div class="container">
+            <h1 style="font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">Auto Parts
+                Premium</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Equipa tu vehículo con los mejores
+                accesorios y repuestos. Calidad garantizada por El Pedalazo.</p>
+        </div>
+    </section>
+
+    <!-- CATEGORÍAS CARROS -->
+    <section class="section">
+        <div class="container">
+            <h2>Categorías Automotriz</h2>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 2rem;">
+
+                <article class="car-category-card">
+                    <div class="car-category-icon"><i data-lucide="car"></i></div>
+                    <h3>Interiores</h3>
+                    <p>Tapetes, fundas y confort</p>
+                </article>
+
+                <article class="car-category-card">
+                    <div class="car-category-icon"><i data-lucide="music"></i></div>
+                    <h3>Audio y Video</h3>
+                    <p>Radios, parlantes y pantallas</p>
+                </article>
+
+                <article class="car-category-card">
+                    <div class="car-category-icon"><i data-lucide="wrench"></i></div>
+                    <h3>Herramientas</h3>
+                    <p>Kits de carretera y limpieza</p>
+                </article>
+
+                <article class="car-category-card">
+                    <div class="car-category-icon"><i data-lucide="lightbulb"></i></div>
+                    <h3>Iluminación</h3>
+                    <p>Luces LED, exploradoras y más</p>
+                </article>
+
+                <article class="car-category-card">
+                    <div class="car-category-icon"><i data-lucide="shield"></i></div>
+                    <h3>Seguridad</h3>
+                    <p>Alarmas, bloqueos y cámaras</p>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS CARROS (Placeholder) -->
+    <section class="section" style="background: var(--bg-surface);">
+        <div class="container">
+            <h2>Productos Destacados</h2>
+            <div class="grid productos__grid">
+                <!-- Ejemplo Producto 1 -->
+                <article class="card product-card">
+                    <div class="product-card__image">
+                        <div class="product-card__image-placeholder"
+                            style="background: linear-gradient(135deg, #1e293b, #334155);">Radio Android</div>
+                    </div>
+                    <div class="product-card__brand">Pioneer</div>
+                    <h3 class="product-card__title">Radio Pantalla Táctil 9"</h3>
+                    <div class="product-card__meta">
+                        <span class="product-card__price">$450.000</span>
+                        <span class="product-card__tag">Oferta</span>
+                    </div>
+                    <div class="product-card__actions">
+                        <button class="btn-primary btn-full">Ver detalle</button>
+                    </div>
+                </article>
+
+                <!-- Ejemplo Producto 2 -->
+                <article class="card product-card">
+                    <div class="product-card__image">
+                        <div class="product-card__image-placeholder"
+                            style="background: linear-gradient(135deg, #1e293b, #334155);">Kit Carretera</div>
+                    </div>
+                    <div class="product-card__brand">Seguridad Vial</div>
+                    <h3 class="product-card__title">Kit de Carretera Reglamentario</h3>
+                    <div class="product-card__meta">
+                        <span class="product-card__price">$85.000</span>
+                    </div>
+                    <div class="product-card__actions">
+                        <button class="btn-primary btn-full">Ver detalle</button>
+                    </div>
+                </article>
+
+                <!-- Ejemplo Producto 3 -->
+                <article class="card product-card">
+                    <div class="product-card__image">
+                        <div class="product-card__image-placeholder"
+                            style="background: linear-gradient(135deg, #1e293b, #334155);">Luces LED</div>
+                    </div>
+                    <div class="product-card__brand">Lumina</div>
+                    <h3 class="product-card__title">Bombillos LED H4 8000Lm</h3>
+                    <div class="product-card__meta">
+                        <span class="product-card__price">$120.000</span>
+                        <span class="product-card__tag">Nuevo</span>
+                    </div>
+                    <div class="product-card__actions">
+                        <button class="btn-primary btn-full">Ver detalle</button>
+                    </div>
+                </article>
+            </div>
+
+            <div style="margin-top: 3rem; text-align: center;">
+                <p class="text-muted">Estamos cargando más productos...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer">
+        <div class="container footer__content">
+            <div>
+                <img src="logo-pedalazo-completo.svg" alt="El Pedalazo" style="height: 60px; margin-bottom: 1rem;">
+                <p>Tu tienda de bicicletas y accesorios en línea.</p>
+            </div>
+            <div>
+                <h4>Contacto</h4>
+                <p>Pitalito, Huila - Colombia</p>
+                <p>WhatsApp: +57 311 449 7589</p>
+            </div>
+            <div>
+                <h4>Redes</h4>
+                <p>Instagram · Facebook · TikTok</p>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p>&copy; 2026 Grupo Empresarial El Pedalazo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar Iconos
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
