@@ -621,9 +621,15 @@
                                 <option value="">Selecciona Modelo...</option>
                             </select>
                         </div>
+                        <div class="form-group" id="group-model-year" style="display:none;">
+                            <label>Modelo (Años Compatibles)</label>
+                            <input type="text" id="input-model-year" class="form-input" placeholder="Ej: 2015-2023">
+                        </div>
+
                         <div class="form-group">
-                            <label>Etiqueta</label>
-                            <input type="text" name="tag" class="form-input" placeholder="Ej: Nuevo">
+                            <label>Etiqueta / Estado</label>
+                            <input type="text" name="tag" id="input-tag" class="form-input"
+                                placeholder="Ej: Nuevo, Oferta">
                         </div>
                         <div class="form-group">
                             <label>Código de Barras</label>
@@ -939,6 +945,14 @@
             const form = e.target;
             const formData = new FormData(form);
 
+            // Handle Model Year for Cars
+            let tag = formData.get('tag') || '';
+            const modelYear = document.getElementById('input-model-year')?.value;
+            // Only append if visible
+            if (modelYear && document.getElementById('group-model-year')?.style.display !== 'none') {
+                tag = tag ? `${tag} | ${modelYear}` : modelYear;
+            }
+
             const payload = {
                 name: formData.get('name'),
                 brand: formData.get('brand'),
@@ -946,7 +960,7 @@
                 price: parseFloat(formData.get('price')),
                 stock: parseInt(formData.get('stock')),
                 use: formData.get('use'),
-                tag: formData.get('tag'),
+                tag: tag,
                 barcode: formData.get('barcode'),
                 images: productImagesBase64
             };
@@ -1346,104 +1360,104 @@
 
 </html>
 <script>
-// Logic for Bike vs Car Product Type
-const carData = {
-    'Chevrolet': ['Spark GT', 'Spark Life', 'Sail', 'Onix', 'Tracker', 'Captiva', 'N300', 'Beat', 'Optra', 'Aveo'],
-    'Renault': ['Logan', 'Sandero', 'Stepway', 'Duster', 'Kwid', 'Clio', 'Captur', 'Kangoo', 'Master'],
-    'Kia': ['Picanto Ion', 'Picanto GT Line', 'Rio Spice', 'Rio R', 'Sportage Revolution', 'Sportage QL', 'Cerato', 'Soluto'],
-    'Mazda': ['Mazda 2', 'Mazda 3', 'CX-30', 'CX-5', 'BT-50', 'Mazda 6'],
-    'Nissan': ['March', 'Versa', 'Kicks', 'Frontier', 'Qashqai', 'Sentra'],
-    'Toyota': ['Hilux', 'Fortuner', 'Corolla', 'Prado', 'TXL', 'Yaris'],
-    'Hyundai': ['Grand i10', 'Accent', 'Tucson', 'Getz', 'i25', 'Creta'],
-    'Suzuki': ['Swift', 'Vitara', 'Jimny', 'Alto'],
-    'Volkswagen': ['Gol', 'Voyage', 'Jetta', 'Amarok'],
-    'Ford': ['Fiesta', 'Ecosport', 'Escape', 'Ranger'],
-    'Taxis': ['Zapatico (Atos)', 'Grand i10', 'Picanto Taxi', 'Kia Rio Taxi', 'Cronos']
-};
+    // Logic for Bike vs Car Product Type
+    const carData = {
+        'Chevrolet': ['Spark GT', 'Spark Life', 'Sail', 'Onix', 'Tracker', 'Captiva', 'N300', 'Beat', 'Optra', 'Aveo'],
+        'Renault': ['Logan', 'Sandero', 'Stepway', 'Duster', 'Kwid', 'Clio', 'Captur', 'Kangoo', 'Master'],
+        'Kia': ['Picanto Ion', 'Picanto GT Line', 'Rio Spice', 'Rio R', 'Sportage Revolution', 'Sportage QL', 'Cerato', 'Soluto'],
+        'Mazda': ['Mazda 2', 'Mazda 3', 'CX-30', 'CX-5', 'BT-50', 'Mazda 6'],
+        'Nissan': ['March', 'Versa', 'Kicks', 'Frontier', 'Qashqai', 'Sentra'],
+        'Toyota': ['Hilux', 'Fortuner', 'Corolla', 'Prado', 'TXL', 'Yaris'],
+        'Hyundai': ['Grand i10', 'Accent', 'Tucson', 'Getz', 'i25', 'Creta'],
+        'Suzuki': ['Swift', 'Vitara', 'Jimny', 'Alto'],
+        'Volkswagen': ['Gol', 'Voyage', 'Jetta', 'Amarok'],
+        'Ford': ['Fiesta', 'Ecosport', 'Escape', 'Ranger'],
+        'Taxis': ['Zapatico (Atos)', 'Grand i10', 'Picanto Taxi', 'Kia Rio Taxi', 'Cronos']
+    };
 
-const carParts = [
-    'Automotriz - Motor', 
-    'Automotriz - Suspensión', 
-    'Automotriz - Frenos', 
-    'Automotriz - Eléctrico', 
-    'Automotriz - Carrocería', 
-    'Automotriz - Refrigeración', 
-    'Automotriz - Filtros y Aceites', 
-    'Automotriz - Transmisión',
-    'Automotriz - Lujos y Accesorios',
-    'Automotriz - Llantas'
-];
+    const carParts = [
+        'Automotriz - Motor',
+        'Automotriz - Suspensión',
+        'Automotriz - Frenos',
+        'Automotriz - Eléctrico',
+        'Automotriz - Carrocería',
+        'Automotriz - Refrigeración',
+        'Automotriz - Filtros y Aceites',
+        'Automotriz - Transmisión',
+        'Automotriz - Lujos y Accesorios',
+        'Automotriz - Llantas'
+    ];
 
-let currentProductType = 'bike';
+    let currentProductType = 'bike';
 
-function toggleProductType(type) {
-    currentProductType = type;
-    const brandSel = document.getElementById('brandSelect');
-    const catSel = document.getElementById('categorySelect');
-    const useInput = document.getElementById('input-use');
-    const useSelect = document.getElementById('select-use');
-    const useLabel = document.getElementById('lbl-use');
-    
-    // Reset values
-    document.getElementById('addProductForm').reset();
-    
-    // Re-check the radio button because reset() clears it back to default
-    // We need to manually set the radio back to 'type'
-    document.querySelector(`input[name="productType"][value="${type}"]`).checked = true;
-
-    if (type === 'car') {
-        // Car Mode
-        useLabel.innerText = "Modelo del Carro (Referencia)";
-        useInput.style.display = 'none';
-        useSelect.style.display = 'block';
-        
-        // Populate Car Brands
-        brandSel.innerHTML = '<option value="">Selecciona Marca de Carro...</option>';
-        Object.keys(carData).forEach(brand => {
-            brandSel.innerHTML += `<option value="${brand}">${brand}</option>`;
-        });
-        
-        // Populate Car Parts Categories
-        catSel.innerHTML = '<option value="">Selecciona Tipo de Repuesto...</option>';
-        carParts.forEach(part => {
-             // Remove 'Automotriz - ' prefix for display if desired, or keep it
-             const display = part.replace('Automotriz - ', '');
-             catSel.innerHTML += `<option value="${part}">${display}</option>`;
-        });
-        
-    } else {
-        // Bike Mode (Restore original logic/data)
-        useLabel.innerText = "Uso (Ej: Montaña, Ruta)";
-        useInput.style.display = 'block';
-        useSelect.style.display = 'none';
-        
-        // Reload default metadata (will require re-fetching or reloading page logic)
-        // Since we don't want to reload page, we can manually populate standard bike brands/cats
-        // Or just trigger the original load function if available.
-        // Simple workaround: reload page-like behavior or just re-populate defaults
-        loadProductMetadata(); 
-    }
-}
-
-// Hook into Brand Change to populate Models
-document.getElementById('brandSelect').addEventListener('change', function() {
-    if (currentProductType === 'car') {
-        const brand = this.value;
+    function toggleProductType(type) {
+        currentProductType = type;
+        const brandSel = document.getElementById('brandSelect');
+        const catSel = document.getElementById('categorySelect');
+        const useInput = document.getElementById('input-use');
         const useSelect = document.getElementById('select-use');
-        useSelect.innerHTML = '<option value="">Selecciona Referencia...</option>';
-        
-        if (carData[brand]) {
-            carData[brand].forEach(model => {
-                useSelect.innerHTML += `<option value="${model}">${model}</option>`;
+        const useLabel = document.getElementById('lbl-use');
+
+        // Reset values
+        document.getElementById('addProductForm').reset();
+
+        // Re-check the radio button because reset() clears it back to default
+        // We need to manually set the radio back to 'type'
+        document.querySelector(`input[name="productType"][value="${type}"]`).checked = true;
+
+        if (type === 'car') {
+            // Car Mode
+            useLabel.innerText = "Modelo del Carro (Referencia)";
+            useInput.style.display = 'none';
+            useSelect.style.display = 'block';
+
+            // Populate Car Brands
+            brandSel.innerHTML = '<option value="">Selecciona Marca de Carro...</option>';
+            Object.keys(carData).forEach(brand => {
+                brandSel.innerHTML += `<option value="${brand}">${brand}</option>`;
             });
+
+            // Populate Car Parts Categories
+            catSel.innerHTML = '<option value="">Selecciona Tipo de Repuesto...</option>';
+            carParts.forEach(part => {
+                // Remove 'Automotriz - ' prefix for display if desired, or keep it
+                const display = part.replace('Automotriz - ', '');
+                catSel.innerHTML += `<option value="${part}">${display}</option>`;
+            });
+
+        } else {
+            // Bike Mode (Restore original logic/data)
+            useLabel.innerText = "Uso (Ej: Montaña, Ruta)";
+            useInput.style.display = 'block';
+            useSelect.style.display = 'none';
+
+            // Reload default metadata (will require re-fetching or reloading page logic)
+            // Since we don't want to reload page, we can manually populate standard bike brands/cats
+            // Or just trigger the original load function if available.
+            // Simple workaround: reload page-like behavior or just re-populate defaults
+            loadProductMetadata();
         }
     }
-});
 
-// Initial Load Fix
-// Ensure 'use-input' value goes to 'final-use' on load
-document.getElementById('input-use').addEventListener('input', function() {
-    document.getElementById('final-use').value = this.value;
-});
+    // Hook into Brand Change to populate Models
+    document.getElementById('brandSelect').addEventListener('change', function () {
+        if (currentProductType === 'car') {
+            const brand = this.value;
+            const useSelect = document.getElementById('select-use');
+            useSelect.innerHTML = '<option value="">Selecciona Referencia...</option>';
+
+            if (carData[brand]) {
+                carData[brand].forEach(model => {
+                    useSelect.innerHTML += `<option value="${model}">${model}</option>`;
+                });
+            }
+        }
+    });
+
+    // Initial Load Fix
+    // Ensure 'use-input' value goes to 'final-use' on load
+    document.getElementById('input-use').addEventListener('input', function () {
+        document.getElementById('final-use').value = this.value;
+    });
 
 </script>
