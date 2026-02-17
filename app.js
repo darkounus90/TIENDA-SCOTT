@@ -835,8 +835,9 @@ function updateLoginButton() {
     };
 
     // Lógica para administradores
-    // Check both role (string) and isAdmin (boolean from some tokens)
-    if ((currentUser.role === 'admin' || currentUser.isAdmin === true) && !document.getElementById('menuAdmin')) {
+    // Lógica para administradores
+    // Check role or loose equality for isAdmin (handles 1 or true)
+    if ((currentUser.role === 'admin' || currentUser.isAdmin == true) && !document.getElementById('menuAdmin')) {
       const userDropdown = document.getElementById("userDropdown");
       const divider = userDropdown.querySelector('.dropdown-divider');
       const logoutBtn = document.getElementById("menuLogout");
