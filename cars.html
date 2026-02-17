@@ -3,22 +3,22 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Accesorios para Carro - Grupo Empresarial El Pedalazo</title>
+    <title>Repuestos y Accesorios de Carro - El Pedalazo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="stylesheet" href="style.css?v=14.3.0" />
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Estilos específicos para la sección de carros */
+        /* Estilos específicos para carros */
         .hero-car {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80');
+            /* Fondo urbano colombiano/taller sugiere repuestos */
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80');
             background-size: cover;
             background-position: center;
-            height: 60vh;
+            height: 50vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -32,33 +32,29 @@
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
-        .car-category-card:hover {
+        .car-category-card:hover,
+        .car-category-card.active {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
-            /* Lila glow */
-            border-color: #a855f7;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
         }
 
-        .car-category-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(168, 85, 247, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #a855f7;
+        .car-brand-logo {
+            font-weight: 800;
             font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: white;
         }
 
         .viewer-loader {
@@ -119,47 +115,47 @@
     <!-- HERO CARROS -->
     <section class="hero-car">
         <div class="container">
-            <h1 style="font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">Auto Parts
-                Premium</h1>
-            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Equipa tu vehículo con los mejores
-                accesorios y repuestos. Calidad garantizada por El Pedalazo.</p>
+            <h1 style="font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">Repuestos
+                Comerciales</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Todo para los vehículos más vendidos en
+                Colombia. Spark, Logan, Picanto y más.</p>
         </div>
     </section>
 
-    <!-- CATEGORÍAS CARROS -->
+    <!-- FILTRADO POR MARCA/MODELO -->
     <section class="section">
         <div class="container">
-            <h2>Categorías Automotriz</h2>
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 2rem;">
+            <h2>Busca por tu carro</h2>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); margin-top: 2rem;">
 
-                <article class="car-category-card" onclick="filterLocal('Interiores')">
-                    <div class="car-category-icon"><i data-lucide="car"></i></div>
-                    <h3>Interiores</h3>
-                    <p>Tapetes, fundas y confort</p>
+                <article class="car-category-card" onclick="filterLocal('Chevrolet')">
+                    <div class="car-brand-logo" style="color:#fbbf24;">Chevrolet</div> <!-- Dorado Chevrolet (aprox) -->
+                    <p class="text-xs text-muted">Spark GT, Sail, Onix, Tracker</p>
                 </article>
 
-                <article class="car-category-card" onclick="filterLocal('Audio')">
-                    <div class="car-category-icon"><i data-lucide="music"></i></div>
-                    <h3>Audio y Video</h3>
-                    <p>Radios, parlantes y pantallas</p>
+                <article class="car-category-card" onclick="filterLocal('Renault')">
+                    <div class="car-brand-logo" style="color:#facc15;">Renault</div> <!-- Amarillo Renault -->
+                    <p class="text-xs text-muted">Logan, Sandero, Duster, Kwid</p>
                 </article>
 
-                <article class="car-category-card" onclick="filterLocal('Herramientas')">
-                    <div class="car-category-icon"><i data-lucide="wrench"></i></div>
-                    <h3>Herramientas</h3>
-                    <p>Kits de carretera y limpieza</p>
+                <article class="car-category-card" onclick="filterLocal('Kia')">
+                    <div class="car-brand-logo" style="color:#ef4444;">Kia</div> <!-- Rojo Kia -->
+                    <p class="text-xs text-muted">Picanto Ion/GT, Rio, Sportage</p>
                 </article>
 
-                <article class="car-category-card" onclick="filterLocal('Iluminación')">
-                    <div class="car-category-icon"><i data-lucide="lightbulb"></i></div>
-                    <h3>Iluminación</h3>
-                    <p>Luces LED, exploradoras y más</p>
+                <article class="car-category-card" onclick="filterLocal('Mazda')">
+                    <div class="car-brand-logo" style="color:#d1d5db;">Mazda</div> <!-- Plateado -->
+                    <p class="text-xs text-muted">Mazda 2, 3, CX-30, CX-5</p>
                 </article>
 
-                <article class="car-category-card" onclick="filterLocal('Seguridad')">
-                    <div class="car-category-icon"><i data-lucide="shield"></i></div>
-                    <h3>Seguridad</h3>
-                    <p>Alarmas, bloqueos y cámaras</p>
+                <article class="car-category-card" onclick="filterLocal('Nissan')">
+                    <div class="car-brand-logo" style="color:#ef4444;">Nissan</div>
+                    <p class="text-xs text-muted">March, Versa, Kicks</p>
+                </article>
+
+                <article class="car-category-card" onclick="filterLocal('Taxi')">
+                    <div class="car-brand-logo" style="color:#fbbf24;">Taxis / SP</div>
+                    <p class="text-xs text-muted">Zapaticos, Cronos, Twingo</p>
                 </article>
 
             </div>
@@ -170,21 +166,21 @@
     <section class="section" style="background: var(--bg-surface); min-height: 400px;">
         <div class="container">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2>Productos Destacados</h2>
+                <h2 id="productsTitle">Todos los Repuestos</h2>
                 <button id="resetFilterBtn" onclick="resetFilter()" class="btn-secondary"
                     style="display:none; font-size:0.8rem; padding: 0.4rem 0.8rem;">Ver Todos</button>
             </div>
 
             <div class="grid productos__grid" id="carProductsList" style="margin-top: 2rem;">
                 <div class="viewer-loader" style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-                    Cargando inventario automotriz...
+                    Cargando inventario...
                 </div>
             </div>
 
             <div id="noProductsMsg" style="display:none; text-align: center; margin-top: 3rem;">
-                <p class="text-muted">No se encontraron productos en esta categoría por el momento.</p>
-                <button class="btn-secondary" onclick="resetFilter()" style="margin-top:1rem;">Ver otros
-                    productos</button>
+                <p class="text-muted">No encontramos repuestos específicos para este filtro por ahora.</p>
+                <button class="btn-secondary" onclick="resetFilter()" style="margin-top:1rem;">Ver todo el
+                    inventario</button>
             </div>
         </div>
     </section>
@@ -194,7 +190,7 @@
         <div class="container footer__content">
             <div>
                 <img src="logo-pedalazo-completo.svg" alt="El Pedalazo" style="height: 60px; margin-bottom: 1rem;">
-                <p>Tu tienda de bicicletas y accesorios en línea.</p>
+                <p>Tu tienda de bicicletas y ahora repuestos automotrices.</p>
             </div>
             <div>
                 <h4>Contacto</h4>
@@ -207,112 +203,139 @@
             </div>
         </div>
         <div class="footer__bottom">
-            <p>&copy; 2026 Grupo Empresarial El Pedalazo. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Grupo Empresarial El Pedalazo.</p>
         </div>
     </footer>
 
     <script>
-        // Inicializar Iconos
-        lucide.createIcons();
+    lucide.createIcons();
 
-        // Lógica para cargar productos de carros
-        const API_BASE = 'api/products.php';
-        let allCarProducts = [];
+    const API_BASE = 'api/products.php'; 
+    let allCarProducts = [];
 
-        async function fetchCarProducts() {
-            const container = document.getElementById('carProductsList');
-            try {
-                const res = await fetch(API_BASE);
-                const data = await res.json();
+    // Palabras clave extendidas para Colombia
+    const carKeywords = [
+        'automotriz', 'carro', 'coche', 'vehiculo', 
+        'chevrolet', 'spark', 'sail', 'onix', 'tracker',
+        'renault', 'logan', 'sandero', 'duster', 'kwid', 'stepway',
+        'kia', 'picanto', 'rio', 'sportage',
+        'mazda', 'cx-30', 'cx-5',
+        'nissan', 'march', 'versa',
+        'taxi', 'hyundai', 'i10', 'atos', 'grand i10'
+    ];
 
-                if (data.success && Array.isArray(data.products)) {
-                    // Filtrar solo categorías de autos
-                    allCarProducts = data.products.filter(p => {
-                        const cat = (p.category || '').toLowerCase();
-                        const name = (p.name || '').toLowerCase();
-                        // Palabras clave para identificar productos de autos
-                        return cat.includes('automotriz') || cat.includes('carro') || cat.includes('coche') || cat.includes('vehiculo') ||
-                            name.includes('automotriz') || name.includes('carro');
-                    });
-                    renderCarProducts(allCarProducts);
-                } else {
-                    container.innerHTML = '<p class="text-muted" style="grid-column:1/-1; text-align:center;">No se pudo cargar el inventario.</p>';
-                }
-            } catch (e) {
-                console.error("Error al cargar productos", e);
-                container.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">Error de conexión. Intenta recargar la página.</p>';
+    async function fetchCarProducts() {
+        const container = document.getElementById('carProductsList');
+        try {
+            const res = await fetch(API_BASE);
+            const data = await res.json();
+            
+            if (data.success && Array.isArray(data.products)) {
+                
+                allCarProducts = data.products.filter(p => {
+                    const cat = (p.category || '').toLowerCase();
+                    const name = (p.name || '').toLowerCase();
+                    const brand = (p.brand || '').toLowerCase();
+                    
+                    // Verificar si coincide con alguna keyword de carro
+                    return carKeywords.some(k => cat.includes(k) || name.includes(k) || brand.includes(k));
+                });
+                
+                renderCarProducts(allCarProducts);
+            } else {
+                 container.innerHTML = '<p class="text-muted" style="grid-column:1/-1; text-align:center;">Inventario vacio.</p>';
             }
+        } catch (e) {
+            console.error("Error al cargar productos", e);
+            container.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">Error de conexión.</p>';
+        }
+    }
+
+    function renderCarProducts(products) {
+        const container = document.getElementById('carProductsList');
+        const noMsg = document.getElementById('noProductsMsg');
+        
+        if (!products || products.length === 0) {
+            container.innerHTML = '';
+            noMsg.style.display = 'block';
+            return;
         }
 
-        function renderCarProducts(products) {
-            const container = document.getElementById('carProductsList');
-            const noMsg = document.getElementById('noProductsMsg');
+        noMsg.style.display = 'none';
+        container.innerHTML = products.map(p => {
+            const imagePath = (p.images && p.images.length > 0) ? p.images[0] : '';
+            const finalImg = imagePath.startsWith('http') || imagePath.startsWith('data:') ? imagePath : `api/../${imagePath}`;
 
-            if (!products || products.length === 0) {
-                container.innerHTML = '';
-                noMsg.style.display = 'block';
-                return;
-            }
-
-            noMsg.style.display = 'none';
-            container.innerHTML = products.map(p => {
-                const imagePath = (p.images && p.images.length > 0) ? p.images[0] : '';
-                // Asegurar ruta correcta si no empieza con http
-                const finalImg = imagePath.startsWith('http') || imagePath.startsWith('data:') ? imagePath : `api/../${imagePath}`;
-
-                return `
+            return `
             <article class="card product-card">
                 <div class="product-card__image">
-                    ${imagePath
-                        ? `<img src="${finalImg}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'product-card__image-placeholder\\'>${p.name}</div>'">`
-                        : `<div class="product-card__image-placeholder" style="background: linear-gradient(135deg, #1e293b, #334155);">${p.name}</div>`
+                    ${imagePath 
+                      ? `<img src="${finalImg}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'product-card__image-placeholder\\'>${p.name}</div>'">` 
+                      : `<div class="product-card__image-placeholder" style="background: linear-gradient(135deg, #1e293b, #334155);">${p.name}</div>`
                     }
                 </div>
-                <div class="product-card__brand">${p.brand || 'El Pedalazo'}</div>
+                <div class="product-card__brand">${p.brand || p.category || 'Repuesto'}</div>
                 <h3 class="product-card__title">${p.name}</h3>
                 <div class="product-card__meta">
                     <span class="product-card__price">$${Number(p.price).toLocaleString()}</span>
                     ${p.tag ? `<span class="product-card__tag">${p.tag}</span>` : ''}
                 </div>
                 <div class="product-card__actions">
-                    <button class="btn-primary btn-full" onclick="window.location.href='index.html#contacto'" title="Consultar disponibilidad">
-                        Consultar
+                    <button class="btn-primary btn-full" onclick="window.location.href='index.html#contacto'" title="Cotizar">
+                        Cotizar
                     </button>
                 </div>
             </article>
         `}).join('');
-            lucide.createIcons();
-        }
+        lucide.createIcons();
+    }
 
-        function filterLocal(term) {
-            const resetBtn = document.getElementById('resetFilterBtn');
-            if (!term) {
-                renderCarProducts(allCarProducts);
-                resetBtn.style.display = 'none';
-                return;
-            }
+    function filterLocal(term) {
+        const resetBtn = document.getElementById('resetFilterBtn');
+        const title = document.getElementById('productsTitle');
+        
+        // Highlight active card
+        document.querySelectorAll('.car-category-card').forEach(c => c.classList.remove('active'));
+        // Find card that was clicked (approximate)
+        // logic handled by UI feedback mostly, simple here.
 
-            const filtered = allCarProducts.filter(p => {
-                const cat = (p.category || '').toLowerCase();
-                const name = (p.name || '').toLowerCase();
-                const t = term.toLowerCase();
-                return cat.includes(t) || name.includes(t);
-            });
-
-            renderCarProducts(filtered);
-            resetBtn.style.display = 'block';
-
-            // Scroll to products
-            document.getElementById('carProductsList').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        function resetFilter() {
+        if (!term) {
             renderCarProducts(allCarProducts);
-            document.getElementById('resetFilterBtn').style.display = 'none';
+            resetBtn.style.display = 'none';
+            title.textContent = "Todos los Repuestos";
+            return;
         }
 
-        // Iniciar carga
-        document.addEventListener('DOMContentLoaded', fetchCarProducts);
+        title.textContent = `Repuestos para ${term}`;
+        const t = term.toLowerCase();
+
+        const filtered = allCarProducts.filter(p => {
+             const cat = (p.category || '').toLowerCase();
+             const name = (p.name || '').toLowerCase();
+             const brand = (p.brand || '').toLowerCase();
+             
+             // Comprobaciones específicas para "Taxi" que pueden ser varias marcas
+             if (t === 'taxi') {
+                 return cat.includes('taxi') || name.includes('taxi') || name.includes('zapatico') || name.includes('atos') || name.includes('cronos');
+             }
+
+             return cat.includes(t) || name.includes(t) || brand.includes(t);
+        });
+        
+        renderCarProducts(filtered);
+        resetBtn.style.display = 'block';
+        
+        document.getElementById('carProductsList').scrollIntoView({ behavior: 'smooth', block:'start' });
+    }
+
+    function resetFilter() {
+        renderCarProducts(allCarProducts);
+        document.getElementById('resetFilterBtn').style.display = 'none';
+        document.getElementById('productsTitle').textContent = "Todos los Repuestos";
+        document.querySelectorAll('.car-category-card').forEach(c => c.classList.remove('active'));
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchCarProducts);
     </script>
 </body>
 
