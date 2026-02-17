@@ -835,7 +835,8 @@ function updateLoginButton() {
     };
 
     // Lógica para administradores
-    if (currentUser.role === 'admin' && !document.getElementById('menuAdmin')) {
+    // Check both role (string) and isAdmin (boolean from some tokens)
+    if ((currentUser.role === 'admin' || currentUser.isAdmin === true) && !document.getElementById('menuAdmin')) {
       const userDropdown = document.getElementById("userDropdown");
       const divider = userDropdown.querySelector('.dropdown-divider');
       const logoutBtn = document.getElementById("menuLogout");
@@ -1316,7 +1317,8 @@ async function initSession() {
       currentUser = {
         username: payload.username,
         email: payload.email || '', // Podría faltar en tokens antiguos
-        isAdmin: payload.isAdmin,
+        isAdmin: payload.isAdmin || payload.role === 'admin',
+        role: payload.role || (payload.isAdmin ? 'admin' : 'user'),
         phone: payload.phone || ''
       };
 
