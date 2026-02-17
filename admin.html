@@ -517,6 +517,24 @@
             <form id="addProductForm" class="product-form" onsubmit="submitProduct(event)">
                 <div class="form-body">
                     <div class="form-grid">
+                        <div class="form-group full-width"
+                            style="margin-bottom: 1rem; background: rgba(59, 130, 246, 0.05); padding: 1rem; border-radius: 8px; border: 1px dashed var(--glass-border);">
+                            <label style="margin-bottom: 0.5rem; display: block; font-weight: 600;">Tipo de
+                                Producto:</label>
+                            <div style="display: flex; gap: 2rem;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                    <input type="radio" name="productType" value="bike" checked
+                                        onchange="toggleProductType('bike')">
+                                    🚲 Bicicleta / Ciclismo
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                    <input type="radio" name="productType" value="car"
+                                        onchange="toggleProductType('car')">
+                                    🚗 Automotriz / Repuesto
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label>Nombre del Producto</label>
                             <input type="text" name="name" required class="form-input" placeholder="Ej: Scott Spark RC">
@@ -589,8 +607,19 @@
                             <input type="number" name="stock" required class="form-input" placeholder="1">
                         </div>
                         <div class="form-group">
-                            <label>Uso</label>
-                            <input type="text" name="use" required class="form-input" placeholder="Ej: Montaña, Ruta">
+                            <label id="lbl-use">Uso / Modelo (Referencia)</label>
+                            <!-- Hidden input captures the final value -->
+                            <input type="hidden" name="use" id="final-use">
+
+                            <!-- Mode: Text Input (Default/Bikes) -->
+                            <input type="text" id="input-use" class="form-input" placeholder="Ej: Montaña, Ruta"
+                                oninput="document.getElementById('final-use').value = this.value">
+
+                            <!-- Mode: Select (Cars) -->
+                            <select id="select-use" class="form-input" style="display:none;"
+                                onchange="document.getElementById('final-use').value = this.value; document.getElementById('input-use').value = this.value;">
+                                <option value="">Selecciona Modelo...</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Etiqueta</label>
@@ -1316,3 +1345,105 @@
 </body>
 
 </html>
+<script>
+// Logic for Bike vs Car Product Type
+const carData = {
+    'Chevrolet': ['Spark GT', 'Spark Life', 'Sail', 'Onix', 'Tracker', 'Captiva', 'N300', 'Beat', 'Optra', 'Aveo'],
+    'Renault': ['Logan', 'Sandero', 'Stepway', 'Duster', 'Kwid', 'Clio', 'Captur', 'Kangoo', 'Master'],
+    'Kia': ['Picanto Ion', 'Picanto GT Line', 'Rio Spice', 'Rio R', 'Sportage Revolution', 'Sportage QL', 'Cerato', 'Soluto'],
+    'Mazda': ['Mazda 2', 'Mazda 3', 'CX-30', 'CX-5', 'BT-50', 'Mazda 6'],
+    'Nissan': ['March', 'Versa', 'Kicks', 'Frontier', 'Qashqai', 'Sentra'],
+    'Toyota': ['Hilux', 'Fortuner', 'Corolla', 'Prado', 'TXL', 'Yaris'],
+    'Hyundai': ['Grand i10', 'Accent', 'Tucson', 'Getz', 'i25', 'Creta'],
+    'Suzuki': ['Swift', 'Vitara', 'Jimny', 'Alto'],
+    'Volkswagen': ['Gol', 'Voyage', 'Jetta', 'Amarok'],
+    'Ford': ['Fiesta', 'Ecosport', 'Escape', 'Ranger'],
+    'Taxis': ['Zapatico (Atos)', 'Grand i10', 'Picanto Taxi', 'Kia Rio Taxi', 'Cronos']
+};
+
+const carParts = [
+    'Automotriz - Motor', 
+    'Automotriz - Suspensión', 
+    'Automotriz - Frenos', 
+    'Automotriz - Eléctrico', 
+    'Automotriz - Carrocería', 
+    'Automotriz - Refrigeración', 
+    'Automotriz - Filtros y Aceites', 
+    'Automotriz - Transmisión',
+    'Automotriz - Lujos y Accesorios',
+    'Automotriz - Llantas'
+];
+
+let currentProductType = 'bike';
+
+function toggleProductType(type) {
+    currentProductType = type;
+    const brandSel = document.getElementById('brandSelect');
+    const catSel = document.getElementById('categorySelect');
+    const useInput = document.getElementById('input-use');
+    const useSelect = document.getElementById('select-use');
+    const useLabel = document.getElementById('lbl-use');
+    
+    // Reset values
+    document.getElementById('addProductForm').reset();
+    
+    // Re-check the radio button because reset() clears it back to default
+    // We need to manually set the radio back to 'type'
+    document.querySelector(`input[name="productType"][value="${type}"]`).checked = true;
+
+    if (type === 'car') {
+        // Car Mode
+        useLabel.innerText = "Modelo del Carro (Referencia)";
+        useInput.style.display = 'none';
+        useSelect.style.display = 'block';
+        
+        // Populate Car Brands
+        brandSel.innerHTML = '<option value="">Selecciona Marca de Carro...</option>';
+        Object.keys(carData).forEach(brand => {
+            brandSel.innerHTML += `<option value="${brand}">${brand}</option>`;
+        });
+        
+        // Populate Car Parts Categories
+        catSel.innerHTML = '<option value="">Selecciona Tipo de Repuesto...</option>';
+        carParts.forEach(part => {
+             // Remove 'Automotriz - ' prefix for display if desired, or keep it
+             const display = part.replace('Automotriz - ', '');
+             catSel.innerHTML += `<option value="${part}">${display}</option>`;
+        });
+        
+    } else {
+        // Bike Mode (Restore original logic/data)
+        useLabel.innerText = "Uso (Ej: Montaña, Ruta)";
+        useInput.style.display = 'block';
+        useSelect.style.display = 'none';
+        
+        // Reload default metadata (will require re-fetching or reloading page logic)
+        // Since we don't want to reload page, we can manually populate standard bike brands/cats
+        // Or just trigger the original load function if available.
+        // Simple workaround: reload page-like behavior or just re-populate defaults
+        loadProductMetadata(); 
+    }
+}
+
+// Hook into Brand Change to populate Models
+document.getElementById('brandSelect').addEventListener('change', function() {
+    if (currentProductType === 'car') {
+        const brand = this.value;
+        const useSelect = document.getElementById('select-use');
+        useSelect.innerHTML = '<option value="">Selecciona Referencia...</option>';
+        
+        if (carData[brand]) {
+            carData[brand].forEach(model => {
+                useSelect.innerHTML += `<option value="${model}">${model}</option>`;
+            });
+        }
+    }
+});
+
+// Initial Load Fix
+// Ensure 'use-input' value goes to 'final-use' on load
+document.getElementById('input-use').addEventListener('input', function() {
+    document.getElementById('final-use').value = this.value;
+});
+
+</script>
