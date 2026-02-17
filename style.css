@@ -2708,3 +2708,60 @@ a {
   color: var(--text-main);
   display: block !important;
 }
+/* 
+   NAVEGACIÓN DESTACADA - Para tu carro! 
+   Estilo premium y resaltado como nueva funcionalidad.
+*/
+
+.nav-highlight {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: #c084fc !important; /* Lila brillante */
+  font-weight: 700 !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  letter-spacing: 0.02em;
+}
+
+.nav-highlight:hover {
+  color: #d8b4fe !important;
+  transform: translateY(-2px);
+  text-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
+}
+
+.nav-badge {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: white;
+  font-size: 0.6rem !important;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4);
+  animation: badge-pulse 2s infinite;
+}
+
+/* Animación sutil para llamar la atención */
+@keyframes badge-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(168, 85, 247, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+}
+
+/* Ocultar en móvil para no desbordar (opcional, o estilizar diferente) */
+@media (max-width: 768px) {
+  .nav-highlight {
+    flex-direction: row-reverse; /* Badge primero o ajustar */
+    justify-content: center;
+    width: 100%;
+    color: #c084fc !important;
+  }
+  
+  .nav-badge {
+    margin-right: 0.5rem;
+    font-size: 0.7rem !important;
+  }
+}
