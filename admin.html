@@ -759,7 +759,11 @@
                     // Categories
                     const cSel = document.getElementById('categorySelect');
                     if (cSel && data.categories) {
-                        const defaults = ['Bicicletas', 'Accesorios', 'Repuestos', 'Ropa', 'Cascos', 'Zapatillas'];
+                        const defaults = [
+                            'Bicicletas', 'Accesorios', 'Repuestos', 'Ropa', 'Cascos', 'Zapatillas',
+                            'Automotriz - Interiores', 'Automotriz - Audio y Video',
+                            'Automotriz - Herramientas', 'Automotriz - Iluminación', 'Automotriz - Seguridad'
+                        ];
                         const allCats = [...new Set([...defaults, ...data.categories])].sort();
                         cSel.innerHTML = '<option value="">Selecciona Categoría...</option>' +
                             allCats.map(c => `<option value="${c}">${c}</option>`).join('');

@@ -60,6 +60,26 @@
             color: #a855f7;
             font-size: 1.5rem;
         }
+
+        .viewer-loader {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
     </style>
 </head>
 
@@ -112,31 +132,31 @@
             <h2>Categorías Automotriz</h2>
             <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 2rem;">
 
-                <article class="car-category-card">
+                <article class="car-category-card" onclick="filterLocal('Interiores')">
                     <div class="car-category-icon"><i data-lucide="car"></i></div>
                     <h3>Interiores</h3>
                     <p>Tapetes, fundas y confort</p>
                 </article>
 
-                <article class="car-category-card">
+                <article class="car-category-card" onclick="filterLocal('Audio')">
                     <div class="car-category-icon"><i data-lucide="music"></i></div>
                     <h3>Audio y Video</h3>
                     <p>Radios, parlantes y pantallas</p>
                 </article>
 
-                <article class="car-category-card">
+                <article class="car-category-card" onclick="filterLocal('Herramientas')">
                     <div class="car-category-icon"><i data-lucide="wrench"></i></div>
                     <h3>Herramientas</h3>
                     <p>Kits de carretera y limpieza</p>
                 </article>
 
-                <article class="car-category-card">
+                <article class="car-category-card" onclick="filterLocal('Iluminación')">
                     <div class="car-category-icon"><i data-lucide="lightbulb"></i></div>
                     <h3>Iluminación</h3>
                     <p>Luces LED, exploradoras y más</p>
                 </article>
 
-                <article class="car-category-card">
+                <article class="car-category-card" onclick="filterLocal('Seguridad')">
                     <div class="car-category-icon"><i data-lucide="shield"></i></div>
                     <h3>Seguridad</h3>
                     <p>Alarmas, bloqueos y cámaras</p>
@@ -146,64 +166,25 @@
         </div>
     </section>
 
-    <!-- PRODUCTOS CARROS (Placeholder) -->
-    <section class="section" style="background: var(--bg-surface);">
+    <!-- PRODUCTOS CARROS DINÁMICOS -->
+    <section class="section" style="background: var(--bg-surface); min-height: 400px;">
         <div class="container">
-            <h2>Productos Destacados</h2>
-            <div class="grid productos__grid">
-                <!-- Ejemplo Producto 1 -->
-                <article class="card product-card">
-                    <div class="product-card__image">
-                        <div class="product-card__image-placeholder"
-                            style="background: linear-gradient(135deg, #1e293b, #334155);">Radio Android</div>
-                    </div>
-                    <div class="product-card__brand">Pioneer</div>
-                    <h3 class="product-card__title">Radio Pantalla Táctil 9"</h3>
-                    <div class="product-card__meta">
-                        <span class="product-card__price">$450.000</span>
-                        <span class="product-card__tag">Oferta</span>
-                    </div>
-                    <div class="product-card__actions">
-                        <button class="btn-primary btn-full">Ver detalle</button>
-                    </div>
-                </article>
-
-                <!-- Ejemplo Producto 2 -->
-                <article class="card product-card">
-                    <div class="product-card__image">
-                        <div class="product-card__image-placeholder"
-                            style="background: linear-gradient(135deg, #1e293b, #334155);">Kit Carretera</div>
-                    </div>
-                    <div class="product-card__brand">Seguridad Vial</div>
-                    <h3 class="product-card__title">Kit de Carretera Reglamentario</h3>
-                    <div class="product-card__meta">
-                        <span class="product-card__price">$85.000</span>
-                    </div>
-                    <div class="product-card__actions">
-                        <button class="btn-primary btn-full">Ver detalle</button>
-                    </div>
-                </article>
-
-                <!-- Ejemplo Producto 3 -->
-                <article class="card product-card">
-                    <div class="product-card__image">
-                        <div class="product-card__image-placeholder"
-                            style="background: linear-gradient(135deg, #1e293b, #334155);">Luces LED</div>
-                    </div>
-                    <div class="product-card__brand">Lumina</div>
-                    <h3 class="product-card__title">Bombillos LED H4 8000Lm</h3>
-                    <div class="product-card__meta">
-                        <span class="product-card__price">$120.000</span>
-                        <span class="product-card__tag">Nuevo</span>
-                    </div>
-                    <div class="product-card__actions">
-                        <button class="btn-primary btn-full">Ver detalle</button>
-                    </div>
-                </article>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2>Productos Destacados</h2>
+                <button id="resetFilterBtn" onclick="resetFilter()" class="btn-secondary"
+                    style="display:none; font-size:0.8rem; padding: 0.4rem 0.8rem;">Ver Todos</button>
             </div>
 
-            <div style="margin-top: 3rem; text-align: center;">
-                <p class="text-muted">Estamos cargando más productos...</p>
+            <div class="grid productos__grid" id="carProductsList" style="margin-top: 2rem;">
+                <div class="viewer-loader" style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+                    Cargando inventario automotriz...
+                </div>
+            </div>
+
+            <div id="noProductsMsg" style="display:none; text-align: center; margin-top: 3rem;">
+                <p class="text-muted">No se encontraron productos en esta categoría por el momento.</p>
+                <button class="btn-secondary" onclick="resetFilter()" style="margin-top:1rem;">Ver otros
+                    productos</button>
             </div>
         </div>
     </section>
@@ -233,6 +214,105 @@
     <script>
         // Inicializar Iconos
         lucide.createIcons();
+
+        // Lógica para cargar productos de carros
+        const API_BASE = 'api/products.php';
+        let allCarProducts = [];
+
+        async function fetchCarProducts() {
+            const container = document.getElementById('carProductsList');
+            try {
+                const res = await fetch(API_BASE);
+                const data = await res.json();
+
+                if (data.success && Array.isArray(data.products)) {
+                    // Filtrar solo categorías de autos
+                    allCarProducts = data.products.filter(p => {
+                        const cat = (p.category || '').toLowerCase();
+                        const name = (p.name || '').toLowerCase();
+                        // Palabras clave para identificar productos de autos
+                        return cat.includes('automotriz') || cat.includes('carro') || cat.includes('coche') || cat.includes('vehiculo') ||
+                            name.includes('automotriz') || name.includes('carro');
+                    });
+                    renderCarProducts(allCarProducts);
+                } else {
+                    container.innerHTML = '<p class="text-muted" style="grid-column:1/-1; text-align:center;">No se pudo cargar el inventario.</p>';
+                }
+            } catch (e) {
+                console.error("Error al cargar productos", e);
+                container.innerHTML = '<p style="text-align:center; color:red; grid-column:1/-1;">Error de conexión. Intenta recargar la página.</p>';
+            }
+        }
+
+        function renderCarProducts(products) {
+            const container = document.getElementById('carProductsList');
+            const noMsg = document.getElementById('noProductsMsg');
+
+            if (!products || products.length === 0) {
+                container.innerHTML = '';
+                noMsg.style.display = 'block';
+                return;
+            }
+
+            noMsg.style.display = 'none';
+            container.innerHTML = products.map(p => {
+                const imagePath = (p.images && p.images.length > 0) ? p.images[0] : '';
+                // Asegurar ruta correcta si no empieza con http
+                const finalImg = imagePath.startsWith('http') || imagePath.startsWith('data:') ? imagePath : `api/../${imagePath}`;
+
+                return `
+            <article class="card product-card">
+                <div class="product-card__image">
+                    ${imagePath
+                        ? `<img src="${finalImg}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'product-card__image-placeholder\\'>${p.name}</div>'">`
+                        : `<div class="product-card__image-placeholder" style="background: linear-gradient(135deg, #1e293b, #334155);">${p.name}</div>`
+                    }
+                </div>
+                <div class="product-card__brand">${p.brand || 'El Pedalazo'}</div>
+                <h3 class="product-card__title">${p.name}</h3>
+                <div class="product-card__meta">
+                    <span class="product-card__price">$${Number(p.price).toLocaleString()}</span>
+                    ${p.tag ? `<span class="product-card__tag">${p.tag}</span>` : ''}
+                </div>
+                <div class="product-card__actions">
+                    <button class="btn-primary btn-full" onclick="window.location.href='index.html#contacto'" title="Consultar disponibilidad">
+                        Consultar
+                    </button>
+                </div>
+            </article>
+        `}).join('');
+            lucide.createIcons();
+        }
+
+        function filterLocal(term) {
+            const resetBtn = document.getElementById('resetFilterBtn');
+            if (!term) {
+                renderCarProducts(allCarProducts);
+                resetBtn.style.display = 'none';
+                return;
+            }
+
+            const filtered = allCarProducts.filter(p => {
+                const cat = (p.category || '').toLowerCase();
+                const name = (p.name || '').toLowerCase();
+                const t = term.toLowerCase();
+                return cat.includes(t) || name.includes(t);
+            });
+
+            renderCarProducts(filtered);
+            resetBtn.style.display = 'block';
+
+            // Scroll to products
+            document.getElementById('carProductsList').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function resetFilter() {
+            renderCarProducts(allCarProducts);
+            document.getElementById('resetFilterBtn').style.display = 'none';
+        }
+
+        // Iniciar carga
+        document.addEventListener('DOMContentLoaded', fetchCarProducts);
     </script>
 </body>
 
