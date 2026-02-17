@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
-<g transform="translate(20, -50) scale(0.8)">
+<g transform="translate(20, 10) scale(0.8)">
   <rect x="80" y="70" width="70" height="360" rx="10" fill="white" />
   <path d="M 240.0 40.0 L 287.8 84.5 L 353.1 86.9 L 355.5 152.2 L 400.0 200.0 L 355.5 247.8 L 353.1 313.1 L 287.8 315.5 L 240.0 360.0 L 192.2 315.5 L 126.9 313.1 L 124.5 247.8 L 80.0 200.0 L 124.5 152.2 L 126.9 86.9 L 192.2 84.5 Z M 240 130 A 70 70 0 1 0 240 270 A 70 70 0 1 0 240 130 Z" fill="white" fill-rule="evenodd" />
 </g>
-<text x="450" y="230" font-family="Arial, sans-serif" font-size="140" font-weight="900" fill="white" letter-spacing="5">EL PEDALAZO</text>
+<text x="360" y="270" font-family="'Inter', sans-serif" font-size="160" font-weight="800" fill="white" letter-spacing="-2">edalazo</text>
 </svg>
