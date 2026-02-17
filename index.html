@@ -223,16 +223,77 @@
     </div>
   </section>
 
-  <!-- UBICACIÓN -->
+  <!-- UBICACIÓN & CONTACTO DETALLADO -->
   <section class="section">
-    <div class="container" style="text-align: center;">
-      <h2 style="margin-bottom: 1.5rem;">Nuestra Ubicación</h2>
-      <div
-        style="max-width: 800px; margin: 0 auto; border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-        <iframe
-          src="https://maps.google.com/maps?q=Cra%205%20%239-53%2C%20Pitalito%2C%20Huila&t=&z=17&ie=UTF8&iwloc=&output=embed"
-          width="100%" height="350" style="border:0; display:block;" allowfullscreen="" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="container">
+      <div class="grid"
+        style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; align-items: center;">
+
+        <!-- Info Side -->
+        <div class="contact-info">
+          <h2 style="margin-bottom: 1rem; font-size: 2.5rem;">Visítanos</h2>
+          <p class="text-muted" style="margin-bottom: 2rem; font-size: 1.1rem;">
+            Estamos ubicados en el corazón de Pitalito. Ven y conoce nuestra tienda principal con el mejor surtido.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <div
+                style="background: rgba(59, 130, 246, 0.1); padding: 0.8rem; border-radius: 12px; color: #3b82f6; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="map-pin" style="width: 24px; height: 24px;"></i>
+              </div>
+              <div>
+                <h4 style="margin: 0 0 0.2rem 0; font-weight: 700;">Dirección</h4>
+                <p style="margin: 0; color: var(--text-muted);">Cra 5 #9-53, Centro</p>
+                <p style="margin: 0; color: var(--text-muted);">Pitalito, Huila</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <div
+                style="background: rgba(59, 130, 246, 0.1); padding: 0.8rem; border-radius: 12px; color: #3b82f6; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="clock" style="width: 24px; height: 24px;"></i>
+              </div>
+              <div>
+                <h4 style="margin: 0 0 0.2rem 0; font-weight: 700;">Horario de Atención</h4>
+                <p style="margin: 0; color: var(--text-muted);">Lunes - Sábado: 8:00 AM - 7:00 PM</p>
+                <p style="margin: 0; color: var(--text-muted);">Domingos: 9:00 AM - 1:00 PM</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; align-items: flex-start;">
+              <div
+                style="background: rgba(59, 130, 246, 0.1); padding: 0.8rem; border-radius: 12px; color: #3b82f6; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="phone" style="width: 24px; height: 24px;"></i>
+              </div>
+              <div>
+                <h4 style="margin: 0 0 0.2rem 0; font-weight: 700;">Contacto</h4>
+                <p style="margin: 0; color: var(--text-muted);">+57 311 449 7589</p>
+                <a href="https://wa.me/573114497589" target="_blank"
+                  style="color: #3b82f6; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Enviar mensaje
+                  →</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Map Side -->
+        <div class="map-wrapper"
+          style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid var(--glass-border); height: 450px; position: relative;">
+          <iframe
+            src="https://maps.google.com/maps?q=Cra%205%20%239-53%2C%20Pitalito%2C%20Huila&t=&z=17&ie=UTF8&iwloc=&output=embed"
+            width="100%" height="100%" style="border:0; display:block;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+          <!-- Badge -->
+          <div
+            style="position: absolute; bottom: 20px; right: 20px; background: white; padding: 0.5rem 1rem; border-radius: 50px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem; color: #0f172a;">
+            <span style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%;"></span> Abierto Ahora
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
