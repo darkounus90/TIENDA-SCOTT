@@ -1630,15 +1630,44 @@ textarea:focus {
     margin-left: auto;
   }
 
-  /* Hero Mobile padding handled in 768px media query */
+  /* Hero Mobile Compact */
+  .hero {
+    padding-top: 90px;
+    padding-bottom: 2rem;
+    min-height: auto;
+  }
+
+  .hero__text-col h1 {
+    font-size: 2rem !important;
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+  }
+
+  .hero__text-col p {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .hero-floating-img {
+    max-width: 260px;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .hero__stats {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    gap: 1.5rem;
+  }
+
+  .hero__stats span {
+    font-size: 1.4rem;
+  }
 
   .header__actions input {
     display: none;
     /* Hide search input on tiny screens or handle differently */
-  }
-
-  .hero__text h1 {
-    font-size: 2.2rem;
   }
 
   .container {
