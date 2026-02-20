@@ -4,33 +4,30 @@
 */
 
 :root {
-  /* Tema Oscuro Premium "Midnight Glass" */
-  --bg-deep: #020617;
-  /* Richer black */
-  --bg-surface: #0f172a;
-  /* Deep navy */
+  /* Tema Premium "Carbon Gold" — Alta Gama Deportiva */
+  --bg-deep: #0a0a0a;
+  /* Carbon black */
+  --bg-surface: #111111;
+  /* Rich charcoal */
 
-  /* Primary with more vibrancy */
-  --primary: #3b82f6;
-  --primary-glow: #60a5fa;
+  /* Primary: Amber Gold — lujo, rendimiento, exclusividad */
+  --primary: #D97706;
+  --primary-glow: #F59E0B;
 
-  /* Neutral scale */
-  --accent: #94a3b8;
-  --accent-glow: #f1f5f9;
+  /* Neutral scale: platinum & warm cream */
+  --accent: #A8A29E;
+  --accent-glow: #F5F0EB;
 
-  --text-main: #f8fafc;
-  --text-muted: #cbd5e1;
-  /* Higher contrast for readability */
+  --text-main: #FAF7F2;
+  --text-muted: #C4BDB5;
 
-  /* Refined Glass Variables */
-  --glass-bg: rgba(15, 23, 42, 0.85);
-  /* Darker, more legible glass */
-  --glass-border: rgba(255, 255, 255, 0.08);
-  /* Thinner, subtler border */
-  --glass-highlight: rgba(255, 255, 255, 0.15);
-  --glass-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  /* Glass Variables — tono carbono cálido */
+  --glass-bg: rgba(17, 17, 17, 0.88);
+  --glass-border: rgba(245, 158, 11, 0.12);
+  --glass-highlight: rgba(245, 158, 11, 0.18);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 
-  --card-hover-bg: rgba(255, 255, 255, 0.03);
+  --card-hover-bg: rgba(217, 119, 6, 0.04);
 
   /* Spacing & Radius */
   --radius-sm: 8px;
@@ -40,10 +37,8 @@
 
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  /* Smoother "apple-like" ease */
 
   --max-width: 1240px;
-  /* Slightly wider for modern feel */
 }
 
 *,
@@ -59,8 +54,8 @@ body {
   color: var(--text-main);
   /* Subtle mesh gradient background */
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(148, 163, 184, 0.05) 0%, transparent 40%);
+    radial-gradient(circle at 10% 20%, rgba(217, 119, 6, 0.07) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.04) 0%, transparent 45%);
   background-attachment: fixed;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -121,7 +116,7 @@ img {
 }
 
 .header__content {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(17, 17, 17, 0.75);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
@@ -227,7 +222,7 @@ img {
     left: auto;
     width: 250px;
     height: auto;
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(17, 17, 17, 0.75);
     /* More transparent for glass effect */
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
@@ -305,8 +300,8 @@ img {
   }
 
   .nav a:hover {
-    background: rgba(99, 102, 241, 0.2);
-    color: #818cf8;
+    background: rgba(217, 119, 6, 0.15);
+    color: #F59E0B;
     transform: scale(1.05);
   }
 
@@ -318,7 +313,7 @@ img {
     transform: translateY(-50%) scaleX(0);
     width: 4px;
     height: 60%;
-    background: linear-gradient(180deg, #6366f1, #8b5cf6);
+    background: linear-gradient(180deg, #D97706, #B45309);
     border-radius: 2px;
     transition: transform 0.3s ease;
   }
@@ -431,7 +426,7 @@ img {
   opacity: 0;
   padding: 0;
   border: none;
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(12, 12, 12, 0.96);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius-pill);
@@ -547,7 +542,7 @@ img {
 .profile-photo-wrapper:hover {
   border-color: var(--primary-glow);
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
 }
 
 .profile-photo-wrapper img {
@@ -605,16 +600,17 @@ img {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  background: linear-gradient(135deg, var(--primary) 0%, #B45309 100%);
+  color: #0a0a0a;
+  font-weight: 700;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  box-shadow: 0 4px 20px rgba(217, 119, 6, 0.45);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
-  background: linear-gradient(135deg, #4f8bf9 0%, #3b82f6 100%);
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.55);
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
 }
 
 .btn-primary::after {
@@ -699,11 +695,11 @@ img {
 
 .badge-new {
   display: inline-block;
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(217, 119, 6, 0.12);
   color: var(--primary-glow);
   padding: 0.5rem 1rem;
   border-radius: 50px;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(245, 158, 11, 0.35);
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -712,7 +708,7 @@ img {
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  background: linear-gradient(90deg, #F59E0B, #FBBF24, #D97706);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -924,7 +920,7 @@ img {
   top: 20%;
   right: 5%;
   width: 300px;
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(17, 17, 17, 0.88);
   /* Glass dark */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1001,7 +997,7 @@ img {
   display: flex;
   gap: 1rem;
   padding: 10px 20px;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(17, 17, 17, 0.75);
   backdrop-filter: blur(10px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1028,7 +1024,7 @@ img {
 .btn-control.active {
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 15px rgba(217, 119, 6, 0.4);
 }
 
 /* Responsive Viewer */
@@ -1137,17 +1133,17 @@ img {
 
 .btn-primary,
 .btn-login {
-  background: linear-gradient(135deg, var(--primary), #6366f1);
-  color: white;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(135deg, var(--primary), #B45309);
+  color: #0a0a0a;
+  box-shadow: 0 4px 20px rgba(217, 119, 6, 0.45);
   position: relative;
   overflow: hidden;
 }
 
-/* Ensure icon is visible and white */
+/* Ensure icon is visible and contrasts with gold background */
 .btn-login svg {
-  color: white;
-  stroke: white;
+  color: #0a0a0a;
+  stroke: #0a0a0a;
   width: 20px;
   height: 20px;
 }
@@ -1168,7 +1164,7 @@ img {
 .btn-primary:hover,
 .btn-login:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.55);
 }
 
 .btn-primary:hover::before,
@@ -1248,7 +1244,7 @@ img {
   position: absolute;
   bottom: 2rem;
   left: 2rem;
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(17, 17, 17, 0.85);
   backdrop-filter: blur(16px);
   padding: 0.5rem 1rem;
   border-radius: var(--radius-pill);
@@ -1346,11 +1342,11 @@ img {
 
 .product-card__tag {
   font-size: 0.7rem;
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(217, 119, 6, 0.1);
   color: var(--primary-glow);
   padding: 4px 10px;
   border-radius: 20px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(217, 119, 6, 0.15);
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -1372,13 +1368,13 @@ img {
 .categoria {
   padding: 2.5rem 2rem;
   text-align: left;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0) 100%);
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(10, 10, 10, 0) 100%);
   border: 1px solid var(--glass-border);
   cursor: pointer;
 }
 
 .categoria:hover {
-  background: linear-gradient(145deg, rgba(59, 130, 246, 0.1) 0%, rgba(15, 23, 42, 0) 100%);
+  background: linear-gradient(145deg, rgba(217, 119, 6, 0.1) 0%, rgba(10, 10, 10, 0) 100%);
   border-color: var(--primary);
   transform: translateY(-5px);
 }
@@ -1412,7 +1408,7 @@ img {
 input,
 select,
 textarea {
-  background: rgba(15, 23, 42, 0.6) !important;
+  background: rgba(17, 17, 17, 0.75) !important;
   border: 1px solid var(--glass-border) !important;
   color: white !important;
   border-radius: var(--radius-sm);
@@ -1427,7 +1423,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--primary) !important;
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.25);
 }
 
 /* Servicios */
@@ -1438,7 +1434,7 @@ textarea:focus {
 }
 
 .servicios__box {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(17, 17, 17, 0.75);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
@@ -1493,7 +1489,7 @@ textarea:focus {
 
 .cart-modal__content,
 .login-modal {
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(17, 17, 17, 0.65);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1524,13 +1520,13 @@ textarea:focus {
 
 .cart-modal__content::-webkit-scrollbar-thumb,
 .login-modal::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.4);
+  background: rgba(217, 119, 6, 0.4);
   border-radius: 3px;
 }
 
 .cart-modal__content::-webkit-scrollbar-thumb:hover,
 .login-modal::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.7);
+  background: rgba(217, 119, 6, 0.7);
 }
 
 .cart-modal__close {
@@ -1931,7 +1927,7 @@ textarea:focus {
   width: 100%;
   text-align: left;
   padding: 0.75rem 1rem;
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.1), transparent);
+  background: linear-gradient(90deg, rgba(217, 119, 6, 0.1), transparent);
   border: 1px solid var(--primary);
   color: var(--primary-glow);
   margin-bottom: 0.5rem;
@@ -2026,7 +2022,7 @@ textarea:focus {
   top: calc(100% + 14px);
   right: 0;
   width: 260px;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(17, 17, 17, 0.75);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2120,15 +2116,15 @@ textarea:focus {
 /* Estilo de Botón Admin en Desplegable - Premium Style */
 .user-dropdown .account-btn-admin {
   background: linear-gradient(90deg, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0));
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
+  border: 1px solid rgba(217, 119, 6, 0.15);
+  color: #F59E0B;
   margin-bottom: 0.5rem;
   position: relative;
 }
 
 .user-dropdown .account-btn-admin:hover {
   background: linear-gradient(90deg, rgba(37, 99, 235, 0.2), rgba(37, 99, 235, 0.05));
-  border-color: rgba(59, 130, 246, 0.5);
+  border-color: rgba(245, 158, 11, 0.4);
   box-shadow: 0 0 15px rgba(37, 99, 235, 0.15);
   transform: translateY(-1px);
 }
@@ -2140,7 +2136,7 @@ textarea:focus {
   top: 0;
   bottom: 0;
   width: 3px;
-  background: #3b82f6;
+  background: #D97706;
   opacity: 0.5;
   transition: opacity 0.2s;
 }
@@ -2229,7 +2225,7 @@ textarea:focus {
 .form-input {
   width: 100%;
   padding: 0.75rem;
-  background: rgba(15, 23, 42, 0.6) !important;
+  background: rgba(17, 17, 17, 0.75) !important;
   border: 1px solid var(--glass-border) !important;
   border-radius: var(--radius-sm);
   color: var(--text-main) !important;
@@ -2240,7 +2236,7 @@ textarea:focus {
 .form-input:focus {
   outline: none;
   border-color: var(--primary) !important;
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
 }
 
 .form-actions {
@@ -2386,7 +2382,7 @@ textarea:focus {
   height: 600px;
   /* Altura fija para escritorio */
   position: relative;
-  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
   overflow: hidden;
   margin-top: 80px;
   /* Espacio para el header fijo */
@@ -2524,12 +2520,12 @@ a {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(59, 130, 246, 0.9);
+  background: rgba(217, 119, 6, 0.9);
   /* Azul primario */
   border: 2px solid white;
   cursor: pointer;
   z-index: 15;
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);
   transition: transform 0.2s ease, background 0.2s;
   display: flex;
   align-items: center;
@@ -2561,7 +2557,7 @@ a {
   right: 0;
   width: 350px;
   height: 100%;
-  background: rgba(15, 23, 42, 0.95);
+  background: rgba(12, 12, 12, 0.96);
   /* Fondo oscuro casi opaco */
   backdrop-filter: blur(20px);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -2788,22 +2784,22 @@ a {
   display: inline-flex !important;
   align-items: center !important;
   gap: 6px !important;
-  color: #c084fc !important;
-  /* Lila brillante */
+  color: #F59E0B !important;
+  /* Amber gold */
   font-weight: 700 !important;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   letter-spacing: 0.02em;
 }
 
 .nav-highlight:hover {
-  color: #d8b4fe !important;
+  color: #FBBF24 !important;
   transform: translateY(-2px);
-  text-shadow: 0 0 15px rgba(192, 132, 252, 0.4);
+  text-shadow: 0 0 15px rgba(245, 158, 11, 0.45);
 }
 
 .nav-badge {
-  background: linear-gradient(135deg, #a855f7, #ec4899);
-  color: white;
+  background: linear-gradient(135deg, #D97706, #F59E0B);
+  color: #0a0a0a;
   font-size: 0.6rem !important;
   padding: 3px 6px;
   border-radius: 4px;
@@ -2811,7 +2807,7 @@ a {
   line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.4);
+  box-shadow: 0 2px 10px rgba(217, 119, 6, 0.4);
   animation: badge-pulse 2s infinite;
 }
 
@@ -2819,17 +2815,17 @@ a {
 @keyframes badge-pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.5);
   }
 
   70% {
     transform: scale(1.05);
-    box-shadow: 0 0 0 6px rgba(168, 85, 247, 0);
+    box-shadow: 0 0 0 6px rgba(217, 119, 6, 0);
   }
 
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0);
   }
 }
 
@@ -2837,10 +2833,9 @@ a {
 @media (max-width: 768px) {
   .nav-highlight {
     flex-direction: row-reverse;
-    /* Badge primero o ajustar */
     justify-content: center;
     width: 100%;
-    color: #c084fc !important;
+    color: #F59E0B !important;
   }
 
   .nav-badge {
