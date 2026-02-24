@@ -693,23 +693,21 @@ function renderProducts() {
   filtered.forEach(product => {
     const card = document.createElement("article");
     card.className = "card product-card";
+
+    // Create the image container matching new CSS
     const imgHtml = product.image
       ? `<img src="${product.image}" alt="${product.name}" class="product-card__img" loading="lazy">`
-      : `<div class="product-card__image-placeholder">Imagen ${product.category.toUpperCase()}</div>`;
+      : `<div class="photo-placeholder" style="color:white;text-align:center;">IMG</div>`;
 
     card.innerHTML = `
       <div class="product-card__image">
         ${imgHtml}
       </div>
-      <div class="product-card__brand">${product.brand}</div>
+      <div class="product-card__brand">${product.brand || 'SCOTT'}</div>
       <h3 class="product-card__title">${product.name}</h3>
       <div class="product-card__meta">
         <span class="product-card__price">${currencyFormat(product.price)}</span>
-        <span class="product-card__tag">${product.tag}</span>
-      </div>
-      <div class="product-card__info">
-        <span>${product.use}</span>
-        <span>Stock: ${product.stock}</span>
+        <span class="product-card__tag">${product.tag || product.category}</span>
       </div>
       <div class="product-card__actions">
         <button class="btn-secondary" onclick="window.location.href='producto.html?id=${product.id}'">Ver detalle</button>

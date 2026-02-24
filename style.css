@@ -377,7 +377,8 @@ img {
     display: flex;
     flex-direction: row !important;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.15rem;
+    /* Reduced gap to fit icon buttons */
     margin-left: auto;
   }
 
@@ -980,29 +981,29 @@ img {
 .bento-item-1 {
   grid-column: span 2;
   grid-row: span 2;
-  background-image: url('scott-mtb.png');
+  background-image: url('scott-mtb.png') !important;
 }
 
 .bento-item-2 {
   grid-column: span 2;
-  background-image: url('scott-road.png');
+  background-image: url('scott-road.png') !important;
 }
 
 .bento-item-3 {
   grid-column: span 1;
-  background-image: url('scott-gravel.png');
+  background-image: url('scott-gravel.png') !important;
 }
 
 .bento-item-4 {
   grid-column: span 1;
-  background-image: url('scott-ebike.png');
+  background-image: url('scott-ebike.png') !important;
 }
 
 .bento-item-5 {
   grid-column: span 4;
   grid-row: span 1;
   height: 180px;
-  background-image: url('scott-accessories.png');
+  background-image: url('scott-accessories.png') !important;
 }
 
 @media (max-width: 1024px) {
@@ -2323,6 +2324,16 @@ textarea:focus {
 /* WhatsApp */
 .whatsapp-float {
   box-shadow: 0 0 25px rgba(37, 211, 102, 0.4);
+  z-index: 90;
+  /* Make sure it sits above content but below modals/menus */
+}
+
+@media (max-width: 768px) {
+
+  /* Push footer up slightly so whatsapp float doesn't cover last links */
+  .footer {
+    padding-bottom: 5rem;
+  }
 }
 
 /* ========================================
