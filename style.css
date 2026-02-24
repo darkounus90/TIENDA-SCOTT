@@ -837,11 +837,15 @@ img {
   z-index: 1;
 }
 
-/* Float bike over massive text */
+/* Float bike over massive text with Luxury Difuminado */
 .hero__image-wrapper {
+  position: relative;
   margin-top: -8vw;
   z-index: 4;
   pointer-events: none;
+  /* El efecto 'difuminado' o 'fade' pedido por el usuario para el look $10k */
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
 }
 
 .hero__main-bike {
@@ -849,8 +853,10 @@ img {
   max-width: 900px;
   margin: 0 auto;
   display: block;
-  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.8));
-  animation: floatingBikePremium 8s ease-in-out infinite;
+  /* Aura resplandeciente premium */
+  filter: drop-shadow(0 0 60px rgba(217, 119, 6, 0.45)) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.9));
+  animation: floatingBikePremium 10s ease-in-out infinite;
+  transform-origin: bottom center;
 }
 
 @keyframes floatingBikePremium {
@@ -861,7 +867,7 @@ img {
   }
 
   50% {
-    transform: translateY(-30px) scale(1.02) rotate(1deg);
+    transform: translateY(-25px) scale(1.03) rotate(1deg);
   }
 }
 
@@ -954,12 +960,12 @@ img {
   border-radius: 20px;
   background-size: cover;
   background-position: center;
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+  /* Animación eliminada a petición del usuario */
 }
 
 .bento-grid .card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  /* Se eliminó el transform de hover a petición del usuario */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
   z-index: 2;
 }
 
