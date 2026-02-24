@@ -10,8 +10,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <!-- SheetJS para Importar Excel -->
+    <!-- SheetJS y ChartJS -->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Sobrescrituras específicas para página de admin independiente */
         body {
@@ -387,6 +388,15 @@
                         </div>
                     </div>
 
+                    <div class="table-card" style="margin-top: 2rem;">
+                        <div class="table-header">
+                            <h3>Evolución de Ventas</h3>
+                        </div>
+                        <div style="height: 300px; width: 100%; position: relative;">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+
                     <div class="table-card">
                         <div class="table-header">
                             <h3>Últimos Pedidos</h3>
@@ -441,6 +451,8 @@
                                     onchange="handleExcelUpload(this)">
                                 <button class="btn-secondary" onclick="document.getElementById('excelInput').click()">📥
                                     Importar Excel</button>
+                                <button class="btn-secondary" onclick="exportInventoryToExcel()">📤
+                                    Exportar Excel</button>
                                 <button class="btn-primary" onclick="openAddProduct()">+ Producto</button>
                             </div>
                         </div>
@@ -1121,6 +1133,7 @@
             const prodRes = await fetch(`${API_BASE}/products.php`);
             const prodData = await prodRes.json();
             if (prodData.success) {
+                window.currentProducts = prodData.products;
                 renderInventory(prodData.products);
                 document.getElementById('statTotalProducts').textContent = prodData.products.length;
             }
@@ -1265,14 +1278,68 @@
             }
         }
 
+        let salesChartInstance = null;
+
         function renderStats(orders) {
-            const total = orders.filter(o => o.status !== 'cancelled').reduce((acc, o) => acc + Number(o.total), 0);
+            const validOrders = orders.filter(o => o.status !== 'cancelled');
+            const total = validOrders.reduce((acc, o) => acc + Number(o.total), 0);
+
             document.getElementById('statTotalSales').innerText = new Intl.NumberFormat('es-CO', {
-                style: 'currency', currency:
-                    'COP'
+                style: 'currency', currency: 'COP'
             }).format(total);
-            document.getElementById('statOrdersToday').innerText = orders.filter(o => o.created_at.startsWith(new
-                Date().toISOString().split('T')[0])).length;
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('statOrdersToday').innerText = orders.filter(o => o.created_at.startsWith(todayStr)).length;
+
+            // Renderizar Gráfico
+            renderSalesChart(validOrders);
+        }
+
+        function renderSalesChart(validOrders) {
+            const ctx = document.getElementById('salesChart');
+            if (!ctx) return;
+
+            // Agrupar ventas por fecha
+            const salesByDate = {};
+            validOrders.forEach(o => {
+                const date = o.created_at.split(' ')[0];
+                if (!salesByDate[date]) salesByDate[date] = 0;
+                salesByDate[date] += Number(o.total);
+            });
+
+            // Ordenar fechas
+            const sortedDates = Object.keys(salesByDate).sort();
+            const data = sortedDates.map(d => salesByDate[d]);
+
+            if (salesChartInstance) salesChartInstance.destroy();
+
+            salesChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sortedDates,
+                    datasets: [{
+                        label: 'Ventas Diarias (COP)',
+                        data: data,
+                        borderColor: '#D97706',
+                        backgroundColor: 'rgba(217, 119, 6, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#F59E0B'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, labels: { color: '#A8A29E' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#A8A29E' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#A8A29E' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
         }
 
         function renderOrders(orders) {
@@ -1305,13 +1372,37 @@
         function renderInventory(products) {
             document.getElementById('inventoryTable').innerHTML = products.map(p => `
     <tr>
-        <td><img src="${p.image || p.images[0]}" width="30"></td>
+        <td><img src="${p.image || (p.images && p.images[0]) || ''}" width="30" style="border-radius: 4px;"></td>
         <td>${p.name}</td>
         <td>${p.stock}</td>
         <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(p.price)}</td>
-        <td><button>✏️</button></td>
+        <td><button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="alert('Editar no implementado')">✏️</button></td>
     </tr>
     `).join('');
+        }
+
+        function exportInventoryToExcel() {
+            if (!window.currentProducts || window.currentProducts.length === 0) {
+                alert("El inventario está vacío.");
+                return;
+            }
+
+            const dataForExcel = window.currentProducts.map(p => ({
+                "ID": p.id,
+                "Nombre": p.name,
+                "Marca": p.brand || "-",
+                "Categoría": p.category,
+                "Referencia / Modelo": p.use || "-",
+                "Stock": p.stock,
+                "Precio (COP)": p.price,
+                "Estado": p.tag || "-",
+                "Código Barras": p.barcode || ""
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(dataForExcel);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Inventario");
+            XLSX.writeFile(wb, "Inventario_ElPedalazo.xlsx");
         }
 
         function renderUsers(users) {

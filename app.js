@@ -1164,24 +1164,20 @@ function addToCart(productId) {
 
   const existing = cart.find(item => item.id === productId);
   if (existing) {
+    if (existing.qty + 1 > product.stock) {
+      alert("No hay suficiente stock.");
+      return;
+    }
     existing.qty += 1;
   } else {
     cart.push({ ...product, qty: 1 });
   }
-  product.stock -= 1;
-  saveProducts();
   updateCartUI();
-  renderProducts(); // Para actualizar el stock mostrado
+  renderProducts(); // Update UI to reflect logic if needed
 }
 
 function removeFromCart(productId) {
-  const item = cart.find(item => item.id === productId);
-  if (item) {
-    const product = products.find(p => p.id === productId);
-    if (product) product.stock += item.qty;
-  }
   cart = cart.filter(item => item.id !== productId);
-  saveProducts();
   updateCartUI();
   renderProducts();
 }
@@ -1229,21 +1225,58 @@ productList.addEventListener("click", e => {
   }
 });
 
-// Proceso de pago (demo)
-checkoutButton.addEventListener("click", () => {
+// Proceso de pago real
+checkoutButton.addEventListener("click", async () => {
   if (cart.length === 0) {
     alert("Tu carrito está vacío.");
     return;
   }
-  // Confirmar compra
-  const confirmPurchase = confirm("¿Confirmar la compra? El stock se reducirá permanentemente.");
+  
+  const token = localStorage.getItem('token');
+  if (!token) {
+    loginModal.classList.add("cart-modal--open"); // Mostrar modal de login si no hay sesión
+    return;
+  }
+  
+  const confirmPurchase = confirm("¿Confirmar la compra? Serás redirigido a la facturación.");
   if (confirmPurchase) {
-    // Vaciar carrito sin restaurar stock
-    cart = [];
-    saveProducts();
-    updateCartUI();
-    renderProducts(); // Para mostrar el stock actualizado
-    alert("¡Compra realizada con éxito! Gracias por tu pedido.");
+      checkoutButton.disabled = true;
+      checkoutButton.innerHTML = "Procesando...";
+      try {
+        const response = await fetch(`${API_BASE}/orders.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ items: cart })
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            // Vaciar carrito
+            cart = [];
+            updateCartUI();
+            await fetchProducts(); // Refrescar stock
+            renderProducts(); 
+            
+            // Generar mensaje automático con WhatsApp (opcional, muy profesional)
+            const message = `Hola, acabo de realizar un pedido de forma automática. Referencia: ${data.reference}. Total: ${currencyFormat(data.total)}`;
+            const waUrl = `https://wa.me/573114497589?text=${encodeURIComponent(message)}`;
+            alert(`¡Compra realizada con éxito! Referencia de orden: ${data.reference}`);
+            window.open(waUrl, "_blank");
+            
+            closeCartModal();
+        } else {
+            alert("Error al procesar la compra: " + (data.message || "Intenta nuevamente."));
+        }
+      } catch (err) {
+         console.error(err);
+         alert("Error de conexión al procesar el pedido.");
+      } finally {
+         checkoutButton.disabled = false;
+         checkoutButton.innerHTML = "Finalizar compra";
+      }
   }
 });
 

@@ -1,44 +1,201 @@
-/* 
-   ESTILO AI-FIRST / AWWWARDS - TEMA DARK SHADER 
-   Diseñado para Fluidez, Profundidad y Compromiso
+/*
+   ESTILO AI-FIRST / AWWWARDS - DUAL THEME
+   Modo Noche: Carbon Gold | Modo Día: Ivory Gold
 */
 
-:root {
+/* ========================
+   MODO NOCHE (default)
+   ======================== */
+:root,
+[data-theme="dark"] {
   /* Tema Premium "Carbon Gold" — Alta Gama Deportiva */
   --bg-deep: #0a0a0a;
-  /* Carbon black */
   --bg-surface: #111111;
-  /* Rich charcoal */
+  --bg-card: #161616;
+  --bg-input: rgba(17, 17, 17, 0.75);
 
-  /* Primary: Amber Gold — lujo, rendimiento, exclusividad */
+  /* Primary: Amber Gold */
   --primary: #D97706;
   --primary-glow: #F59E0B;
+  --primary-text: #0a0a0a;
 
-  /* Neutral scale: platinum & warm cream */
+  /* Neutrals */
   --accent: #A8A29E;
   --accent-glow: #F5F0EB;
-
   --text-main: #FAF7F2;
   --text-muted: #C4BDB5;
+  --text-heading: #FFFFFF;
 
-  /* Glass Variables — tono carbono cálido */
+  /* Glass */
   --glass-bg: rgba(17, 17, 17, 0.88);
   --glass-border: rgba(245, 158, 11, 0.12);
   --glass-highlight: rgba(245, 158, 11, 0.18);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-
   --card-hover-bg: rgba(217, 119, 6, 0.04);
 
-  /* Spacing & Radius */
+  /* Section alt */
+  --section-alt-bg: #0d0d0d;
+
+  /* Footer */
+  --footer-bg: #080808;
+
+  /* Scrollbar */
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --scrollbar-hover: rgba(255, 255, 255, 0.30);
+
+  /* Gradients body */
+  --body-grad-1: rgba(217, 119, 6, 0.07);
+  --body-grad-2: rgba(245, 158, 11, 0.04);
+}
+
+/* ========================
+   MODO DÍA "Ivory Gold"
+   ======================== */
+[data-theme="light"] {
+  --bg-deep: #FAF8F5;
+  --bg-surface: #F0EBE1;
+  --bg-card: #FFFFFF;
+  --bg-input: rgba(255, 255, 255, 0.9);
+
+  /* Primary más oscuro para contraste en blanco */
+  --primary: #B45309;
+  --primary-glow: #D97706;
+  --primary-text: #FFFFFF;
+
+  /* Neutrals cálidos */
+  --accent: #78716C;
+  --accent-glow: #44403C;
+  --text-main: #1C1917;
+  --text-muted: #57534E;
+  --text-heading: #0C0A09;
+
+  /* Glass para día */
+  --glass-bg: rgba(250, 248, 245, 0.92);
+  --glass-border: rgba(180, 83, 9, 0.15);
+  --glass-highlight: rgba(180, 83, 9, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --card-hover-bg: rgba(180, 83, 9, 0.04);
+
+  /* Section alt */
+  --section-alt-bg: #EDE8DE;
+
+  /* Footer */
+  --footer-bg: #1C1917;
+
+  /* Scrollbar */
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-hover: rgba(0, 0, 0, 0.35);
+
+  /* Gradients body */
+  --body-grad-1: rgba(180, 83, 9, 0.06);
+  --body-grad-2: rgba(217, 119, 6, 0.03);
+}
+
+/* Detección automática del sistema (si no hay preferencia guardada) */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg-deep: #FAF8F5;
+    --bg-surface: #F0EBE1;
+    --bg-card: #FFFFFF;
+    --bg-input: rgba(255, 255, 255, 0.9);
+    --primary: #B45309;
+    --primary-glow: #D97706;
+    --primary-text: #FFFFFF;
+    --accent: #78716C;
+    --accent-glow: #44403C;
+    --text-main: #1C1917;
+    --text-muted: #57534E;
+    --text-heading: #0C0A09;
+    --glass-bg: rgba(250, 248, 245, 0.92);
+    --glass-border: rgba(180, 83, 9, 0.15);
+    --glass-highlight: rgba(180, 83, 9, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --card-hover-bg: rgba(180, 83, 9, 0.04);
+    --section-alt-bg: #EDE8DE;
+    --footer-bg: #1C1917;
+    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+    --scrollbar-hover: rgba(0, 0, 0, 0.35);
+    --body-grad-1: rgba(180, 83, 9, 0.06);
+    --body-grad-2: rgba(217, 119, 6, 0.03);
+  }
+}
+
+/* Transición suave al cambiar de tema */
+*,
+*::before,
+*::after {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.2s ease, box-shadow 0.4s ease;
+}
+
+/* Spacing & Radius (no dependen del tema) */
+:root {
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-pill: 9999px;
-
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-smooth: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-
   --max-width: 1240px;
+}
+
+/* ========================
+   THEME TOGGLE BUTTON
+   ======================== */
+.theme-toggle {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  background: var(--glass-highlight);
+  border-color: var(--primary);
+  transform: scale(1.1) rotate(15deg);
+  box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
+  color: var(--primary-glow);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  position: absolute;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+  width: 18px;
+  height: 18px;
+}
+
+/* Dark mode: mostramos luna, ocultamos sol */
+[data-theme="dark"] .icon-sun,
+:root:not([data-theme="light"]) .icon-sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+[data-theme="dark"] .icon-moon,
+:root:not([data-theme="light"]) .icon-moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+/* Light mode: mostramos sol, ocultamos luna */
+[data-theme="light"] .icon-sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+[data-theme="light"] .icon-moon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
 }
 
 *,
@@ -52,10 +209,9 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-deep);
   color: var(--text-main);
-  /* Subtle mesh gradient background */
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(217, 119, 6, 0.07) 0%, transparent 45%),
-    radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.04) 0%, transparent 45%);
+    radial-gradient(circle at 10% 20%, var(--body-grad-1) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, var(--body-grad-2) 0%, transparent 45%);
   background-attachment: fixed;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -71,14 +227,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
   border: 2px solid var(--bg-deep);
-  /* Gap effect */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--scrollbar-hover);
 }
 
 img {
@@ -1408,7 +1563,7 @@ img {
 input,
 select,
 textarea {
-  background: rgba(17, 17, 17, 0.75) !important;
+  background: var(--bg-input) !important;
   border: 1px solid var(--glass-border) !important;
   color: white !important;
   border-radius: var(--radius-sm);
@@ -1569,7 +1724,8 @@ textarea:focus {
 /* Footer */
 .footer {
   border-top: 1px solid var(--glass-border);
-  background: rgba(3, 0, 20, 0.9);
+  background: var(--footer-bg);
+  color: #FAF7F2;
   padding: 4rem 0 2rem;
 }
 
@@ -2225,7 +2381,7 @@ textarea:focus {
 .form-input {
   width: 100%;
   padding: 0.75rem;
-  background: rgba(17, 17, 17, 0.75) !important;
+  background: var(--bg-input) !important;
   border: 1px solid var(--glass-border) !important;
   border-radius: var(--radius-sm);
   color: var(--text-main) !important;
@@ -2477,7 +2633,7 @@ a {
 }
 
 .section--alt {
-  background: linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, transparent 100%);
+  background: var(--section-alt-bg);
   border-top: 1px solid var(--glass-border);
   border-bottom: 1px solid var(--glass-border);
 }
