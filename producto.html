@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <!-- Título y descripción Dinámico para SEO -->
+    <title id="seoTitle">Cargando Producto... | El Pedalazo</title>
+    <meta id="seoDesc" name="description"
+        content="Encuentra el mejor repuesto o bicicleta al mejor precio en El Pedalazo.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css?v=15.0.0" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .product-view-container {
+            min-height: calc(100vh - 80px);
+            /* 80px header approx */
+            padding: 4rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .product-split {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .product-gallery {
+            position: sticky;
+            top: 100px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .product-thumbnails {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .thumb {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color var(--transition-fast);
+        }
+
+        .thumb:hover,
+        .thumb.active {
+            border-color: var(--primary-glow);
+        }
+
+        /* Información del producto */
+        .product-info-panel h1 {
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            color: var(--text-heading);
+            letter-spacing: -1px;
+        }
+
+        .product-brand {
+            display: inline-block;
+            background: rgba(217, 119, 6, 0.1);
+            color: var(--primary-glow);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stock-badge {
+            font-size: 0.9rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        .out-stock {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 2rem;
+        }
+
+        /* Características */
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .features-list i {
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        /* Actions */
+        .action-bars {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-add-cart {
+            flex: 1;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+        }
+
+        .btn-whatsapp-buy {
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 1rem 2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-whatsapp-buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- CABECERA SIMPLIFICADA (O puedes importar cabecera global) -->
+    <header class="header">
+        <div class="container header__content">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center;">
+                    <span style="font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: -1px;">El
+                        Pedalazo</span>
+                </a>
+            </div>
+            <nav class="nav">
+                <a href="index.html">← Volver a la Tienda</a>
+            </nav>
+            <div class="header__actions">
+                <button class="btn-icon" id="cartButton" onclick="window.location.href='index.html#cart'">
+                    <i data-lucide="shopping-bag"></i> <span id="cartCountLocal">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- LOADING STATE -->
+    <div id="loading" style="height: 80vh; display: flex; justify-content: center; align-items: center;">
+        <h2 style="color: var(--text-muted); animation: pulse 1s infinite;">Cargando especificaciones...</h2>
+    </div>
+
+    <!-- PRODUCT VIEW -->
+    <main class="product-view-container section" id="productView" style="display: none;">
+        <div class="container product-split">
+            <!-- Galería de imágenes local/api -->
+            <div class="product-gallery">
+                <img id="mainImg" src="" alt="Producto" class="main-image">
+                <div class="product-thumbnails" id="thumbContainer"></div>
+            </div>
+
+            <!-- Detalles del producto -->
+            <div class="product-info-panel">
+                <div class="product-brand" id="pBrand">MARCA</div>
+                <h1 id="pName">Nombre del Producto</h1>
+
+                <div class="product-price">
+                    <span id="pPrice">$0</span>
+                    <span id="pStockBadge" class="stock-badge">Stock</span>
+                </div>
+
+                <p class="product-description" id="pCategory">
+                    Categoría y etiquetas del producto. Detalles técnicos y de compatibilidad para asegurar el encaje
+                    perfecto.
+                </p>
+
+                <ul class="features-list">
+                    <li><i data-lucide="check-circle"></i> Garantía Directa</li>
+                    <li><i data-lucide="shield"></i> Pago 100% Seguro</li>
+                    <li><i data-lucide="truck"></i> Envíos a todo el país</li>
+                    <li id="featBarcode" style="display:none;"><i data-lucide="hash"></i> <span id="pBarcode"></span>
+                    </li>
+                </ul>
+
+                <div class="action-bars">
+                    <button class="btn-primary btn-add-cart" id="btnAddToCart">
+                        <i data-lucide="shopping-cart" style="margin-right: 8px; vertical-align: middle;"></i> Añadir al
+                        Carrito
+                    </button>
+                    <button class="btn-whatsapp-buy" id="btnWhatsapp">
+                        <i data-lucide="message-circle"></i> Comprar Ya
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="margin-top: auto;">
+        <div class="container footer__content" style="text-align: center;">
+            <p>&copy; 2026 Grupo Empresarial El Pedalazo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Actualizar carrito del header
+        function updateMiniCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cartCountLocal').innerText = count;
+        }
+
+        async function loadProduct() {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+
+            if (!id) {
+                document.getElementById('loading').innerHTML = "<h1>Producto no especificado.</h1>";
+                return;
+            }
+
+            try {
+                // Recuperar catálogo. (Idealmente sería un endpoint /products.php?id=... pero por ahora lista total)
+                const res = await fetch(`api/products.php`);
+                const products = await res.json();
+
+                const product = products.find(p => p.id == id);
+                if (!product) {
+                    document.getElementById('loading').innerHTML = "<h1>Producto Variante no encontrado.</h1>";
+                    return;
+                }
+
+                // Llenar SEO y UI
+                document.title = `${product.name} - El Pedalazo`;
+                document.getElementById('pName').innerText = product.name;
+                document.getElementById('pBrand').innerText = product.brand || 'Original';
+                document.getElementById('pPrice').innerText = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(product.price);
+                document.getElementById('pCategory').innerText = `Repuesto / Bicicleta categorizada en: ${product.category}. ${product.tag ? 'Etiqueta: ' + product.tag : ''} | Referencia: ${product.use || 'General'}`;
+
+                // Barra código de barras
+                if (product.barcode) {
+                    document.getElementById('featBarcode').style.display = "flex";
+                    document.getElementById('pBarcode').innerText = `Ref: ${product.barcode}`;
+                }
+
+                // Stock
+                const stockBadge = document.getElementById('pStockBadge');
+                if (product.stock > 0) {
+                    stockBadge.innerText = `En Stock (${product.stock} disp.)`;
+                    stockBadge.className = 'stock-badge in-stock';
+                } else {
+                    stockBadge.innerText = `Agotado`;
+                    stockBadge.className = 'stock-badge out-stock';
+                    document.getElementById('btnAddToCart').disabled = true;
+                    document.getElementById('btnAddToCart').style.opacity = 0.5;
+                }
+
+                // Imágenes
+                const mainImg = document.getElementById('mainImg');
+                const thumbContainer = document.getElementById('thumbContainer');
+
+                let images = [];
+                if (product.images && product.images.length > 0) images = product.images;
+                else if (product.image) images = [product.image];
+
+                if (images.length > 0) {
+                    const firstImg = images[0].startsWith('http') || images[0].startsWith('data:') ? images[0] : (images[0] ? `api/../${images[0]}` : '');
+                    mainImg.src = firstImg;
+
+                    images.forEach(img => {
+                        const fixedPath = img.startsWith('http') || img.startsWith('data:') ? img : (img ? `api/../${img}` : '');
+                        const thumb = document.createElement('img');
+                        thumb.src = fixedPath;
+                        thumb.className = 'thumb';
+                        thumb.onclick = () => { mainImg.src = fixedPath; };
+                        thumbContainer.appendChild(thumb);
+                    });
+                } else {
+                    mainImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23eee'/%3E%3Ctext x='50' y='50' font-family='sans-serif' font-size='10' text-anchor='middle' alignment-baseline='middle' fill='%23999'%3ESin Imagen%3C/text%3E%3C/svg%3E";
+                }
+
+                // Eventos
+                document.getElementById('btnAddToCart').onclick = () => {
+                    if (product.stock <= 0) return;
+                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    const existing = cart.find(i => i.id == product.id);
+                    if (existing) {
+                        if (existing.qty + 1 > product.stock) { alert('Stock máximo alcanzado.'); return; }
+                        existing.qty++;
+                    } else {
+                        cart.push({ ...product, qty: 1 });
+                    }
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    updateMiniCart();
+
+                    const btn = document.getElementById('btnAddToCart');
+                    const oldHtml = btn.innerHTML;
+                    btn.innerHTML = `✓ Añadido!`;
+                    btn.style.background = "#22c55e";
+
+                    setTimeout(() => {
+                        btn.innerHTML = oldHtml;
+                        btn.style.background = "";
+                    }, 2000);
+                };
+
+                document.getElementById('btnWhatsapp').onclick = () => {
+                    const wsMsg = `Hola El Pedalazo, me gustaría comprar el producto de su web: ${product.name} por $${product.price}. ID: ${product.id}`;
+                    window.open(`https://wa.me/573114497589?text=${encodeURIComponent(wsMsg)}`, '_blank');
+                };
+
+                // Show
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('productView').style.display = 'flex';
+                updateMiniCart();
+
+            } catch (e) {
+                console.error(e);
+                document.getElementById('loading').innerHTML = "<h1>Error conectando con la base de datos.</h1>";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProduct);
+    </script>
+</body>
+
+</html>

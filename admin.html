@@ -528,6 +528,7 @@
             <h2>Agregar Nuevo Producto</h2>
             <form id="addProductForm" class="product-form" onsubmit="submitProduct(event)">
                 <div class="form-body">
+                    <input type="hidden" id="editProductId" value="">
                     <div class="form-grid">
                         <div class="form-group full-width"
                             style="margin-bottom: 1rem; background: rgba(59, 130, 246, 0.05); padding: 1rem; border-radius: 8px; border: 1px dashed var(--glass-border);">
@@ -977,11 +978,16 @@
                 images: productImagesBase64
             };
 
+            const editId = document.getElementById('editProductId').value;
+            if (editId) {
+                payload.id = editId;
+            }
+
             const token = localStorage.getItem('token');
 
             try {
                 const res = await fetch(`${API_BASE}/products.php`, {
-                    method: 'POST',
+                    method: editId ? 'PUT' : 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
@@ -991,7 +997,7 @@
 
                 const data = await res.json();
                 if (data.success) {
-                    alert('Producto creado exitosamente');
+                    alert('Producto guardado exitosamente');
                     closeAddProduct();
                     loadDashboard(); // Recargar inventario
                 } else {
@@ -1376,7 +1382,7 @@
         <td>${p.name}</td>
         <td>${p.stock}</td>
         <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(p.price)}</td>
-        <td><button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="alert('Editar no implementado')">✏️</button></td>
+        <td><button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="editProduct(${p.id})">✏️</button></td>
     </tr>
     `).join('');
         }
@@ -1403,6 +1409,37 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Inventario");
             XLSX.writeFile(wb, "Inventario_ElPedalazo.xlsx");
+        }
+
+        function editProduct(id) {
+            const product = window.currentProducts.find(p => p.id == id);
+            if (!product) return;
+
+            document.getElementById('editProductId').value = product.id;
+
+            // Llenar campos
+            const form = document.getElementById('addProductForm');
+            form.elements['name'].value = product.name;
+            form.elements['price'].value = product.price;
+            form.elements['stock'].value = product.stock;
+            form.elements['barcode'].value = product.barcode || '';
+            document.getElementById('input-tag').value = product.tag || '';
+
+            // Marcas y categorías
+            setFinalValue('brand', product.brand);
+            toggleHybrid('brand', 'input');
+            document.getElementById('brandInput').value = product.brand;
+
+            setFinalValue('category', product.category);
+            toggleHybrid('category', 'input');
+            document.getElementById('categoryInput').value = product.category;
+
+            // Tipo y uso
+            const useField = product.use || product.use_type || '';
+            document.getElementById('final-use').value = useField;
+            document.getElementById('input-use').value = useField;
+
+            openAddProduct();
         }
 
         function renderUsers(users) {

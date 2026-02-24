@@ -473,7 +473,12 @@ document.addEventListener("DOMContentLoaded", () => {
   checkSession();
   fetchProducts().then(() => {
     renderProducts();
-    // Restaurar carrito si existiera (opcional, por ahora solo memoria)
+    // Revalidar carrito existente contra stock actual
+    cart = cart.filter(item => {
+      const liveProduct = products.find(p => p.id === item.id);
+      return liveProduct && liveProduct.stock >= item.qty;
+    });
+    updateCartUI(); // Restaurar UI del carrito
   });
 
 });
@@ -707,7 +712,7 @@ function renderProducts() {
         <span>Stock: ${product.stock}</span>
       </div>
       <div class="product-card__actions">
-        <button class="btn-secondary" data-id="${product.id}">Ver detalle</button>
+        <button class="btn-secondary" onclick="window.location.href='producto.html?id=${product.id}'">Ver detalle</button>
         <button class="btn-primary" data-add="${product.id}">Agregar</button>
       </div>
     `;
@@ -1141,7 +1146,7 @@ const cartCountElement = document.getElementById("cartCount");
 const checkoutButton = document.getElementById("checkoutButton");
 const cartItemsContainer = document.getElementById("cartItems"); // Definición añadida
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 function openCart() {
   cartModal.classList.add("cart-modal--open");
@@ -1183,6 +1188,7 @@ function removeFromCart(productId) {
 }
 
 function updateCartUI() {
+  localStorage.setItem('cart', JSON.stringify(cart));
   cartItemsContainer.innerHTML = "";
   let total = 0;
   let count = 0;
@@ -1231,52 +1237,52 @@ checkoutButton.addEventListener("click", async () => {
     alert("Tu carrito está vacío.");
     return;
   }
-  
+
   const token = localStorage.getItem('token');
   if (!token) {
     loginModal.classList.add("cart-modal--open"); // Mostrar modal de login si no hay sesión
     return;
   }
-  
+
   const confirmPurchase = confirm("¿Confirmar la compra? Serás redirigido a la facturación.");
   if (confirmPurchase) {
-      checkoutButton.disabled = true;
-      checkoutButton.innerHTML = "Procesando...";
-      try {
-        const response = await fetch(`${API_BASE}/orders.php`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ items: cart })
-        });
-        const data = await response.json();
-        
-        if (data.success) {
-            // Vaciar carrito
-            cart = [];
-            updateCartUI();
-            await fetchProducts(); // Refrescar stock
-            renderProducts(); 
-            
-            // Generar mensaje automático con WhatsApp (opcional, muy profesional)
-            const message = `Hola, acabo de realizar un pedido de forma automática. Referencia: ${data.reference}. Total: ${currencyFormat(data.total)}`;
-            const waUrl = `https://wa.me/573114497589?text=${encodeURIComponent(message)}`;
-            alert(`¡Compra realizada con éxito! Referencia de orden: ${data.reference}`);
-            window.open(waUrl, "_blank");
-            
-            closeCartModal();
-        } else {
-            alert("Error al procesar la compra: " + (data.message || "Intenta nuevamente."));
-        }
-      } catch (err) {
-         console.error(err);
-         alert("Error de conexión al procesar el pedido.");
-      } finally {
-         checkoutButton.disabled = false;
-         checkoutButton.innerHTML = "Finalizar compra";
+    checkoutButton.disabled = true;
+    checkoutButton.innerHTML = "Procesando...";
+    try {
+      const response = await fetch(`${API_BASE}/orders.php`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ items: cart })
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        // Vaciar carrito
+        cart = [];
+        updateCartUI();
+        await fetchProducts(); // Refrescar stock
+        renderProducts();
+
+        // Generar mensaje automático con WhatsApp (opcional, muy profesional)
+        const message = `Hola, acabo de realizar un pedido de forma automática. Referencia: ${data.reference}. Total: ${currencyFormat(data.total)}`;
+        const waUrl = `https://wa.me/573114497589?text=${encodeURIComponent(message)}`;
+        alert(`¡Compra realizada con éxito! Referencia de orden: ${data.reference}`);
+        window.open(waUrl, "_blank");
+
+        closeCartModal();
+      } else {
+        alert("Error al procesar la compra: " + (data.message || "Intenta nuevamente."));
       }
+    } catch (err) {
+      console.error(err);
+      alert("Error de conexión al procesar el pedido.");
+    } finally {
+      checkoutButton.disabled = false;
+      checkoutButton.innerHTML = "Finalizar compra";
+    }
   }
 });
 
