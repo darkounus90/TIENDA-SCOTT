@@ -114,28 +114,48 @@
     </div>
   </header>
 
-  <!-- HERO (New Split Design) -->
+  <!-- NOISE OVERLAY FOR PREMIUM TEXTURE -->
+  <div class="noise-overlay"></div>
+
+  <!-- HERO (Awwwards Enterprise Style) -->
   <section class="hero" id="home">
+    <div class="hero-bg-glow"></div>
     <div class="container hero__container">
-      <div class="hero__text-col">
-        <span class="badge-new">Nueva Colección 2026</span>
-        <h1>PERFORMANCE <br><span class="text-gradient">SIN LÍMITES</span></h1>
-        <p>Descubre la ingeniería suiza más avanzada. Diseñadas para ganar, construidas para durar.</p>
-        <div class="hero__btns">
-          <a href="#productos" class="btn-primary">Ver Bicicletas</a>
-        </div>
-        <div class="hero__stats">
-          <div><span>50+</span><small>Modelos</small></div>
-          <div><span>12k</span><small>Clientes</small></div>
-          <div><span>24h</span><small>Soporte</small></div>
+      <div class="hero__text-content fade-up-anim">
+        <h1 class="hero__headline">
+          PERFORMANCE <br />
+          <span class="hero__sub-headline">DISEÑADAS PARA GANAR. CONSTRUIDAS PARA DURAR.</span>
+        </h1>
+        <div class="hero__actions">
+          <a href="#productos" class="btn-magnetic"><span>Explorar Catálogo</span></a>
         </div>
       </div>
-      <div class="hero__image-col">
-        <div class="glow-effect"></div>
-        <img src="scott-scale-pov-real.png" alt="Vista POV Scott Scale 910 RC en acción" class="hero-pov-img">
+      <div class="hero__image-wrapper fade-up-anim delay-1">
+        <img src="scott-scale-pov-real.png" alt="Bicicleta Premium" class="hero__main-bike">
+      </div>
+      <div class="hero__stats fade-up-anim delay-2">
+        <div class="stat-item"><strong>50+</strong><br><span>Modelos Exclusivos</span></div>
+        <div class="stat-item"><strong>12k</strong><br><span>Clientes Felices</span></div>
+        <div class="stat-item"><strong>24/7</strong><br><span>Soporte Técnico</span></div>
       </div>
     </div>
   </section>
+
+  <!-- MARQUEE (Infinite scrolling banner) -->
+  <div class="marquee-section">
+    <div class="marquee-content">
+      <span>✦ INGENIERÍA SUIZA</span>
+      <span>✦ MATERIALES DE ALTA GAMA</span>
+      <span>✦ ENVÍOS NACIONALES INMEDIATOS</span>
+      <span>✦ GARANTÍA DIRECTA</span>
+      <span>✦ MÁXIMO DESEMPEÑO</span>
+      <span>✦ INGENIERÍA SUIZA</span>
+      <span>✦ MATERIALES DE ALTA GAMA</span>
+      <span>✦ ENVÍOS NACIONALES INMEDIATOS</span>
+      <span>✦ GARANTÍA DIRECTA</span>
+      <span>✦ MÁXIMO DESEMPEÑO</span>
+    </div>
+  </div>
 
   <!-- CATEGORÍAS -->
   <section class="section" id="categorias">
@@ -143,35 +163,30 @@
       <h2>Categorías principales</h2>
       <p>Encuentra la bicicleta ideal y complementos para cada tipo de ciclismo.</p>
 
-      <div class="grid categorias__grid">
-        <article class="card categoria" data-category="mtb">
+      <div class="bento-grid">
+        <article class="card categoria bento-item-1" data-category="mtb">
           <h3>Montaña (MTB)</h3>
           <p>XC, trail y enduro para dominar cualquier terreno.</p>
         </article>
 
-        <article class="card categoria" data-category="ruta">
+        <article class="card categoria bento-item-2" data-category="ruta">
           <h3>Ruta</h3>
           <p>Ligereza y aerodinámica para largas distancias.</p>
         </article>
 
-        <article class="card categoria" data-category="gravel">
+        <article class="card categoria bento-item-3" data-category="gravel">
           <h3>Gravel</h3>
           <p>Aventura y versatilidad en caminos mixtos.</p>
         </article>
 
-        <article class="card categoria" data-category="ciudad">
-          <h3>Ciudad / Urbanas</h3>
-          <p>Comodidad y estilo para el día a día.</p>
+        <article class="card categoria bento-item-4" data-category="ebike">
+          <h3>E‑Bikes & Urbanas</h3>
+          <p>Asistencia eléctrica y confort para el día a día.</p>
         </article>
 
-        <article class="card categoria" data-category="ebike">
-          <h3>E‑Bikes</h3>
-          <p>Asistencia eléctrica para ir más lejos con menos esfuerzo.</p>
-        </article>
-
-        <article class="card categoria" data-category="accesorios">
-          <h3>Accesorios</h3>
-          <p>Cascos, luces, herramientas, rodillos y más.</p>
+        <article class="card categoria bento-item-5" data-category="accesorios">
+          <h3>Accesorios Premium</h3>
+          <p>Cascos, luces, herramientas y componentes clave.</p>
         </article>
       </div>
     </div>
