@@ -52,71 +52,84 @@
    MODO DÍA "Ivory Gold"
    ======================== */
 [data-theme="light"] {
-  --bg-deep: #FAF8F5;
-  --bg-surface: #F0EBE1;
+  --bg-deep: #F8FAFC;
+  /* Slate 50 - Fondo general muy limpio */
+  --bg-surface: #F1F5F9;
+  /* Slate 100 - Cajas secundarias */
   --bg-card: #FFFFFF;
-  --bg-input: rgba(255, 255, 255, 0.9);
+  /* Blanco puro para tarjetas */
+  --bg-input: #FFFFFF;
 
-  /* Primary más oscuro para contraste en blanco */
-  --primary: #B45309;
-  --primary-glow: #D97706;
+  /* Primary: Naranja deportivo mantenido pero más vibrante */
+  --primary: #EA580C;
+  /* Orange 600 */
+  --primary-glow: #F97316;
+  /* Orange 500 */
   --primary-text: #FFFFFF;
 
-  /* Neutrals cálidos */
-  --accent: #78716C;
-  --accent-glow: #44403C;
-  --text-main: #1C1917;
-  --text-muted: #57534E;
-  --text-heading: #0C0A09;
+  /* Neutrals: Grises azulados para texto Premium */
+  --accent: #64748B;
+  /* Slate 500 */
+  --accent-glow: #334155;
+  /* Slate 700 */
+  --text-main: #0F172A;
+  /* Slate 900 - Texto principal (casi negro) */
+  --text-muted: #475569;
+  /* Slate 600 - Texto secundario */
+  --text-heading: #020617;
+  /* Slate 950 - Títulos fuertes */
 
-  /* Glass para día */
-  --glass-bg: rgba(250, 248, 245, 0.92);
-  --glass-border: rgba(180, 83, 9, 0.15);
-  --glass-highlight: rgba(180, 83, 9, 0.1);
-  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --card-hover-bg: rgba(180, 83, 9, 0.04);
+  /* Glass para día (más sutil) */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(15, 23, 42, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 1);
+  --glass-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+  /* Sombra muy suave */
+  --card-hover-bg: rgba(241, 245, 249, 0.5);
 
   /* Section alt */
-  --section-alt-bg: #EDE8DE;
+  --section-alt-bg: #E2E8F0;
+  /* Slate 200 */
 
   /* Footer */
-  --footer-bg: #1C1917;
+  --footer-bg: #0F172A;
+  /* Slate 900 (Footer oscuro incluso de día es más Premium) */
 
   /* Scrollbar */
-  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
-  --scrollbar-hover: rgba(0, 0, 0, 0.35);
+  --scrollbar-thumb: rgba(15, 23, 42, 0.2);
+  --scrollbar-hover: rgba(15, 23, 42, 0.4);
 
-  /* Gradients body */
-  --body-grad-1: rgba(180, 83, 9, 0.06);
-  --body-grad-2: rgba(217, 119, 6, 0.03);
+  /* Gradients body (Sutiles destellos grises/naranjas) */
+  --body-grad-1: rgba(249, 115, 22, 0.04);
+  --body-grad-2: rgba(51, 65, 85, 0.02);
 }
 
 /* Detección automática del sistema (si no hay preferencia guardada) */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    --bg-deep: #FAF8F5;
-    --bg-surface: #F0EBE1;
+    --bg-deep: #F8FAFC;
+    --bg-surface: #F1F5F9;
     --bg-card: #FFFFFF;
-    --bg-input: rgba(255, 255, 255, 0.9);
-    --primary: #B45309;
-    --primary-glow: #D97706;
+    --bg-input: #FFFFFF;
+    --primary: #EA580C;
+    --primary-glow: #F97316;
     --primary-text: #FFFFFF;
-    --accent: #78716C;
-    --accent-glow: #44403C;
-    --text-main: #1C1917;
-    --text-muted: #57534E;
-    --text-heading: #0C0A09;
-    --glass-bg: rgba(250, 248, 245, 0.92);
-    --glass-border: rgba(180, 83, 9, 0.15);
-    --glass-highlight: rgba(180, 83, 9, 0.1);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    --card-hover-bg: rgba(180, 83, 9, 0.04);
-    --section-alt-bg: #EDE8DE;
-    --footer-bg: #1C1917;
-    --scrollbar-thumb: rgba(0, 0, 0, 0.2);
-    --scrollbar-hover: rgba(0, 0, 0, 0.35);
-    --body-grad-1: rgba(180, 83, 9, 0.06);
-    --body-grad-2: rgba(217, 119, 6, 0.03);
+    --accent: #64748B;
+    --accent-glow: #334155;
+    --text-main: #0F172A;
+    --text-muted: #475569;
+    --text-heading: #020617;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(15, 23, 42, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 1);
+    --glass-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+    --card-hover-bg: rgba(241, 245, 249, 0.5);
+    --section-alt-bg: #E2E8F0;
+    --footer-bg: #0F172A;
+    --scrollbar-thumb: rgba(15, 23, 42, 0.2);
+    --scrollbar-hover: rgba(15, 23, 42, 0.4);
+    --body-grad-1: rgba(249, 115, 22, 0.04);
+    --body-grad-2: rgba(51, 65, 85, 0.02);
   }
 }
 
