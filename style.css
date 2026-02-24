@@ -842,7 +842,6 @@ img {
   margin-top: -8vw;
   z-index: 4;
   pointer-events: none;
-  animation: floatingBikePremium 8s ease-in-out infinite;
 }
 
 .hero__main-bike {
@@ -851,6 +850,7 @@ img {
   margin: 0 auto;
   display: block;
   filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.8));
+  animation: floatingBikePremium 8s ease-in-out infinite;
 }
 
 @keyframes floatingBikePremium {
@@ -898,27 +898,33 @@ img {
 .marquee-section {
   width: 100%;
   overflow: hidden;
-  background: var(--primary);
-  padding: 1rem 0;
-  box-shadow: 0 10px 30px rgba(217, 119, 6, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-deep);
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .marquee-content {
   display: flex;
   width: max-content;
-  animation: marqueeScroll 25s linear infinite;
+  animation: marqueeScroll 35s linear infinite;
 }
 
 .marquee-content span {
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-size: 1.5rem;
+  font-weight: 300;
   text-transform: uppercase;
-  color: #000;
-  padding: 0 2rem;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  padding: 0 3rem;
   white-space: nowrap;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.2em;
+}
+
+.marquee-content span:nth-child(even) {
+  color: var(--primary);
+  -webkit-text-stroke: 0;
+  font-weight: 500;
 }
 
 @keyframes marqueeScroll {
@@ -948,6 +954,13 @@ img {
   border-radius: 20px;
   background-size: cover;
   background-position: center;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+
+.bento-grid .card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  z-index: 2;
 }
 
 .bento-grid .card::before {
