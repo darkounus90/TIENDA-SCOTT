@@ -1983,10 +1983,17 @@ textarea:focus {
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
   color: var(--text-muted);
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.form-group:focus-within label {
+  color: var(--primary);
 }
 
 .form-group .icon {
@@ -2497,19 +2504,33 @@ textarea:focus {
 
 .form-input {
   width: 100%;
-  padding: 0.75rem;
-  background: var(--bg-input) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: var(--radius-md);
   color: var(--text-main) !important;
   font-family: inherit;
-  transition: var(--transition-fast);
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-input:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 .form-input:focus {
   outline: none;
+  background: rgba(255, 255, 255, 0.05) !important;
   border-color: var(--primary) !important;
-  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
 }
 
 .form-actions {
@@ -2518,7 +2539,7 @@ textarea:focus {
   justify-content: flex-end;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Subida de Archivos */
@@ -2536,26 +2557,43 @@ textarea:focus {
 
 .file-cta {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  padding: 1rem;
-  background: var(--glass-bg);
-  border: 2px dashed var(--glass-border);
-  border-radius: var(--radius-md);
+  padding: 2.5rem 1rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   color: var(--text-muted);
 }
 
 .file-cta:hover {
   border-color: var(--primary);
-  background: var(--card-hover-bg);
+  background: rgba(217, 119, 6, 0.05);
   color: var(--text-main);
+  box-shadow: 0 10px 25px -5px rgba(217, 119, 6, 0.1);
+  transform: translateY(-2px);
 }
 
 .file-cta .icon {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.file-cta:hover .icon {
+  color: var(--primary);
+}
+
+.file-cta span:not(.icon) {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 /* Cuadrícula de Previsualización de Imagen */
