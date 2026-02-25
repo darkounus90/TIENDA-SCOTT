@@ -840,23 +840,26 @@
                     // Brands
                     const bSel = document.getElementById('brandSelect');
                     if (bSel && data.brands) {
+                        const carBrandsToExclude = ['Chevrolet', 'Renault', 'Kia', 'Mazda', 'Nissan', 'Toyota', 'Hyundai', 'Suzuki', 'Volkswagen', 'Ford', 'Taxis'];
+                        const filteredBrands = data.brands.filter(b => !carBrandsToExclude.includes(b));
+                        const defaultBikeBrands = ['SCOTT', 'Shimano', 'SRAM', 'Maxxis', 'Fox', 'RockShox', 'Specialized', 'Trek', 'Giant', 'GW', 'Oakley'];
+                        const allBrands = [...new Set([...defaultBikeBrands, ...filteredBrands])].sort();
+
                         bSel.innerHTML = '<option value="">Selecciona Marca...</option>' +
-                            data.brands.map(b => `<option value="${b}">${b}</option>`).join('');
+                            allBrands.map(b => `<option value="${b}">${b}</option>`).join('');
                     }
 
                     // Categories
                     const cSel = document.getElementById('categorySelect');
                     if (cSel && data.categories) {
                         const defaults = [
-                            // Bicicletas - Clasificación detallada
                             'MTB', 'Ruta', 'Gravel', 'Ciudad', 'E-Bikes',
-                            // General Ciclismo
-                            'Accesorios', 'Repuestos', 'Ropa', 'Cascos', 'Zapatillas',
-                            // Automotriz - Clasificación comercial Colombia
-                            'Chevrolet (Spark/Sail/Onix)', 'Renault (Logan/Sandero/Duster)',
-                            'Kia (Picanto/Rio)', 'Mazda (2/3/CX)', 'Nissan', 'Toyota', 'Hyundai', 'Taxis'
+                            'Accesorios', 'Repuestos', 'Ropa', 'Cascos', 'Zapatillas'
                         ];
-                        const allCats = [...new Set([...defaults, ...data.categories])].sort();
+                        
+                        const filteredCats = data.categories.filter(c => !c.startsWith('Automotriz') && !c.includes('Chevrolet'));
+                        const allCats = [...new Set([...defaults, ...filteredCats])].sort();
+                        
                         cSel.innerHTML = '<option value="">Selecciona Categoría...</option>' +
                             allCats.map(c => `<option value="${c}">${c}</option>`).join('');
                     }
