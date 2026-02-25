@@ -451,10 +451,10 @@ function logout() {
   window.location.reload();
 }
 
-// Función para obtener productos
+// Función para obtener productos (Con Cache Buster)
 async function fetchProducts() {
   try {
-    const response = await fetch(`${API_BASE}/products.php`);
+    const response = await fetch(`${API_BASE}/products.php?_t=${Date.now()}`);
     const data = await response.json();
     if (Array.isArray(data)) {
       products = data;
