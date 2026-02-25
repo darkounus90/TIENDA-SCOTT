@@ -989,29 +989,31 @@ img {
 .bento-item-1 {
   grid-column: span 2;
   grid-row: span 2;
-  background-image: url('scott-mtb.png') !important;
+  background-image: url('images/mtb_premium.png') !important;
 }
 
 .bento-item-2 {
   grid-column: span 2;
-  background-image: url('scott-road.png') !important;
+  background-image: url('images/road_premium.png') !important;
 }
 
 .bento-item-3 {
   grid-column: span 1;
-  background-image: url('scott-gravel.png') !important;
+  background-image: url('https://images.unsplash.com/photo-1541625602330-2277a4c46182?auto=format&fit=crop&w=800&q=80') !important;
+  background-position: center;
 }
 
 .bento-item-4 {
   grid-column: span 1;
-  background-image: url('scott-ebike.png') !important;
+  background-image: url('https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=800&q=80') !important;
+  background-position: center;
 }
 
 .bento-item-5 {
   grid-column: span 4;
   grid-row: span 1;
   height: 180px;
-  background-image: url('scott-accessories.png') !important;
+  background-image: url('images/acc_premium.png') !important;
 }
 
 @media (max-width: 1024px) {

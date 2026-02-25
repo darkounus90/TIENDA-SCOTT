@@ -856,10 +856,10 @@
                             'MTB', 'Ruta', 'Gravel', 'Ciudad', 'E-Bikes',
                             'Accesorios', 'Repuestos', 'Ropa', 'Cascos', 'Zapatillas'
                         ];
-                        
+
                         const filteredCats = data.categories.filter(c => !c.startsWith('Automotriz') && !c.includes('Chevrolet'));
                         const allCats = [...new Set([...defaults, ...filteredCats])].sort();
-                        
+
                         cSel.innerHTML = '<option value="">Selecciona Categoría...</option>' +
                             allCats.map(c => `<option value="${c}">${c}</option>`).join('');
                     }
@@ -1426,9 +1426,35 @@
         <td>${p.name}</td>
         <td>${p.stock}</td>
         <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(p.price)}</td>
-        <td><button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="editProduct(${p.id})">✏️</button></td>
+        <td>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-start;">
+                <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: rgba(255,255,255,0.2);" onclick="editProduct(${p.id})" title="Editar">✏️</button>
+                <button class="btn-secondary text-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;" onclick="deleteProduct(${p.id})" title="Eliminar">🗑️</button>
+            </div>
+        </td>
     </tr>
     `).join('');
+        }
+
+        async function deleteProduct(id) {
+            if (!confirm('¿Estás SEGURO de que deseas eliminar este producto? Esta acción no se puede deshacer.')) return;
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch(`${API_BASE}/products.php?id=${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Producto eliminado exitosamente.');
+                    loadDashboard(); // Reload table
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('No se pudo conectar con el servidor.');
+            }
         }
 
         function exportInventoryToExcel() {
