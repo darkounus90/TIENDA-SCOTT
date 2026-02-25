@@ -711,26 +711,50 @@ img {
   position: relative;
   min-height: 100vh;
   margin-top: -80px;
+  /* Pull up under header */
   padding-top: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 10%, rgba(217, 119, 6, 0.08) 0%, var(--bg-deep) 60%);
+  background: var(--bg-deep);
+  /* Fallback */
 }
 
-.hero-bg-glow {
+.hero-video-bg .hero-bg-media {
   position: absolute;
-  width: 50vw;
-  height: 50vw;
-  background: var(--primary);
-  filter: blur(250px);
-  opacity: 0.05;
-  top: -10%;
-  left: 25%;
-  border-radius: 50%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center 70%;
   z-index: 0;
-  pointer-events: none;
+  transform: scale(1.05);
+  /* Slight scale to allow for soft parallax or just to avoid edges */
+  animation: subtleZoom 20s ease-out infinite alternate;
+}
+
+@keyframes subtleZoom {
+  0% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1.08);
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Sleek vignette and dark gradient fade for premium contrast */
+  background: linear-gradient(180deg, rgba(10, 10, 12, 0.4) 0%, rgba(10, 10, 12, 0.8) 60%, var(--bg-deep) 100%),
+    radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 1;
 }
 
 .hero__container {
@@ -756,11 +780,8 @@ img {
   letter-spacing: -0.04em;
   color: var(--text-heading);
   text-transform: uppercase;
-  margin-bottom: 2rem;
-  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.7) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
 
 .hero__sub-headline {
@@ -768,97 +789,18 @@ img {
   font-size: clamp(1rem, 2vw, 1.5rem);
   font-weight: 400;
   letter-spacing: 0.2em;
-  color: var(--primary-glow);
+  color: #fff;
   margin-top: 1rem;
-  background: none;
-  -webkit-text-fill-color: var(--primary-glow);
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
 }
 
 .hero__actions {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 }
 
-.btn-magnetic {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem 3rem;
-  border-radius: 100px;
-  background: transparent;
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.btn-magnetic::before {
-  content: '';
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background: var(--primary);
-  border-radius: 50% 50% 0 0;
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  z-index: 0;
-}
-
-.btn-magnetic:hover {
-  border-color: var(--primary);
-  color: #000;
-}
-
-.btn-magnetic:hover::before {
-  top: 0;
-  border-radius: 0;
-}
-
-.btn-magnetic span {
-  position: relative;
-  z-index: 1;
-}
-
-/* Float bike over massive text with Luxury Difuminado */
-.hero__image-wrapper {
-  position: relative;
-  margin-top: -8vw;
-  z-index: 4;
-  pointer-events: none;
-  /* El efecto 'difuminado' o 'fade' pedido por el usuario para el look $10k */
-  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-}
-
-.hero__main-bike {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  display: block;
-  /* Aura resplandeciente premium */
-  filter: drop-shadow(0 0 60px rgba(217, 119, 6, 0.45)) drop-shadow(0 20px 30px rgba(0, 0, 0, 0.9));
-  animation: floatingBikePremium 10s ease-in-out infinite;
-  transform-origin: bottom center;
-}
-
-@keyframes floatingBikePremium {
-
-  0%,
-  100% {
-    transform: translateY(0) scale(1) rotate(0);
-  }
-
-  50% {
-    transform: translateY(-25px) scale(1.03) rotate(1deg);
-  }
-}
+/* Float removal (replaced by bg image) */
 
 .hero__stats {
   display: flex;
@@ -3154,5 +3096,299 @@ a {
   .nav-badge {
     margin-right: 0.5rem;
     font-size: 0.7rem !important;
+  }
+}
+
+/* =====================
+   PREMIUM CART REDESIGN
+===================== */
+.cart-premium-panel {
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column;
+  overflow: hidden !important;
+  max-width: 500px !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(12, 12, 14, 0.95) !important;
+  box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.7) !important;
+}
+
+.cart-premium-header {
+  padding: 2rem 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+}
+
+.cart-premium-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.cart-premium-title-wrapper i {
+  color: var(--primary);
+  width: 28px;
+  height: 28px;
+}
+
+.cart-premium-title-wrapper h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.cart-premium-count {
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--primary);
+  padding: 0.35rem 0.85rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+
+.cart-premium-items {
+  padding: 1rem 2.5rem;
+  overflow-y: auto;
+  max-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cart-premium-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-premium-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cart-premium-items::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.cart-premium-items::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+.cart-premium-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.cart-premium-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cart-item-image-wrapper {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-item-placeholder {
+  color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+}
+
+.cart-item-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.2rem 0;
+  color: #fff;
+}
+
+.cart-item-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cart-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart-item-qty {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+}
+
+.cart-item-price {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.cart-item-remove-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  width: 36px;
+  height: 36px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cart-item-remove-btn:hover {
+  background: #ef4444;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.cart-item-remove-btn i {
+  width: 18px;
+  height: 18px;
+}
+
+.cart-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.cart-empty-state i {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.cart-empty-state p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.cart-premium-footer {
+  padding: 2.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.cart-summary-label {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.cart-summary-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #fff, #9ca3af);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cart-tax-notice {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0 0 2rem 0;
+}
+
+.cart-actions-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.checkout-btn-premium {
+  padding: 1.1rem;
+  font-size: 1.05rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 12px;
+}
+
+.continue-shopping-btn {
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 600px) {
+  .cart-premium-panel {
+    max-width: 100% !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  .cart-premium-header,
+  .cart-premium-items,
+  .cart-premium-footer {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .cart-premium-items {
+    max-height: none;
+    flex-grow: 1;
   }
 }

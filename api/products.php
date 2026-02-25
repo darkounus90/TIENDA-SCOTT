@@ -91,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $use_type = $conn->real_escape_string($data['use'] ?? '');
     $stock = (int)($data['stock'] ?? 0);
     $barcode = $conn->real_escape_string($data['barcode'] ?? '');
+    $description = $conn->real_escape_string($data['description'] ?? '');
     $images = $data['images'] ?? []; // Array de Base64 strings
 
     if (!$name || !$price) {
@@ -101,8 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Convertir array de imágenes a JSON para guardar
     $imagesJson = $conn->real_escape_string(json_encode($images));
 
-    $sql = "INSERT INTO products (name, brand, category, price, tag, use_type, stock, barcode, images) 
-            VALUES ('$name', '$brand', '$category', $price, '$tag', '$use_type', $stock, '$barcode', '$imagesJson')";
+    $sql = "INSERT INTO products (name, brand, category, price, tag, use_type, stock, barcode, description, images) 
+            VALUES ('$name', '$brand', '$category', $price, '$tag', '$use_type', $stock, '$barcode', '$description', '$imagesJson')";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["success" => true, "message" => "Producto guardado", "id" => $conn->insert_id]);
@@ -144,6 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $tag = $conn->real_escape_string($data['tag'] ?? '');
     $stock = (int)($data['stock'] ?? 0);
     $barcode = $conn->real_escape_string($data['barcode'] ?? '');
+    $description = $conn->real_escape_string($data['description'] ?? '');
     
     // Solo actualizar imágenes si se envían nuevas
     $imagesSql = "";
@@ -154,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
     $sql = "UPDATE products SET 
             name='$name', brand='$brand', category='$category', 
-            price=$price, tag='$tag', stock=$stock, barcode='$barcode'
+            price=$price, tag='$tag', stock=$stock, barcode='$barcode', description='$description'
             $imagesSql
             WHERE id=$id";
 

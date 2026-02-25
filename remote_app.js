@@ -1165,10 +1165,10 @@ cartModal.addEventListener("click", e => {
 });
 
 function addToCart(productId) {
-  const product = products.find(p => p.id == productId);
+  const product = products.find(p => p.id === productId);
   if (!product || product.stock <= 0) return;
 
-  const existing = cart.find(item => item.id == productId);
+  const existing = cart.find(item => item.id === productId);
   if (existing) {
     if (existing.qty + 1 > product.stock) {
       alert("No hay suficiente stock.");
@@ -1183,7 +1183,7 @@ function addToCart(productId) {
 }
 
 function removeFromCart(productId) {
-  cart = cart.filter(item => item.id != productId);
+  cart = cart.filter(item => item.id !== productId);
   updateCartUI();
   renderProducts();
 }
@@ -1199,53 +1199,21 @@ function updateCartUI() {
     count += item.qty;
 
     const row = document.createElement("div");
-    row.className = "cart-premium-item fade-up-anim";
-
-    // Attempt to parse out a nice image
-    let imgSrc = "";
-    if (item.image) imgSrc = item.image;
-    else if (item.images && item.images.length > 0) imgSrc = item.images[0];
-
-    const imgHtml = imgSrc ? `<img src="${imgSrc}" alt="${item.name}" class="cart-item-img">` : `<div class="cart-item-placeholder"><i data-lucide="image"></i></div>`;
-
+    row.className = "cart-item";
     row.innerHTML = `
-      <div class="cart-item-image-wrapper">
-        ${imgHtml}
-      </div>
-      <div class="cart-item-details">
-        <h4 class="cart-item-title">${item.name}</h4>
-        <div class="cart-item-meta">
-          <span class="cart-item-brand">${item.brand || 'SCOTT'}</span>
-        </div>
-        <div class="cart-item-bottom">
-          <span class="cart-item-qty">Qt: ${item.qty}</span>
-          <span class="cart-item-price">${currencyFormat(item.price)}</span>
+      <div>
+        <div class="cart-item__name">${item.name}</div>
+        <div class="cart-item__meta">
+          ${item.qty} x ${currencyFormat(item.price)}
         </div>
       </div>
-      <button class="cart-item-remove-btn" data-remove="${item.id}" title="Eliminar">
-        <i data-lucide="trash-2"></i>
-      </button>
+      <button data-remove="${item.id}">Eliminar</button>
     `;
     cartItemsContainer.appendChild(row);
   });
-  if (typeof lucide !== 'undefined') lucide.createIcons();
 
   cartTotalElement.textContent = currencyFormat(total);
   cartCountElement.textContent = count.toString();
-
-  const headerCount = document.getElementById("cartHeaderCount");
-  if (headerCount) headerCount.textContent = count + (count === 1 ? " ítem" : " ítems");
-
-  if (cart.length === 0) {
-    cartItemsContainer.innerHTML = `
-      <div class="cart-empty-state">
-        <i data-lucide="shopping-cart"></i>
-        <p>Tu carrito está vacío</p>
-        <button class="btn-secondary" onclick="document.getElementById('closeCart').click()">Descubrir productos</button>
-      </div>
-    `;
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-  }
 
   // eventos eliminar
   cartItemsContainer.querySelectorAll("[data-remove]").forEach(btn => {
@@ -1280,8 +1248,7 @@ checkoutButton.addEventListener("click", async () => {
   const confirmPurchase = confirm("¿Confirmar la compra? Serás redirigido a la facturación.");
   if (confirmPurchase) {
     checkoutButton.disabled = true;
-    checkoutButton.innerHTML = "<span>Procesando...</span> <i data-lucide='loader'></i>";
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    checkoutButton.innerHTML = "Procesando...";
     try {
       const response = await fetch(`${API_BASE}/orders.php`, {
         method: 'POST',
@@ -1315,8 +1282,7 @@ checkoutButton.addEventListener("click", async () => {
       alert("Error de conexión al procesar el pedido.");
     } finally {
       checkoutButton.disabled = false;
-      checkoutButton.innerHTML = "<span>Ir a Pagar</span> <i data-lucide='arrow-right'></i>";
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      checkoutButton.innerHTML = "Finalizar compra";
     }
   }
 });
