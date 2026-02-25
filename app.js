@@ -1050,6 +1050,8 @@ if (imageUploadGrid) {
     // Clic en ranura para activar input
     slot.addEventListener("click", (e) => {
       if (e.target.closest(".remove-img-btn")) return; // Ignorar clic en botón eliminar
+      if (e.target === input) return; // Evitar loop infinito que bloquea el explorador
+
       if (!productImages[index]) {
         input.click();
       }
