@@ -1138,13 +1138,13 @@
             }
 
 
-            // Obtener Productos
-            const prodRes = await fetch(`${API_BASE}/products.php`);
+            // Obtener Productos (con cache-buster)
+            const prodRes = await fetch(`${API_BASE}/products.php?_t=${Date.now()}`);
             const prodData = await prodRes.json();
-            if (prodData.success) {
-                window.currentProducts = prodData.products;
-                renderInventory(prodData.products);
-                document.getElementById('statTotalProducts').textContent = prodData.products.length;
+            if (Array.isArray(prodData)) {
+                window.currentProducts = prodData;
+                renderInventory(prodData);
+                document.getElementById('statTotalProducts').textContent = prodData.length;
             }
 
             // Obtener Usuarios
