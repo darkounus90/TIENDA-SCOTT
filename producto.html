@@ -232,8 +232,12 @@
                 </div>
 
                 <p class="product-description" id="pCategory">
-                    Categoría y etiquetas del producto. Detalles técnicos y de compatibilidad para asegurar el encaje
-                    perfecto.
+                    Recuperando categoría...
+                </p>
+
+                <p class="product-description" id="pDescription"
+                    style="font-size: 1rem; color: var(--text-main); font-weight: 500;">
+                    <!-- Descripción del producto (se llena por JS) -->
                 </p>
 
                 <ul class="features-list">
@@ -300,6 +304,13 @@
                 document.getElementById('pBrand').innerText = product.brand || 'Original';
                 document.getElementById('pPrice').innerText = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(product.price);
                 document.getElementById('pCategory').innerText = `Repuesto / Bicicleta categorizada en: ${product.category}. ${product.tag ? 'Etiqueta: ' + product.tag : ''} | Referencia: ${product.use || 'General'}`;
+
+                if (product.description) {
+                    document.getElementById('pDescription').innerText = product.description;
+                    document.getElementById('pDescription').style.display = "block";
+                } else {
+                    document.getElementById('pDescription').style.display = "none";
+                }
 
                 // Barra código de barras
                 if (product.barcode) {
