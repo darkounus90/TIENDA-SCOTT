@@ -1053,6 +1053,7 @@ if (imageUploadGrid) {
       if (e.target === input) return; // Evitar loop infinito que bloquea el explorador
 
       if (!productImages[index]) {
+        console.log("Abriendo selector de archivos para ranura", index);
         input.click();
       }
     });

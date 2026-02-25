@@ -1637,8 +1637,15 @@ textarea:focus {
 }
 
 .image-slot input[type="file"] {
-  display: none !important;
-  /* Hide native input, handled by JS click */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .image-slot .slot-placeholder {
