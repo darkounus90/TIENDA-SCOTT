@@ -747,19 +747,24 @@ function renderProducts() {
 }
 
 // Filtro por select
-categoryFilter.addEventListener("change", e => {
-  filteredCategory = e.target.value;
-  renderProducts();
-});
+if (categoryFilter) {
+  categoryFilter.addEventListener("change", e => {
+    filteredCategory = e.target.value;
+    renderProducts();
+  });
+}
 
 // Filtro por categoría clickeando cards de categorías
 document.querySelectorAll(".categoria").forEach(card => {
   card.addEventListener("click", () => {
     const cat = card.dataset.category;
     filteredCategory = cat;
-    categoryFilter.value = cat;
+    if (categoryFilter) categoryFilter.value = cat;
     renderProducts();
-    window.scrollTo({ top: document.getElementById("productos").offsetTop - 80, behavior: "smooth" });
+    const productosSection = document.getElementById("productos");
+    if (productosSection) {
+      window.scrollTo({ top: productosSection.offsetTop - 80, behavior: "smooth" });
+    }
   });
 });
 
