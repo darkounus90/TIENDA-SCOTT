@@ -1594,6 +1594,38 @@
             form.elements['stock'].value = product.stock;
             form.elements['barcode'].value = product.barcode || '';
             document.getElementById('input-tag').value = product.tag || '';
+            
+            const descInput = document.getElementById('input-description');
+            if (descInput) descInput.value = product.description || '';
+
+            // Cargar imágenes previas
+            productImagesBase64 = [];
+            const grid = document.getElementById('imagePreviewGrid');
+            if (grid) {
+                grid.innerHTML = '';
+                let imgs = [];
+                if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+                    imgs = product.images;
+                } else if (product.image) {
+                    imgs = [product.image];
+                }
+                
+                imgs.forEach(imgBase64 => {
+                    productImagesBase64.push(imgBase64);
+                    const img = document.createElement('img');
+                    // Soporte si la ruta es relativa
+                    if (!imgBase64.startsWith('data:') && !imgBase64.startsWith('http')) {
+                         img.src = API_BASE + '/../' + imgBase64; 
+                    } else {
+                         img.src = imgBase64;
+                    }
+                    img.style.width = '80px';
+                    img.style.height = '80px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '4px';
+                    grid.appendChild(img);
+                });
+            }
 
             // Marcas y categorías
             setFinalValue('brand', product.brand);
