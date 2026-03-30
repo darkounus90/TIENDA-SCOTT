@@ -1287,19 +1287,22 @@ function updateCartUI() {
 }
 
 // Delegación de eventos para botones de producto
-productList.addEventListener("click", e => {
-  const addId = e.target.dataset.add;
-  if (addId) {
-    addToCart(Number(addId));
-  }
-});
+if (productList) {
+  productList.addEventListener("click", e => {
+    const addId = e.target.dataset.add;
+    if (addId) {
+      addToCart(Number(addId));
+    }
+  });
+}
 
 // Proceso de pago real
-checkoutButton.addEventListener("click", async () => {
-  if (cart.length === 0) {
-    alert("Tu carrito está vacío.");
-    return;
-  }
+if (checkoutButton) {
+  checkoutButton.addEventListener("click", async () => {
+    if (cart.length === 0) {
+      alert("Tu carrito está vacío.");
+      return;
+    }
 
   const token = localStorage.getItem('token');
   if (!token) {
@@ -1350,6 +1353,7 @@ checkoutButton.addEventListener("click", async () => {
     }
   }
 });
+}
 
 // Lógica de agregar producto
 addProductForm.addEventListener("submit", async (e) => {
