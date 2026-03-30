@@ -1423,23 +1423,23 @@ img {
 }
 
 .product-card__image {
-  background: #ffffff; /* Fondo blanco para disimular jpegs con paddings variados */
-  border-radius: var(--radius-md) var(--radius-md) 0 0; /* Bordes solo arriba si no hay padding, o redondeado suave */
-  margin: -1.5rem -1.5rem 1.5rem -1.5rem; /* Margen negativo para llenar toda la parte superior de la tarjeta (padding es 1.5rem en el padre) */
-  padding: 0;
+  background: #ffffff; /* Fondo blanco uniforme */
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+  padding: 1rem; /* Devolver algo de padding para que las fotos no toquen los bordes */
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1 / 1; /* Formato cuadrado idéntico para todas */
+  aspect-ratio: 1 / 1; /* Forzar bloque perfectamente cuadrado */
   position: relative;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255,255,255,0.05); /* Separador sutil */
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .product-card__img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Recortar al mismo tamaño */
+  object-fit: contain; /* Mostrar TODA la imagen, sin recortes que la hagan ilegible */
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -3397,6 +3397,92 @@ a {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* ========================================================================= */
+/* PREMIUM SECTION HEADER (PRODUCTS)                                         */
+/* ========================================================================= */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 768px) {
+  .section-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+}
+
+.section-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section-title .badge {
+  align-self: flex-start;
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--primary-glow);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+
+.section-title h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.filter-wrapper {
+  position: relative;
+  min-width: 250px;
+}
+
+.filter-wrapper select {
+  appearance: none;
+  width: 100%;
+  background: rgba(20, 25, 35, 0.6);
+  backdrop-filter: blur(12px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 3rem 1rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.filter-wrapper select:hover {
+  background: rgba(30, 35, 45, 0.8);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.filter-wrapper select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.2);
 }
 
 .cart-tax-notice {
