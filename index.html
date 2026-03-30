@@ -191,82 +191,123 @@
     </div>
   </div>
 
-  <!-- CATEGORÍAS -->
-  <section class="section" id="categorias">
+  <!-- CATEGORÍAS BENTO LUXE -->
+  <section class="section category-luxe" id="categorias">
     <div class="container">
-      <h2>Categorías principales</h2>
-      <p>Encuentra la bicicleta ideal y complementos para cada tipo de ciclismo.</p>
+      <div class="section-luxe__header">
+        <h2 class="title-luxe">CATEGORÍAS<br><em class="accent">EXPLORA</em></h2>
+        <p class="desc-luxe">Selección experta para cada disciplina y estilo de competencia.</p>
+      </div>
 
-      <div class="bento-grid">
-        <article class="card categoria bento-item-1" data-category="mtb">
-          <h3>Montaña (MTB)</h3>
-          <p>XC, trail y enduro para dominar cualquier terreno.</p>
+      <div class="bento-luxe">
+        <article class="bento-luxe__item span-2" data-category="mtb">
+          <div class="bento-luxe__icon"><i data-lucide="mountain"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Montaña (MTB)</h3>
+            <p>XC, trail y enduro. Domina cualquier terreno con precisión.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-2" data-category="ruta">
-          <h3>Ruta</h3>
-          <p>Ligereza y aerodinámica para largas distancias.</p>
+        <article class="bento-luxe__item" data-category="ruta">
+          <div class="bento-luxe__icon"><i data-lucide="wind"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Ruta</h3>
+            <p>Aerodinámica y velocidad en el asfalto.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-3" data-category="gravel">
-          <h3>Gravel</h3>
-          <p>Aventura y versatilidad en caminos mixtos.</p>
+        <article class="bento-luxe__item span-tall" data-category="ebike">
+          <div class="bento-luxe__icon"><i data-lucide="zap"></i></div>
+          <div class="bento-luxe__content">
+            <h3>E‑Bikes</h3>
+            <p>El futuro es hoy. Asistencia eléctrica para cruzar horizontes sin límites.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-4" data-category="ebike">
-          <h3>E‑Bikes & Urbanas</h3>
-          <p>Asistencia eléctrica y confort para el día a día.</p>
+        <article class="bento-luxe__item" data-category="gravel">
+          <div class="bento-luxe__icon"><i data-lucide="map"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Gravel</h3>
+            <p>Versatilidad en caminos mixtos.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-5" data-category="accesorios">
-          <h3>Accesorios Premium</h3>
-          <p>Cascos, luces, herramientas y componentes clave.</p>
+        <article class="bento-luxe__item span-2" data-category="accesorios">
+          <div class="bento-luxe__icon"><i data-lucide="shield"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Accesorios Premium</h3>
+            <p>Cascos, luces, indumentaria y herramientas vitales.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
       </div>
     </div>
   </section>
 
-
-
-  <!-- SERVICIOS / TALLER -->
-  <section class="section section--alt" id="servicios">
-    <div class="container servicios__content">
-      <div>
-        <h2>Taller especializado y servicios</h2>
-        <p>
-          Ofrecemos mantenimiento preventivo, reparaciones completas, ajustes de transmisión
-          y servicio de suspensión para todas las marcas.
+  <!-- SERVICIOS / TALLER LUXE -->
+  <section class="section service-luxe" id="servicios">
+    <div class="service-luxe__bg"></div>
+    <div class="container service-luxe__container">
+      <div class="service-luxe__info">
+        <h2 class="title-luxe">PERFORMANCE<br><em class="accent">LAB</em></h2>
+        <p class="desc-luxe">
+          Más que un taller, es el centro neurálgico para mantener tu máquina en estado de competencia.
         </p>
-        <ul class="servicios__list">
-          <li>Mantenimiento básico y avanzado.</li>
-          <li>Ajuste de frenos, cambios y suspensión.</li>
-          <li>Armado de bicicletas nuevas y personalización.</li>
-          <li>Asesoría para elección de talla y tipo de bicicleta.</li>
+        <ul class="service-luxe__list">
+          <li>
+            <span class="icon-wrap"><i data-lucide="settings"></i></span>
+            <div>
+              <strong>Mantenimiento Avanzado</strong>
+              <span>Desensamble, limpieza ultrasónica y torque preciso.</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon-wrap"><i data-lucide="activity"></i></span>
+            <div>
+              <strong>Ajuste y Suspensión</strong>
+              <span>Telemetría y ajuste fino para dominar el sendero.</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon-wrap"><i data-lucide="user-plus"></i></span>
+            <div>
+              <strong>Asesoría y Personalización</strong>
+              <span>Biometría y armado a la medida de tu fisionomía.</span>
+            </div>
+          </li>
         </ul>
       </div>
-      <div class="servicios__box">
-        <h3>Agenda tu servicio</h3>
-        <form id="serviceForm">
-          <label>
-            Nombre
-            <input type="text" name="nombre" required />
-          </label>
-          <label>
-            Teléfono / WhatsApp
-            <input type="tel" name="telefono" required />
-          </label>
-          <label>
-            Tipo de servicio
-            <select name="tipo" required>
-              <option value="mantenimiento">Mantenimiento general</option>
-              <option value="ajuste">Ajuste cambios / frenos</option>
-              <option value="suspension">Servicio de suspensión</option>
-              <option value="asesoria">Asesoría de compra</option>
-            </select>
-          </label>
-          <button type="submit" class="btn-primary btn-full">Enviar solicitud</button>
-          <p class="form__status" id="serviceStatus"></p>
-        </form>
+      
+      <div class="service-luxe__form-wrapper">
+        <div class="glass-form-panel">
+          <h3>Agendar Intervención</h3>
+          <p>Reserva tu espacio en el taller especializado.</p>
+          <form id="serviceForm" class="form-luxe">
+            <div class="form-luxe__group">
+              <input type="text" name="nombre" required placeholder=" " />
+              <label>Tu Nombre</label>
+            </div>
+            <div class="form-luxe__group">
+              <input type="tel" name="telefono" required placeholder=" " />
+              <label>WhatsApp / Teléfono</label>
+            </div>
+            <div class="form-luxe__group select-mod">
+              <select name="tipo" required>
+                <option value="" disabled selected>Selecciona el servicio...</option>
+                <option value="mantenimiento">Mantenimiento general VIP</option>
+                <option value="ajuste">Ajuste de precisión (Frenos/Cambios)</option>
+                <option value="suspension">Service de suspensión completa</option>
+                <option value="asesoria">Asesoría de compra y fitting</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-luxe btn-full">Solicitar Espacio <i data-lucide="calendar"></i></button>
+            <p class="form__status" id="serviceStatus"></p>
+          </form>
+        </div>
       </div>
     </div>
   </section>

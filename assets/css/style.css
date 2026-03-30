@@ -3859,3 +3859,326 @@ a {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+/* =========================================================
+   REDISEÑO PREMIUM: BENTO CATEGORÍAS
+   ========================================================= */
+
+.category-luxe {
+  background: var(--bg-deep);
+  position: relative;
+}
+
+.section-luxe__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.title-luxe {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: white;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.title-luxe .accent {
+  color: var(--primary);
+  font-style: normal;
+}
+
+.desc-luxe {
+  font-size: 1.1rem;
+  color: #A8A29E;
+  font-weight: 400;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.bento-luxe {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(280px, auto);
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .bento-luxe {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .bento-luxe {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bento-luxe__item {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+}
+
+.bento-luxe__item:hover {
+  transform: translateY(-5px);
+  border-color: rgba(217, 119, 6, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.bento-luxe__item.span-2 {
+  grid-column: span 2;
+}
+
+.bento-luxe__item.span-tall {
+  grid-row: span 2;
+}
+
+@media (max-width: 1024px) {
+  .bento-luxe__item.span-2 { grid-column: span 2; }
+  .bento-luxe__item.span-tall { grid-row: span 1; }
+}
+
+@media (max-width: 600px) {
+  .bento-luxe__item.span-2 { grid-column: span 1; }
+}
+
+.bento-luxe__icon {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: rgba(255,255,255,0.2);
+  transition: all 0.5s ease;
+}
+
+.bento-luxe__icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.bento-luxe__item:hover .bento-luxe__icon {
+  color: var(--primary);
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.bento-luxe__content {
+  position: relative;
+  z-index: 2;
+}
+
+.bento-luxe__content h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.bento-luxe__content p {
+  color: #A8A29E;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  transition: opacity 0.3s ease;
+}
+
+.bento-luxe__glow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at bottom left, rgba(217,119,6,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.bento-luxe__item:hover .bento-luxe__glow {
+  opacity: 1;
+}
+
+/* =========================================================
+   REDISEÑO PREMIUM: SERVICIOS Y TALLER
+   ========================================================= */
+
+.service-luxe {
+  position: relative;
+  background: #050505;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+
+.service-luxe__bg {
+  position: absolute;
+  top: 0; right: 0;
+  width: 50%; height: 100%;
+  background: radial-gradient(circle at center, rgba(217,119,6,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.service-luxe__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .service-luxe__container {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}
+
+.service-luxe__list {
+  list-style: none;
+  padding: 0;
+  margin: 3rem 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.service-luxe__list li {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.service-luxe__list .icon-wrap {
+  background: rgba(217,119,6,0.1);
+  color: var(--primary);
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(217,119,6,0.2);
+}
+
+.service-luxe__list strong {
+  display: block;
+  color: white;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.service-luxe__list span {
+  color: #A8A29E;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  display: block;
+}
+
+/* Glass Form Panel */
+.glass-form-panel {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.glass-form-panel h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.glass-form-panel p {
+  color: #8c8885;
+  margin-bottom: 2rem;
+}
+
+/* Formularios Luxe (Floating Labels) */
+.form-luxe {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-luxe__group {
+  position: relative;
+}
+
+.form-luxe__group input,
+.form-luxe__group select {
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  padding: 1.25rem 1rem 0.5rem 1rem;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-luxe__group select {
+  padding: 1rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23A8A29E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.form-luxe__group input:focus,
+.form-luxe__group select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(0,0,0,0.5);
+  box-shadow: 0 0 0 4px rgba(217,119,6,0.1);
+}
+
+.form-luxe__group label {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: #A8A29E;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.form-luxe__group input:focus + label,
+.form-luxe__group input:not(:placeholder-shown) + label {
+  top: 0.25rem;
+  transform: translateY(0);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.select-mod select {
+  color: #A8A29E;
+}
+.select-mod select:focus {
+  color: white;
+}
+.select-mod select option {
+  background: var(--bg-surface);
+  color: white;
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1rem;
+}
