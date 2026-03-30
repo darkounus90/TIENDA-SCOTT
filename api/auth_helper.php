@@ -98,6 +98,10 @@ function getAuthHeaderRaw(): ?string {
     }
     if (!empty($_SERVER['HTTP_AUTHORIZATION']))          return $_SERVER['HTTP_AUTHORIZATION'];
     if (!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) return $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+    
+    // Fallback for strict FastCGI setups that strip headers
+    if (!empty($_GET['token'])) return 'Bearer ' . $_GET['token'];
+    
     return null;
 }
 

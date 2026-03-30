@@ -1,4 +1,18 @@
 // APP.JS - Main Logic
+// --- FEROZO TOKEN PASSTHROUGH FIX ---
+const originalFetch = window.fetch;
+window.fetch = async function () {
+    let [resource, config] = arguments;
+    const token = localStorage.getItem('token');
+    if (token && typeof resource === 'string' && resource.includes('api/')) {
+        const separator = resource.includes('?') ? '&' : '?';
+        if (!resource.includes('token=')) {
+            resource += `${separator}token=${encodeURIComponent(token)}`;
+        }
+    }
+    return originalFetch.apply(this, arguments);
+};
+// ------------------------------------
 const accountButton = document.getElementById("accountButton");
 const accountModal = document.getElementById("accountModal");
 const closeAccount = document.getElementById("closeAccount");

@@ -12,8 +12,11 @@
 # Configuración básica de reescritura si es necesaria para router (opcional)
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    # RewriteBase /
+    RewriteCond %{HTTP:Authorization} ^(.*)
+    RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
 </IfModule>
+
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 
 # Proteger archivos sensibles
 <FilesMatch "^\.">
