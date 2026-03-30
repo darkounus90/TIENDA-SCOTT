@@ -152,10 +152,10 @@ img {
   justify-content: space-between;
   align-items: center;
   position: relative;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   max-width: var(--max-width);
   margin: 0 auto;
-  width: calc(100% - 2rem);
+  width: 100%;
+  gap: 1rem;
 }
 
 .logo {
@@ -176,33 +176,38 @@ img {
 }
 
 .logo span {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-family: 'Inter', sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .nav {
   order: 2;
   display: flex;
-  gap: 2.5rem;
+  gap: 1.25rem;
   align-items: center;
+  flex: 1;
+  justify-content: center;
 }
 
 .header__actions {
   order: 3;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.5rem;
 }
 
 .nav a {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   color: var(--text-muted);
   transition: var(--transition-fast);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 /* Mobile Navigation & Hamburger */
