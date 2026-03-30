@@ -1,6 +1,8 @@
 <?php
+require 'auth_helper.php';
+setCorsHeaders();
+requireAdmin(); // Solo admins pueden ejecutar este script
 require 'db.php';
-
 // Mostrar errores temporalmente para debug
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);

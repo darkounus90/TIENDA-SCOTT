@@ -1,10 +1,12 @@
-const CACHE_NAME = 'pedalazo-v' + Date.now(); // Cache name dinámico basado en tiempo para forzar purga en cada cambio
+const CACHE_NAME = 'pedalazo-v' + Date.now();
 const ASSETS = [
   './',
   './index.html',
-  './style.css',
-  './app.js',
-  './logo-pedalazo-icon.svg',
+  './productos.html',
+  './producto.html',
+  './assets/css/style.css',
+  './assets/js/app.js',
+  './assets/images/favicon.svg',
   './manifest.json'
 ];
 
