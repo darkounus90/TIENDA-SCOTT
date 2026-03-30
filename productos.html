@@ -15,12 +15,12 @@
 </head>
 
 <body class="products-page">
-  <!-- Header (Same as index.html) -->
+  <!-- CABECERA -->
   <header class="header">
     <div class="container header__content">
-      <div class="header__logo">
+      <div class="logo">
         <a href="index.html">
-          <span style="font-size: 1.5rem; font-weight: 800; color: white;">El Pedalazo</span>
+          <span>El Pedalazo</span>
         </a>
       </div>
 
@@ -37,25 +37,37 @@
       </nav>
 
       <div class="header__actions">
-        <div class="search-wrapper">
-          <i data-lucide="search"></i>
-          <input type="text" id="searchInput" placeholder="Buscar productos...">
-        </div>
-        
-        <button class="icon-btn" id="accountButton" title="Mi Cuenta">
-          <i data-lucide="user"></i>
-        </button>
-        
-        <button class="icon-btn cart-btn" id="cartButton">
-          <i data-lucide="shopping-bag"></i>
-          <span class="cart-count" id="cartCount">0</span>
+        <button class="btn-icon" id="searchToggle"><i data-lucide="search"></i></button>
+        <button class="btn-icon" id="cartButton">
+          <i data-lucide="shopping-bag"></i> <span id="cartCount">0</span>
         </button>
 
-        <button class="hamburger" id="hamburgerMenu">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="user-menu-container">
+          <button class="btn-icon" id="loginButton" title="Iniciar Sesión"><i data-lucide="user"></i></button>
+          <button class="btn-icon" id="accountButton" style="display:none;" title="Mi Cuenta"><i
+              data-lucide="user"></i></button>
+
+          <!-- Dropdown Menu -->
+          <div class="user-dropdown" id="userDropdown">
+            <button id="menuProfile"><span class="icon"><i data-lucide="user"></i></span> Mi Perfil</button>
+            <button id="menuOrders"><span class="icon"><i data-lucide="package"></i></span> Mis Pedidos</button>
+            <div class="dropdown-divider"></div>
+            <button id="menuLogout" class="text-danger"><span class="icon"><i data-lucide="log-out"></i></span> Cerrar
+              Sesión</button>
+          </div>
+        </div>
+
+        <!-- HAMBURGER MENU BUTTON -->
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Abrir menú">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
         </button>
+      </div>
+
+      <!-- Search Input Hidden -->
+      <div class="search-overlay" id="searchOverlay" style="display: none;">
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos..." />
       </div>
     </div>
   </header>

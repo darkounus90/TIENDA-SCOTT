@@ -1423,29 +1423,28 @@ img {
 }
 
 .product-card__image {
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
-  border-radius: var(--radius-md);
-  margin-bottom: 1.5rem;
-  padding: 1rem;
+  background: #ffffff; /* Fondo blanco para disimular jpegs con paddings variados */
+  border-radius: var(--radius-md) var(--radius-md) 0 0; /* Bordes solo arriba si no hay padding, o redondeado suave */
+  margin: -1.5rem -1.5rem 1.5rem -1.5rem; /* Margen negativo para llenar toda la parte superior de la tarjeta (padding es 1.5rem en el padre) */
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 4/3;
-  /* Consistent ratio */
+  aspect-ratio: 1 / 1; /* Formato cuadrado idéntico para todas */
   position: relative;
   overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.05); /* Separador sutil */
 }
 
 .product-card__img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+  object-fit: cover; /* Recortar al mismo tamaño */
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .product-card:hover .product-card__img {
-  transform: scale(1.1) rotate(-2deg);
+  transform: scale(1.05); /* Escala más sutil por ser cover */
 }
 
 .product-card__brand {
