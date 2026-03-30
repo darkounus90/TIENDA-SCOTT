@@ -11,10 +11,10 @@ $db   = getenv('DB_NAME') ?: 'c2721903_scott';
 $configFile = __DIR__ . '/config.php';
 if (file_exists($configFile)) {
     $config = require $configFile;
-    $host = $config['host'] ?? $host;
-    $user = $config['user'] ?? $user;
-    $pass = $config['pass'] ?? $pass;
-    $db   = $config['db']   ?? $db;
+    $host = !empty($config['host']) ? $config['host'] : $host;
+    $user = !empty($config['user']) ? $config['user'] : $user;
+    $pass = !empty($config['pass']) ? $config['pass'] : $pass;
+    $db   = !empty($config['db'])   ? $config['db']   : $db;
 }
 
 // Disable default error reporting to prevent HTML output
