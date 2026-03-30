@@ -734,6 +734,7 @@ function populateCategoryFilters() {
 
 // Render productos
 function renderProducts() {
+  if (!productList) return;
   productList.innerHTML = "";
   const fragment = document.createDocumentFragment();
 
