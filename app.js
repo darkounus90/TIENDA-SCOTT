@@ -488,7 +488,9 @@ async function fetchProducts() {
 document.addEventListener("DOMContentLoaded", () => {
   checkSession();
   fetchProducts().then(() => {
-    renderProducts();
+    if (document.getElementById("productList")) {
+      renderProducts();
+    }
     // Revalidar carrito existente contra stock actual
     cart = cart.filter(item => {
       const liveProduct = products.find(p => p.id === item.id);
