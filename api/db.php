@@ -4,7 +4,7 @@
 // NUNCA hardcodear contraseñas aquí
 $host = getenv('DB_HOST') ?: 'localhost';
 $user = getenv('DB_USER') ?: 'c2721903_scott';
-$pass = getenv('DB_PASS') ?: '';
+$pass = getenv('DB_PASS') ?: 'danida50PE';
 $db   = getenv('DB_NAME') ?: 'c2721903_scott';
 
 // Try to load local config if it exists
