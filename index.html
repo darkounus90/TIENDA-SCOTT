@@ -23,6 +23,7 @@
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/style.css?v=18.0.0" />
   <!-- Lucide Icons - Cargado con defer para no bloquear el renderizado -->
@@ -125,43 +126,68 @@
   <!-- NOISE OVERLAY FOR PREMIUM TEXTURE -->
   <div class="noise-overlay"></div>
 
-  <!-- HERO (Awwwards Enterprise Style) -->
-  <section class="hero hero-video-bg" id="home">
-    <div class="hero-bg-media" style="background-image: url('assets/images/scott-scale-pov-real.png');"></div>
-    <div class="hero-overlay"></div>
-    <div class="container hero__container">
-      <div class="hero__text-content fade-up-anim">
-        <h1 class="hero__headline">
-          PERFORMANCE<br /><span>PURA</span>
+  <!-- REDISEÑO PREMIUM: HERO EDITORIAL -->
+  <section class="hero-premium" id="home">
+    <div class="hero-premium__bg" style="background-image: url('assets/images/scott-scale-pov-real.png');"></div>
+    <div class="hero-premium__vignette"></div>
+    <div class="hero-premium__grain"></div>
+    
+    <div class="container hero-premium__container">
+      <div class="hero-premium__content">
+        <div class="hero-premium__badge fade-up-anim">SCOTT COLOMBIA</div>
+        <h1 class="hero-premium__title fade-up-anim delay-1">
+          <span class="line">DOMINA</span>
+          <span class="line offset">LA <em class="accent">RUTA.</em></span>
         </h1>
-        <span class="hero__sub-headline">ENTREGA TOTAL EN CADA PEDALAZO. DESCUBRE TU LÍMITE.</span>
-        <div class="hero__actions">
-          <a href="#productos" class="btn-primary">
-            Ver Colección
-          </a>
+        <p class="hero-premium__desc fade-up-anim delay-2">
+          Ingeniería suiza para el máximo desempeño. Descubre bicicletas de diseño vanguardista construidas para cruzar cualquier límite.
+        </p>
+        <div class="hero-premium__actions fade-up-anim delay-3">
+          <a href="#productos" class="btn-luxe">Explorar Colección <i data-lucide="arrow-right"></i></a>
+          <a href="#servicios" class="link-luxe">Agenda tu taller</a>
         </div>
       </div>
-      <div class="hero__stats fade-up-anim delay-2">
-        <div class="stat-item"><strong>50+</strong><br><span>Modelos</span></div>
-        <div class="stat-item"><strong>12k</strong><br><span>Usuarios</span></div>
-        <div class="stat-item"><strong>24/7</strong><br><span>Soporte</span></div>
+
+      <div class="hero-premium__stats fade-up-anim delay-4">
+        <div class="stat-luxe">
+          <span class="stat-luxe__num">01</span>
+          <span class="stat-luxe__label">Garantía<br>Oficial</span>
+        </div>
+        <div class="stat-luxe">
+          <span class="stat-luxe__num">02</span>
+          <span class="stat-luxe__label">Armado<br>Premium</span>
+        </div>
+        <div class="stat-luxe">
+          <span class="stat-luxe__num">03</span>
+          <span class="stat-luxe__label">Soporte<br>Experto</span>
+        </div>
       </div>
     </div>
+    
+    <!-- Decoración geométrica -->
+    <div class="hero-premium__deco-line"></div>
+    <div class="hero-premium__deco-circle"></div>
   </section>
 
-  <!-- MARQUEE (Infinite scrolling banner) -->
-  <div class="marquee-section">
-    <div class="marquee-content">
-      <span>✦ INGENIERÍA SUIZA</span>
-      <span>✦ MATERIALES DE ALTA GAMA</span>
-      <span>✦ ENVÍOS NACIONALES INMEDIATOS</span>
-      <span>✦ GARANTÍA DIRECTA</span>
-      <span>✦ MÁXIMO DESEMPEÑO</span>
-      <span>✦ INGENIERÍA SUIZA</span>
-      <span>✦ MATERIALES DE ALTA GAMA</span>
-      <span>✦ ENVÍOS NACIONALES INMEDIATOS</span>
-      <span>✦ GARANTÍA DIRECTA</span>
-      <span>✦ MÁXIMO DESEMPEÑO</span>
+  <!-- MARQUEE MODERNIZADO -->
+  <div class="marquee-luxe">
+    <div class="marquee-luxe__track">
+      <span>PERFORMANCE PURA</span>
+      <span class="separator">✦</span>
+      <span>DISEÑO AERODINÁMICO</span>
+      <span class="separator">✦</span>
+      <span>TECNOLOGÍA DE CARBONO</span>
+      <span class="separator">✦</span>
+      <span>ENVÍOS A TODA COLOMBIA</span>
+      <span class="separator">✦</span>
+      <span>PERFORMANCE PURA</span>
+      <span class="separator">✦</span>
+      <span>DISEÑO AERODINÁMICO</span>
+      <span class="separator">✦</span>
+      <span>TECNOLOGÍA DE CARBONO</span>
+      <span class="separator">✦</span>
+      <span>ENVÍOS A TODA COLOMBIA</span>
+      <span class="separator">✦</span>
     </div>
   </div>
 
