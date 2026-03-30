@@ -541,31 +541,72 @@
 
                 <!-- Pestaña: Inventario -->
                 <div id="tab-inventory" class="view-section">
+                    <!-- KPI Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem 1.4rem;">
+                            <div style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Total Productos</div>
+                            <div id="kpiTotalProducts" style="font-size: 1.8rem; font-weight: 700; color: #f8fafc; margin-top: 0.3rem;">0</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem 1.4rem;">
+                            <div style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Unidades en Stock</div>
+                            <div id="kpiTotalStock" style="font-size: 1.8rem; font-weight: 700; color: #10b981; margin-top: 0.3rem;">0</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem 1.4rem;">
+                            <div style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Agotados</div>
+                            <div id="kpiOutOfStock" style="font-size: 1.8rem; font-weight: 700; color: #ef4444; margin-top: 0.3rem;">0</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem 1.4rem;">
+                            <div style="font-size: 0.75rem; color: #64748b; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">Valor Inventario</div>
+                            <div id="kpiInventoryValue" style="font-size: 1.8rem; font-weight: 700; color: #818cf8; margin-top: 0.3rem;">$0</div>
+                        </div>
+                    </div>
+
                     <div class="table-card">
-                        <div class="table-header">
-                            <h3>Inventario</h3>
-                            <div style="display:flex; gap:10px;">
+                        <div class="table-header" style="flex-wrap: wrap; gap: 0.8rem;">
+                            <h3 style="margin: 0;">Gestión de Inventario</h3>
+                            <div style="display:flex; gap:8px; flex-wrap: wrap; align-items: center;">
                                 <input type="file" id="excelInput" accept=".xlsx, .xls" style="display:none;"
                                     onchange="handleExcelUpload(this)">
-                                <button class="btn-secondary" onclick="document.getElementById('excelInput').click()">📥
-                                    Importar Excel</button>
-                                <button class="btn-secondary" onclick="exportInventoryToExcel()">📤
-                                    Exportar Excel</button>
-                                <button class="btn-primary" onclick="openAddProduct()">+ Producto</button>
+                                <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;" onclick="document.getElementById('excelInput').click()">📥 Importar</button>
+                                <button class="btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 0.8rem;" onclick="exportInventoryToExcel()">📤 Exportar</button>
+                                <button class="btn-primary" style="font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="openAddProduct()">+ Nuevo Producto</button>
                             </div>
                         </div>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Img</th>
-                                    <th>Producto</th>
-                                    <th>Stock</th>
-                                    <th>Precio</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="inventoryTable"></tbody>
-                        </table>
+
+                        <!-- Búsqueda y filtros -->
+                        <div style="display: flex; gap: 0.8rem; padding: 0 1rem 1rem 1rem; flex-wrap: wrap; align-items: center;">
+                            <div style="flex: 1; min-width: 200px; position: relative;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                <input type="text" id="inventorySearch" placeholder="Buscar por nombre, SKU, marca..." style="width: 100%; padding: 0.6rem 0.6rem 0.6rem 2.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-size: 0.85rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='rgba(129,140,248,0.5)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'" oninput="filterInventoryTable()">
+                            </div>
+                            <select id="inventoryCategoryFilter" style="padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-size: 0.85rem; outline: none; min-width: 160px;" onchange="filterInventoryTable()">
+                                <option value="all">Todas las categorías</option>
+                            </select>
+                            <select id="inventoryStockFilter" style="padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: #f8fafc; font-size: 0.85rem; outline: none; min-width: 130px;" onchange="filterInventoryTable()">
+                                <option value="all">Todo Stock</option>
+                                <option value="ok">Óptimo (5+)</option>
+                                <option value="low">Bajo (1-4)</option>
+                                <option value="out">Agotado (0)</option>
+                            </select>
+                            <div id="inventoryResultCount" style="font-size: 0.8rem; color: #64748b; white-space: nowrap;"></div>
+                        </div>
+
+                        <div style="overflow-x: auto; width: 100%;">
+                            <table class="data-table" style="min-width: 800px; white-space: nowrap;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid rgba(255,255,255,0.05);">
+                                        <th style="width: 50px; text-align: left;">ID</th>
+                                        <th style="width: 60px;">Img</th>
+                                        <th style="text-align: left;">Producto / SKU</th>
+                                        <th style="text-align: left;">Categoría / Marca</th>
+                                        <th style="text-align: left;">Stock</th>
+                                        <th style="text-align: left;">Precio</th>
+                                        <th style="text-align: right;">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryTable"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -1520,20 +1561,121 @@
 
 
         function renderInventory(products) {
-            document.getElementById('inventoryTable').innerHTML = products.map(p => `
-    <tr>
-        <td><img src="${p.image || (p.images && p.images[0]) || ''}" width="30" style="border-radius: 4px;"></td>
-        <td>${p.name}</td>
-        <td>${p.stock}</td>
-        <td>${currencyFormat(p.price)}</td>
+            // --- KPIs ---
+            const totalProducts = products.length;
+            const totalStock = products.reduce((s, p) => s + (parseInt(p.stock) || 0), 0);
+            const outOfStock = products.filter(p => parseInt(p.stock) <= 0).length;
+            const inventoryValue = products.reduce((s, p) => s + ((parseFloat(p.price) || 0) * (parseInt(p.stock) || 0)), 0);
+
+            const kpiTotal = document.getElementById('kpiTotalProducts');
+            const kpiStock = document.getElementById('kpiTotalStock');
+            const kpiOut = document.getElementById('kpiOutOfStock');
+            const kpiValue = document.getElementById('kpiInventoryValue');
+            if (kpiTotal) kpiTotal.textContent = totalProducts;
+            if (kpiStock) kpiStock.textContent = totalStock.toLocaleString('es-CO');
+            if (kpiOut) kpiOut.textContent = outOfStock;
+            if (kpiValue) kpiValue.textContent = currencyFormat(inventoryValue);
+
+            // --- Llenar filtro de categorías dinámicamente ---
+            const catFilter = document.getElementById('inventoryCategoryFilter');
+            if (catFilter) {
+                const currentCat = catFilter.value;
+                const uniqueCats = [...new Set(products.map(p => (p.category || '').trim()).filter(c => c))].sort();
+                let catHtml = '<option value="all">Todas las categorías</option>';
+                uniqueCats.forEach(c => {
+                    catHtml += `<option value="${c}">${c}</option>`;
+                });
+                catFilter.innerHTML = catHtml;
+                if (currentCat && (currentCat === 'all' || uniqueCats.includes(currentCat))) {
+                    catFilter.value = currentCat;
+                }
+            }
+
+            // --- Renderizar tabla ---
+            window._inventoryProducts = products; // Cache para filtro
+            renderInventoryRows(products);
+        }
+
+        function renderInventoryRows(products) {
+            const tbody = document.getElementById('inventoryTable');
+            tbody.innerHTML = products.map(p => {
+                let imgUrl = p.image || '';
+                if (!imgUrl && p.images && p.images.length > 0) imgUrl = p.images[0];
+                if (imgUrl && !imgUrl.startsWith('data:') && !imgUrl.startsWith('http')) {
+                    imgUrl = API_BASE + '/../' + imgUrl;
+                }
+
+                const stock = parseInt(p.stock) || 0;
+                const stockColor = stock <= 0 ? '#ef4444' : (stock < 5 ? '#f59e0b' : '#10b981');
+                const stockBg = stock <= 0 ? 'rgba(239, 68, 68, 0.1)' : (stock < 5 ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)');
+                const stockText = stock <= 0 ? 'Agotado' : (stock < 5 ? 'Bajo' : 'Óptimo');
+
+                return `
+    <tr style="border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+        <td style="color: #94a3b8; font-size: 0.85rem; font-weight: 500;">#${p.id}</td>
         <td>
-            <div style="display: flex; gap: 0.5rem; justify-content: flex-start;">
-                <button class="btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: rgba(255,255,255,0.2);" onclick="editProduct(${p.id})" title="Editar">✏️</button>
-                <button class="btn-secondary text-danger" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;" onclick="deleteProduct(${p.id})" title="Eliminar">🗑️</button>
+            ${imgUrl ? `<img src="${imgUrl}" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.2);">` : `<div style="width: 44px; height: 44px; border-radius: 6px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #64748b; font-weight: 500;">Sin Img</div>`}
+        </td>
+        <td>
+            <div style="font-weight: 600; font-size: 0.95rem; color: #f8fafc; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${p.name}">${p.name}</div>
+            <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">SKU: <span style="font-family: monospace;">${p.barcode || 'N/A'}</span></div>
+        </td>
+        <td>
+            <div style="font-size: 0.85rem; color: #e2e8f0; font-weight: 500;">${p.category || 'General'}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 2px;">${p.brand || '—'}</div>
+        </td>
+        <td>
+            <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+                <span style="font-size: 0.9rem; font-weight: 600;">${stock} <small style="font-weight: 400; color: #64748b;">uds</small></span>
+                <span style="display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; background: ${stockBg}; color: ${stockColor}; line-height: 1;">${stockText}</span>
+            </div>
+        </td>
+        <td style="font-weight: 600; color: #f8fafc; font-size: 0.95rem;">${currencyFormat(p.price)}</td>
+        <td style="text-align: right; vertical-align: middle;">
+            <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
+                <button class="btn-secondary" style="padding: 0.4rem; display: flex; align-items: center; justify-content: center; border-radius: 6px; border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'" onclick="editProduct(${p.id})" title="Editar Producto">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                </button>
+                <button class="btn-secondary" style="padding: 0.4rem; display: flex; align-items: center; justify-content: center; border-radius: 6px; border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.05); color: #ef4444; transition: all 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.15)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.05)'" onclick="deleteProduct(${p.id})" title="Eliminar Producto">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
             </div>
         </td>
     </tr>
-    `).join('');
+    `;
+            }).join('');
+
+            // Contador de resultados
+            const counter = document.getElementById('inventoryResultCount');
+            if (counter) {
+                counter.textContent = `${products.length} producto${products.length !== 1 ? 's' : ''}`;
+            }
+        }
+
+        function filterInventoryTable() {
+            const allProducts = window._inventoryProducts || [];
+            const search = (document.getElementById('inventorySearch')?.value || '').toLowerCase().trim();
+            const catVal = document.getElementById('inventoryCategoryFilter')?.value || 'all';
+            const stockVal = document.getElementById('inventoryStockFilter')?.value || 'all';
+
+            const filtered = allProducts.filter(p => {
+                // Búsqueda
+                if (search) {
+                    const haystack = `${p.name} ${p.barcode || ''} ${p.brand || ''} ${p.category || ''} ${p.tag || ''}`.toLowerCase();
+                    if (!haystack.includes(search)) return false;
+                }
+                // Categoría
+                if (catVal !== 'all' && (p.category || '') !== catVal) return false;
+                // Stock
+                const stock = parseInt(p.stock) || 0;
+                if (stockVal === 'ok' && stock < 5) return false;
+                if (stockVal === 'low' && (stock < 1 || stock >= 5)) return false;
+                if (stockVal === 'out' && stock > 0) return false;
+
+                return true;
+            });
+
+            renderInventoryRows(filtered);
         }
 
         async function deleteProduct(id) {
