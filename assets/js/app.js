@@ -488,6 +488,9 @@ async function fetchProducts() {
 document.addEventListener("DOMContentLoaded", () => {
   checkSession();
   fetchProducts().then(() => {
+    // Llenar dinámicamente los filtros de categoría y el datalist
+    populateCategoryFilters();
+
     if (document.getElementById("productList")) {
       renderProducts();
     }
@@ -689,6 +692,45 @@ const addProductForm = document.getElementById("addProductForm");
 let filteredCategory = "all";
 let searchTerm = "";
 let searchDebounceTimer;
+
+// Llenar listas desplegables de categoría dinámicamente según BD
+function populateCategoryFilters() {
+  if (products.length === 0) return;
+
+  // Extraer categorías únicas
+  const uniqueCategories = [...new Set(products
+    .map(p => p.category ? p.category.trim() : '')
+    .filter(c => c !== '' && c.toLowerCase() !== 'all')
+  )].sort();
+
+  // Actualizar #categoryFilter (el select del catálogo)
+  const catFilter = document.getElementById("categoryFilter");
+  if (catFilter) {
+    const currentValue = catFilter.value;
+    let html = '<option value="all">Todas las categorías</option>';
+    uniqueCategories.forEach(cat => {
+      const label = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+      html += `<option value="${cat}">${label}</option>`;
+    });
+    catFilter.innerHTML = html;
+    
+    // Restaurar el valor si aún es válido
+    if (currentValue === 'all' || uniqueCategories.includes(currentValue)) {
+      catFilter.value = currentValue;
+    }
+  }
+
+  // Actualizar #categoryOptions (el datalist para crear nuevos productos)
+  const catOptions = document.getElementById("categoryOptions");
+  if (catOptions) {
+    let html = '';
+    uniqueCategories.forEach(cat => {
+      const label = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+      html += `<option value="${cat}">${label}</option>`;
+    });
+    catOptions.innerHTML = html;
+  }
+}
 
 // Render productos
 function renderProducts() {

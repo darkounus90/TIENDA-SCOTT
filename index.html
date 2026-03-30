@@ -592,15 +592,10 @@
             </div>
             <div class="form-group">
               <label for="productCategory"><span class="icon" data-lucide="folder"></span> Categoría</label>
-              <select id="productCategory" name="category" required>
-                <option value="">Seleccionar categoría</option>
-                <option value="mtb">MTB</option>
-                <option value="ruta">Ruta</option>
-                <option value="gravel">Gravel</option>
-                <option value="ciudad">Ciudad</option>
-                <option value="ebike">E-Bike</option>
-                <option value="accesorios">Accesorios</option>
-              </select>
+              <input type="text" id="productCategory" name="category" list="categoryOptions" required placeholder="Ej: MTB o Nueva Categoría">
+              <datalist id="categoryOptions">
+                <!-- JS autocompletará esto -->
+              </datalist>
             </div>
             <div class="form-group">
               <label for="productPrice"><span class="icon" data-lucide="dollar-sign"></span> Precio (COP)</label>
