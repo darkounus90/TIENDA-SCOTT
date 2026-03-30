@@ -1,14 +1,9 @@
 <?php
 // products.php - Gestión completa de productos
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header('Content-Type: application/json');
+require 'auth_helper.php';
+setCorsHeaders();
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
 
 require 'db.php';
 
@@ -74,12 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 // --- POST: Crear Producto (Solo Admin) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validar Auth (básico)
-    $headers = getallheaders();
-    $auth = $headers['Authorization'] ?? '';
-    // En producción REAL, validar token JWT aquí. 
-    // Por simplicidad, confiamos en que el frontend envía si es admin, 
-    // pero idealmente decodificaríamos el token para verificar isAdmin=1.
+    requireAdmin(); // Verifica token firmado Y que isAdmin === 1
 
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -113,8 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// --- DELETE: Eliminar producto ---
+// --- DELETE: Eliminar producto (Solo Admin) ---
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    requireAdmin();
     $id = (int)($_GET['id'] ?? 0);
     if ($id > 0) {
         if ($conn->query("DELETE FROM products WHERE id=$id")) {
@@ -128,8 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     exit;
 }
 
-// --- PUT: Actualizar Producto ---
+// --- PUT: Actualizar Producto (Solo Admin) ---
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    requireAdmin();
     $data = json_decode(file_get_contents('php://input'), true);
     
     $id = (int)($data['id'] ?? 0);

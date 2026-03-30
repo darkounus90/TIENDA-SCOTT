@@ -1,0 +1,39 @@
+# Credenciales y secretos — NUNCA subir al repositorio
+.env
+.env.local
+.env.production
+
+# PHP config con credenciales
+api/config.php
+api/google_login_error.log
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build outputs
+dist/
+build/
+
+# Logs del servidor
+*.log
+server.log
+
+# Archivos de debug
+debug_db_response.json
+
+# Uploads de usuarios
+uploads/
+
+# Claves RSA / Certificados
+keys/
+*.pem
+*.key
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# TypeScript cache
+*.tsbuildinfo

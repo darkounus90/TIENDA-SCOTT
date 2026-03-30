@@ -410,36 +410,38 @@ async function checkSession() {
   const token = localStorage.getItem('token');
   if (token) {
     try {
-      // Enviar token tanto en Header como en URL para redundancia máxima
-      const res = await fetch(`${API_BASE}/me.php?token=${encodeURIComponent(token)}&_t=${Date.now()}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+      // Estándar seguro: Header Authorization con Bearer Token
+      const res = await fetch(`${API_BASE}/me.php?_t=${Date.now()}`, {
+        method: 'GET',
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
+      
       const data = await res.json();
-      if (data.success) {
-        currentUser = data.user;
-        // Guardar datos frescos
-        localStorage.setItem('user', JSON.stringify(currentUser));
-        updateLoginButton();
-
-        // Viewer init moved to main flow
-      } else {
-        console.warn("Sesión inválida:", data);
-        // Token inválido o expirado real
+      
+      if (res.status === 401 || !data.success) {
+        console.warn("Sesión inválida o expirada:", data);
         logout();
+        return;
       }
+
+      currentUser = data.user;
+      localStorage.setItem('user', JSON.stringify(currentUser));
+      updateLoginButton();
+
     } catch (err) {
-      console.error("Error validando sesión:", err);
-      // Fallback a localStorage si no hay conexión, pero intentar actualizar UI
+      console.error("Error conectando con el servidor:", err);
+      // Fallback a localStorage si el servidor está caído
       const storedUser = localStorage.getItem('user');
       if (storedUser) {
         currentUser = JSON.parse(storedUser);
         updateLoginButton();
-      } else {
-        updateLoginButton(); // Estado inicial (sin sesión)
       }
     }
   } else {
-    updateLoginButton(); // No hay token, inicializar botón
+    updateLoginButton();
   }
 }
 
@@ -634,8 +636,16 @@ function showRegisterSuccess() {
 
 
 
-const currencyFormat = value =>
-  value.toLocaleString("es-CO", { style: "currency", currency: "COP" });
+const currencyFormat = value => {
+  const num = Number(value);
+  if (isNaN(num)) return value;
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(num);
+};
 
 const productList = document.getElementById("productList");
 const categoryFilter = document.getElementById("categoryFilter");
@@ -710,7 +720,7 @@ function renderProducts() {
         <span class="product-card__tag">${product.tag || product.category}</span>
       </div>
       <div class="product-card__actions">
-        <button class="btn-secondary" onclick="window.location.href='producto.html?id=${product.id}'">Ver detalle</button>
+        <a href="producto.html?id=${product.id}" class="btn-secondary">Ver detalle</a>
         <button class="btn-primary" data-add="${product.id}">Agregar</button>
       </div>
     `;
@@ -845,14 +855,13 @@ function updateLoginButton() {
       const divider = userDropdown.querySelector('.dropdown-divider');
       const logoutBtn = document.getElementById("menuLogout");
 
-      const adminBtn = document.createElement("button");
+      const adminBtn = document.createElement("a");
       adminBtn.id = "menuAdmin";
+      adminBtn.href = "admin.html";
       adminBtn.innerHTML = '<span class="icon"><i data-lucide="shield"></i></span> Panel Admin';
 
       adminBtn.onclick = (e) => {
-        e.stopPropagation();
         userDropdown.classList.remove("active");
-        if (typeof openAdmin === 'function') openAdmin();
       };
 
       // Insertar antes del divisor si existe, sino antes de cerrar sesión

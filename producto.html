@@ -278,6 +278,18 @@
             document.getElementById('cartCountLocal').innerText = count;
         }
 
+        // Helper for COP Currency formatting
+        const currencyFormat = value => {
+            const num = Number(value);
+            if (isNaN(num)) return value;
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(num);
+        };
+
         async function loadProduct() {
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
@@ -302,7 +314,7 @@
                 document.title = `${product.name} - El Pedalazo`;
                 document.getElementById('pName').innerText = product.name;
                 document.getElementById('pBrand').innerText = product.brand || 'Original';
-                document.getElementById('pPrice').innerText = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(product.price);
+                document.getElementById('pPrice').innerText = currencyFormat(product.price);
                 document.getElementById('pCategory').innerText = `Repuesto / Bicicleta categorizada en: ${product.category}. ${product.tag ? 'Etiqueta: ' + product.tag : ''} | Referencia: ${product.use || 'General'}`;
 
                 if (product.description) {
@@ -380,7 +392,7 @@
                 };
 
                 document.getElementById('btnWhatsapp').onclick = () => {
-                    const wsMsg = `Hola El Pedalazo, me gustaría comprar el producto de su web: ${product.name} por $${product.price}. ID: ${product.id}`;
+                    const wsMsg = `Hola El Pedalazo, me gustaría comprar el producto de su web: ${product.name} por ${currencyFormat(product.price)}. ID: ${product.id}`;
                     window.open(`https://wa.me/573114497589?text=${encodeURIComponent(wsMsg)}`, '_blank');
                 };
 

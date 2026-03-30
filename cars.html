@@ -297,6 +297,18 @@
             'taxi', 'hyundai', 'i10', 'atos', 'grand i10'
         ];
 
+        // Helper for COP Currency formatting
+        const currencyFormat = value => {
+            const num = Number(value);
+            if (isNaN(num)) return value;
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(num);
+        };
+
         async function fetchCarProducts() {
             const container = document.getElementById('carProductsList');
             try {
@@ -350,11 +362,11 @@
                 <div class="product-card__brand">${p.brand || p.category || 'Repuesto'}</div>
                 <h3 class="product-card__title">${p.name}</h3>
                 <div class="product-card__meta">
-                    <span class="product-card__price">$${Number(p.price).toLocaleString()}</span>
+                    <span class="product-card__price">${currencyFormat(p.price)}</span>
                     ${p.tag ? `<span class="product-card__tag">${p.tag}</span>` : ''}
                 </div>
                 <div class="product-card__actions">
-                    <button class="btn-primary btn-full" onclick="window.open('https://wa.me/573114497589?text=Hola%20JDAUTOPARTES,%20me%20gustar%C3%ADa%20cotizar%20el%20repuesto:%20' + encodeURIComponent('${p.name}'), '_blank')" title="Cotizar por WhatsApp">
+                    <button class="btn-primary btn-full" onclick="window.open('https://wa.me/573114497589?text=Hola%20JDAUTOPARTES,%20me%20gustar%C3%ADa%20cotizar%20el%20repuesto:%20' + encodeURIComponent('${p.name}') + '%20por%20' + encodeURIComponent('${currencyFormat(p.price)}'), '_blank')" title="Cotizar por WhatsApp">
                         Cotizar por WhatsApp
                     </button>
                 </div>

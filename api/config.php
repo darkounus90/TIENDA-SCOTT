@@ -1,11 +1,9 @@
 <?php
-// api/config.php
-// Database credentials
-// You can change these to match your local environment
+// api/config.php — NUNCA commitear este archivo con credenciales reales
+// Usar variables de entorno en producción (cPanel de Ferozo > Variables de entorno)
 return [
-    'host' => 'localhost',     // Si corre en Ferozo, es 'localhost'. Si es local, pon la IP de Ferozo.
-    'user' => 'c2721903_scott',
-    'pass' => 'danida50PE',
-    'db'   => 'c2721903_scott'
+    'host' => getenv('DB_HOST') ?: 'localhost',
+    'user' => getenv('DB_USER') ?: 'c2721903_scott',   // cambiar a getenv() en producción
+    'pass' => getenv('DB_PASS') ?: '',                  // MOVER A .env — NO dejar contraseña aquí
+    'db'   => getenv('DB_NAME') ?: 'c2721903_scott',
 ];
-?>
