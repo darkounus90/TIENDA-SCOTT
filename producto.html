@@ -32,6 +32,13 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
+            .product-gallery {
+                position: relative !important;
+                top: 0 !important;
+            }
+            .main-image {
+                height: 350px !important;
+            }
         }
 
         .product-gallery {
@@ -300,8 +307,8 @@
             }
 
             try {
-                // Recuperar catálogo. (Idealmente sería un endpoint /products.php?id=... pero por ahora lista total)
-                const res = await fetch(`api/products.php`);
+                // Recuperar catálogo optimizado: pedimos solo el ID que necesitamos
+                const res = await fetch(`api/products.php?id=${id}`);
                 const products = await res.json();
 
                 const product = products.find(p => p.id == id);

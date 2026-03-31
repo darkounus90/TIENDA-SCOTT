@@ -26,18 +26,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $category = $conn->real_escape_string($_GET['category'] ?? '');
     $search = $conn->real_escape_string($_GET['search'] ?? '');
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     
     $sql = "SELECT * FROM products WHERE 1=1";
     
-    if ($category && $category !== 'all') {
-        $sql .= " AND category = '$category'";
+    if ($id > 0) {
+        $sql .= " AND id = $id";
+    } else {
+        if ($category && $category !== 'all') {
+            $sql .= " AND category = '$category'";
+        }
+        
+        if ($search) {
+            $sql .= " AND (name LIKE '%$search%' OR brand LIKE '%$search%' OR tag LIKE '%$search%' OR barcode LIKE '%$search%')";
+        }
+        
+        $sql .= " ORDER BY id DESC"; // Más recientes primero
     }
-    
-    if ($search) {
-        $sql .= " AND (name LIKE '%$search%' OR brand LIKE '%$search%' OR tag LIKE '%$search%' OR barcode LIKE '%$search%')";
-    }
-    
-    $sql .= " ORDER BY id DESC"; // Más recientes primero
     
     $result = $conn->query($sql);
     $products = [];
