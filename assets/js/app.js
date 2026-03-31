@@ -778,15 +778,24 @@ function renderProducts() {
         <span class="product-card__price">${currencyFormat(product.price)}</span>
         <span class="product-card__tag">${product.tag || product.category}</span>
       </div>
-      <div class="product-card__actions">
-        <a href="producto.html?id=${product.id}" class="btn-secondary">Ver detalle</a>
-        <button class="btn-primary" data-add="${product.id}">Agregar</button>
+      <div class="product-card__actions" style="display: flex; gap: 0.5rem;">
+        <a href="producto.html?id=${product.id}" class="btn-secondary" title="Ver detalle" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0;">
+          <i data-lucide="eye" style="width: 20px; height: 20px;"></i>
+          <span class="hide-mobile" style="font-size: 0.85rem;">Detalles</span>
+        </a>
+        <button class="btn-primary" data-add="${product.id}" title="Agregar al Carrito" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0;">
+          <i data-lucide="shopping-bag" style="width: 20px; height: 20px;"></i>
+          <span class="hide-mobile" style="font-size: 0.85rem;">Agregar</span>
+        </button>
       </div>
     `;
     fragment.appendChild(card);
   });
 
   productList.appendChild(fragment);
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 }
 
 // Filtro por select

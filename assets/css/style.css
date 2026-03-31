@@ -4263,4 +4263,9 @@ a {
     background: #111 !important;
     border: 1px solid rgba(255,255,255,0.03) !important;
   }
+  
+  /* Replace text with icons on mobile */
+  .hide-mobile {
+    display: none !important;
+  }
 }
