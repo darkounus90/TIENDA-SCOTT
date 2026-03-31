@@ -34,7 +34,6 @@
             .product-split {
                 grid-template-columns: 1fr;
                 gap: 2rem;
-                overflow: hidden; /* Evitar desbordamiento en móvil */
             }
             .product-gallery {
                 position: relative !important;
@@ -45,8 +44,9 @@
             }
             .product-info-panel h1 {
                 font-size: 2rem !important; /* Texto responsivo para evitar ensanchamiento de pantalla */
-                word-wrap: break-word;
+                word-wrap: break-word; /* Forzar ruptura de palabras excesivamente largas */
                 overflow-wrap: break-word;
+                hyphens: auto; /* Cortar palabras con guiones si es posible */
             }
         }
 
@@ -58,10 +58,11 @@
         .main-image {
             width: 100%;
             height: 500px;
-            object-fit: cover;
+            object-fit: contain; /* IMPORTANTE: contain para que no se recorte la foto automotriz/bici */
             border-radius: var(--radius-lg);
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
+            padding: 1rem; /* Margen interno para que no toque los bordes */
             box-shadow: var(--glass-shadow);
         }
 
