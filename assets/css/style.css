@@ -86,14 +86,17 @@ body {
 
 /* Comportamiento tipo App Nativa SOLO en Dispositivos Móviles */
 @media (max-width: 768px) {
+  *, *::before, *::after {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+  }
+
   html, body {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
     overscroll-behavior-y: none;
     
-    /* Bloqueo estricto de desplazamiento lateral (arrastrar el borde de la pantalla) */
+    /* Bloqueo estricto de desplazamiento lateral */
     overscroll-behavior-x: none;
     width: 100%;
     max-width: 100vw;
@@ -101,10 +104,11 @@ body {
     position: relative;
   }
 
-  input, textarea, select, [contenteditable] {
-    -webkit-user-select: auto;
-    user-select: auto;
-    -webkit-touch-callout: default;
+  /* Excepciones donde SI queremos que se escriba/seleccione */
+  input, textarea, select, [contenteditable], input *, textarea *, select *, [contenteditable] * {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+    -webkit-touch-callout: default !important;
   }
 }
 
