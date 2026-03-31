@@ -702,29 +702,38 @@ let filteredCategory = "all";
 let searchTerm = "";
 let searchDebounceTimer;
 
-// Llenar listas desplegables de categoría dinámicamente según BD
+// Llenar listas desplegables de categoría dinámicamente según BD y predefinidas
 function populateCategoryFilters() {
-  if (products.length === 0) return;
+  const predefinedCategories = {
+    'mtb': 'Montaña (MTB)',
+    'ruta': 'Ruta',
+    'ebike': 'E-Bikes',
+    'gravel': 'Gravel',
+    'accesorios': 'Accesorios Premium'
+  };
 
-  // Extraer categorías únicas
-  const uniqueCategories = [...new Set(products
-    .map(p => p.category ? p.category.trim() : '')
-    .filter(c => c !== '' && c.toLowerCase() !== 'all')
-  )].sort();
+  // Extraer categorías únicas de productos
+  const dbCategories = products
+    .map(p => p.category ? p.category.toLowerCase().trim() : '')
+    .filter(c => c !== '' && c !== 'all');
+
+  // Unir predefinidas y las de la base de datos
+  const uniqueKeys = [...new Set([...Object.keys(predefinedCategories), ...dbCategories])].sort();
 
   // Actualizar #categoryFilter (el select del catálogo)
   const catFilter = document.getElementById("categoryFilter");
   if (catFilter) {
     const currentValue = catFilter.value;
     let html = '<option value="all">Todas las categorías</option>';
-    uniqueCategories.forEach(cat => {
-      const label = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+    
+    uniqueKeys.forEach(cat => {
+      const label = predefinedCategories[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase());
       html += `<option value="${cat}">${label}</option>`;
     });
     catFilter.innerHTML = html;
     
-    // Restaurar el valor si aún es válido
-    if (currentValue === 'all' || uniqueCategories.includes(currentValue)) {
+    // Evitar que resetee el filtro si ya venía seleccionado y es válido
+    if (currentValue === 'all' || uniqueKeys.includes(currentValue)) {
       catFilter.value = currentValue;
     }
   }
@@ -733,8 +742,8 @@ function populateCategoryFilters() {
   const catOptions = document.getElementById("categoryOptions");
   if (catOptions) {
     let html = '';
-    uniqueCategories.forEach(cat => {
-      const label = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+    uniqueKeys.forEach(cat => {
+      const label = predefinedCategories[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase());
       html += `<option value="${cat}">${label}</option>`;
     });
     catOptions.innerHTML = html;
