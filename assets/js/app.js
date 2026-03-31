@@ -491,6 +491,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // Llenar dinámicamente los filtros de categoría y el datalist
     populateCategoryFilters();
 
+    // Leer parámetro de categoría en URL si existe (ej. productos.html?category=mtb)
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('category');
+    if (catParam) {
+      filteredCategory = catParam;
+      const catFilter = document.getElementById("categoryFilter");
+      if (catFilter) catFilter.value = catParam;
+    }
+
     if (document.getElementById("productList")) {
       renderProducts();
     }
@@ -739,8 +748,12 @@ function renderProducts() {
   const fragment = document.createDocumentFragment();
 
   const filtered = products.filter(p => {
+    const pCat = p.category ? p.category.toLowerCase().trim() : "";
+    const currentCat = filteredCategory ? filteredCategory.toLowerCase().trim() : "all";
+    
     const matchCategory =
-      filteredCategory === "all" || p.category === filteredCategory;
+      currentCat === "all" || pCat === currentCat;
+    
     const matchSearch =
       searchTerm.trim() === "" ||
       p.name.toLowerCase().includes(searchTerm) ||
@@ -806,16 +819,21 @@ if (categoryFilter) {
   });
 }
 
-// Filtro por categoría clickeando cards de categorías
-document.querySelectorAll(".categoria").forEach(card => {
+// Filtro por categoría clickeando cards de categorías (bento-luxe desde el index)
+document.querySelectorAll(".categoria, .bento-luxe__item").forEach(card => {
   card.addEventListener("click", () => {
     const cat = card.dataset.category;
-    filteredCategory = cat;
-    if (categoryFilter) categoryFilter.value = cat;
-    renderProducts();
-    const productosSection = document.getElementById("productos");
-    if (productosSection) {
-      window.scrollTo({ top: productosSection.offsetTop - 80, behavior: "smooth" });
+    if (!cat) return;
+    
+    // Validar si ya estamos en la página de productos
+    if (window.location.pathname.includes('productos.html')) {
+      filteredCategory = cat;
+      if (categoryFilter) categoryFilter.value = cat;
+      renderProducts();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      // Redirigir a productos.html con el parámetro en la URL
+      window.location.href = `productos.html?category=${encodeURIComponent(cat)}`;
     }
   });
 });
