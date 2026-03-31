@@ -218,11 +218,13 @@
             flex: 1;
             background: #25D366;
             color: white;
-            border: none;
-            border-radius: var(--radius-sm);
+            border: 1px solid #25D366; /* Mismo tamaño de borde que btn-primary para alinear altura */
+            border-radius: var(--radius-pill); /* MISMO borde curvo */
             padding: 1rem 2rem;
             font-weight: 700;
             font-size: 1.2rem;
+            text-transform: uppercase; /* Misma tipografía */
+            letter-spacing: 0.05em; /* Mismo espaciado de letras */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -233,7 +235,7 @@
 
         .btn-whatsapp-buy:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
         }
     </style>
 </head>
