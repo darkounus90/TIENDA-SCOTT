@@ -34,6 +34,7 @@
             .product-split {
                 grid-template-columns: 1fr;
                 gap: 2rem;
+                overflow: hidden; /* Evitar desbordamiento en móvil */
             }
             .product-gallery {
                 position: relative !important;
@@ -41,6 +42,11 @@
             }
             .main-image {
                 height: 350px !important;
+            }
+            .product-info-panel h1 {
+                font-size: 2rem !important; /* Texto responsivo para evitar ensanchamiento de pantalla */
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
         }
 

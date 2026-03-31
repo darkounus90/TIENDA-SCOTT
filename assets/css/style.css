@@ -92,6 +92,13 @@ body {
     -webkit-user-select: none;
     user-select: none;
     overscroll-behavior-y: none;
+    
+    /* Bloqueo estricto de desplazamiento lateral (arrastrar el borde de la pantalla) */
+    overscroll-behavior-x: none;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
   }
 
   input, textarea, select, [contenteditable] {
