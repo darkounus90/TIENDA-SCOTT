@@ -1770,13 +1770,13 @@
             }
 
             // Marcas y categorías
-            setFinalValue('brand', product.brand);
             toggleHybrid('brand', 'input');
             document.getElementById('brandInput').value = product.brand;
+            setFinalValue('brand', product.brand);
 
-            setFinalValue('category', product.category);
             toggleHybrid('category', 'input');
             document.getElementById('categoryInput').value = product.category;
+            setFinalValue('category', product.category);
 
             // Tipo y uso
             const useField = product.use || product.use_type || '';

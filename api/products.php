@@ -138,6 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $stock = (int)($data['stock'] ?? 0);
     $barcode = $conn->real_escape_string($data['barcode'] ?? '');
     $description = $conn->real_escape_string($data['description'] ?? '');
+    $use_type = $conn->real_escape_string($data['use'] ?? '');
     
     // Solo actualizar imágenes si se envían nuevas
     $imagesSql = "";
@@ -148,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
     $sql = "UPDATE products SET 
             name='$name', brand='$brand', category='$category', 
-            price=$price, tag='$tag', stock=$stock, barcode='$barcode', description='$description'
+            price=$price, tag='$tag', stock=$stock, barcode='$barcode', description='$description', use_type='$use_type'
             $imagesSql
             WHERE id=$id";
 

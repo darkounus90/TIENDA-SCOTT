@@ -4182,3 +4182,85 @@ a {
   justify-content: center;
   margin-top: 1rem;
 }
+
+/* =========================================================
+   SKILL: FRONTEND-DESIGN - MOBILE PERFORMANCE & AESTHETICS
+   ========================================================= */
+@media (max-width: 768px) {
+  /* 1. PERFOMANCE FIX: Eliminar desenfoques que matan el renderizado GPU */
+  .header__content, .nav, .search-input, .glass-form-panel, .cart-modal__content {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: var(--bg-deep) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* 2. PERFOMANCE FIX: Fondo estático en lugar de fixed. Fixed fuerza redibujos en scroll. */
+  body {
+    background-attachment: scroll !important;
+  }
+  
+  /* 3. PERFOMANCE FIX: Apaga texturas o ruido en móvil */
+  .noise-overlay, .hero-premium__grain, .hero-premium__vignette {
+    display: none !important;
+  }
+  
+  /* 4. PERFOMANCE FIX: Aminorar animación de entrada hero en móvil */
+  .hero-video-bg .hero-bg-media {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  /* 5. AESTHETICS: Tipografía y Layout Refinado para móvil */
+  .hero-premium__desc {
+    font-size: 1rem !important; 
+    line-height: 1.5 !important;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .title-luxe, .hero-premium__title {
+    font-size: clamp(2.5rem, 8vw, 3.5rem) !important; 
+    letter-spacing: -1px;
+    line-height: 1.1 !important;
+  }
+
+  /* Mejorar grilla bento en móvil para evitar sobrecargas y asegurar toque fácil */
+  .bento-luxe {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  .bento-luxe__item {
+    align-items: center;
+    text-align: center;
+    padding: 2rem !important;
+  }
+  .bento-luxe__icon {
+    margin-bottom: 1rem;
+  }
+  
+  /* Botones tocables */
+  .btn-luxe, .btn-primary, .btn-secondary {
+    min-height: 52px; /* Touch target */
+    font-weight: 700 !important;
+    letter-spacing: 0.05em;
+  }
+
+  /* Menu movil opaco */
+  .header__content {
+    padding: 0.5rem 1rem !important;
+    background-color: rgba(10, 10, 10, 0.98) !important;
+  }
+  
+  .nav {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8) !important;
+    border-radius: 0 0 24px 24px !important;
+  }
+  
+  /* Product card fixes */
+  .product-card {
+    background: #111 !important;
+    border: 1px solid rgba(255,255,255,0.03) !important;
+  }
+}
