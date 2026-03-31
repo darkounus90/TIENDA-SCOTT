@@ -68,6 +68,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  touch-action: manipulation;
 }
 
 body {
