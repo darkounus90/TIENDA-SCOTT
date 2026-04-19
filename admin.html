@@ -488,7 +488,7 @@
                                     Importar Excel</button>
                                 <button class="btn-secondary" onclick="exportInventoryToExcel()">📤
                                     Exportar Excel</button>
-                                <button class="btn-primary" onclick="openAddProduct()">+ Producto</button>
+                                <button class="btn-primary" onclick="prepareNewProduct()">+ Producto</button>
                             </div>
                         </div>
                         <table class="data-table">
@@ -683,6 +683,12 @@
                             <label>Código de Barras</label>
                             <input type="text" name="barcode" class="form-input" placeholder="Opcional">
                         </div>
+                        <div class="form-group full-width" style="background: rgba(217, 119, 6, 0.05); padding: 1rem; border-radius: 8px; border: 1px solid var(--glass-border); margin-top: 1rem;">
+                           <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; color: var(--primary);">
+                               <input type="checkbox" id="inputIsRecommended" name="is_recommended" style="width: 20px; height: 20px;">
+                               ⭐ Marcar como Producto Recomendado (Aparece en inicio)
+                           </label>
+                        </div>
                         <div class="form-group full-width" style="grid-column: 1 / -1;">
                             <label>Descripción del Producto</label>
                             <textarea id="input-description" name="description" class="form-input" rows="4"
@@ -792,10 +798,23 @@
 
         // --- Gestión de Productos ---
         function openAddProduct() {
+            // Resetear formulario si no es edición (asumiendo que si entramos aquí directo es nuevo)
+            // Pero como editProduct también llama aquí, mejor resetear solo si el click viene del botón "+ Producto"
+            // Por simplicidad, el botón "+ Producto" debería limpiar el ID primero.
             const modal = document.getElementById('addProductModal');
             modal.classList.add('active');
-            modal.classList.add('cart-modal--open'); // Asegurar consistencia con CSS
+            modal.classList.add('cart-modal--open');
             loadProductMetadata();
+        }
+        
+        // Función para limpiar el formulario (llamar desde el botón + Producto)
+        function prepareNewProduct() {
+            document.getElementById('editProductId').value = '';
+            document.getElementById('addProductForm').reset();
+            document.getElementById('inputIsRecommended').checked = false;
+            document.getElementById('imagePreviewGrid').innerHTML = '';
+            productImagesBase64 = [];
+            openAddProduct();
         }
 
         function toggleHybrid(type, mode) {
@@ -1019,7 +1038,8 @@
                 tag: tag,
                 barcode: formData.get('barcode'),
                 description: formData.get('description'),
-                images: productImagesBase64
+                images: productImagesBase64,
+                is_recommended: document.getElementById('inputIsRecommended').checked ? 1 : 0
             };
 
             const editId = document.getElementById('editProductId').value;
@@ -1423,7 +1443,7 @@
             document.getElementById('inventoryTable').innerHTML = products.map(p => `
     <tr>
         <td><img src="${p.image || (p.images && p.images[0]) || ''}" width="30" style="border-radius: 4px;"></td>
-        <td>${p.name}</td>
+        <td>${p.is_recommended == 1 ? '⭐ ' : ''}${p.name}</td>
         <td>${p.stock}</td>
         <td>${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(p.price)}</td>
         <td>
@@ -1508,6 +1528,7 @@
             const useField = product.use || product.use_type || '';
             document.getElementById('final-use').value = useField;
             document.getElementById('input-use').value = useField;
+            document.getElementById('inputIsRecommended').checked = product.is_recommended == 1;
 
             openAddProduct();
         }

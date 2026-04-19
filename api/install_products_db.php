@@ -14,6 +14,7 @@ $sql = "CREATE TABLE IF NOT EXISTS products (
     use_type VARCHAR(100),
     stock INT DEFAULT 0,
     barcode VARCHAR(100) UNIQUE,
+    is_recommended TINYINT(1) DEFAULT 0,
     images JSON,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -33,6 +34,12 @@ if ($conn->query($sql) === TRUE) {
     if ($checkImg->num_rows == 0) {
         $conn->query("ALTER TABLE products ADD COLUMN images JSON");
         echo "<p>✅ Columna 'images' (JSON) agregada.</p>";
+    }
+
+    $checkRec = $conn->query("SHOW COLUMNS FROM products LIKE 'is_recommended'");
+    if ($checkRec->num_rows == 0) {
+        $conn->query("ALTER TABLE products ADD COLUMN is_recommended TINYINT(1) DEFAULT 0 AFTER description");
+        echo "<p>✅ Columna 'is_recommended' agregada.</p>";
     }
     
 } else {

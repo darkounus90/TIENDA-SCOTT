@@ -31,44 +31,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $category = $conn->real_escape_string($_GET['category'] ?? '');
     $search = $conn->real_escape_string($_GET['search'] ?? '');
+    $recommended = isset($_GET['recommended']) && $_GET['recommended'] === '1' ? 1 : 0;
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 0; // 0 means no limit (backward compatibility)
     
-    $sql = "SELECT * FROM products WHERE 1=1";
+    $where = " WHERE 1=1";
     
     if ($category && $category !== 'all') {
-        $sql .= " AND category = '$category'";
+        $where .= " AND category = '$category'";
     }
     
     if ($search) {
-        $sql .= " AND (name LIKE '%$search%' OR brand LIKE '%$search%' OR tag LIKE '%$search%' OR barcode LIKE '%$search%')";
+        $where .= " AND (name LIKE '%$search%' OR brand LIKE '%$search%' OR tag LIKE '%$search%' OR barcode LIKE '%$search%')";
+    }
+
+    if ($recommended) {
+        $where .= " AND is_recommended = 1";
     }
     
-    $sql .= " ORDER BY id DESC"; // Más recientes primero
+    // Count total products for this query (without pagination)
+    $countRes = $conn->query("SELECT COUNT(*) as total FROM products $where");
+    $totalCount = ($countRes) ? (int)$countRes->fetch_assoc()['total'] : 0;
+
+    $sql = "SELECT * FROM products $where ORDER BY id DESC";
+    
+    if ($limit > 0) {
+        $offset = ($page - 1) * $limit;
+        $sql .= " LIMIT $limit OFFSET $offset";
+    }
     
     $result = $conn->query($sql);
     $products = [];
     
     if ($result) {
         while ($row = $result->fetch_assoc()) {
-            // Asegurar que 'images' se envíe como array real, no string JSON doblemente codificado
-            if (!empty($row['images'])) {
-                // Decodificar si está guardado como string JSON en DB
-                $decoded = json_decode($row['images']);
-                $row['images'] = $decoded ? $decoded : []; 
-            } else {
-                $row['images'] = [];
-            }
-            // Compatibilidad con frontend antiguo que espera 'image' simple
-            $row['image'] = !empty($row['images'][0]) ? $row['images'][0] : null;
+            // Decodificar imágenes
+            $imgs = json_decode($row['images'] ?? '[]', true);
+            $row['images'] = is_array($imgs) ? $imgs : [];
+            $row['image'] = count($row['images']) > 0 ? $row['images'][0] : '';
             
-            // Compatibilidad use -> use_type (Frontend espera .use)
+            // Compatibilidad use -> use_type
             if (!isset($row['use'])) {
-                 $row['use'] = $row['use_type'] ?? ''; 
+                $row['use'] = $row['use_type'] ?? ''; 
             }
-
             $products[] = $row;
         }
     }
-    echo json_encode($products);
+
+    if ($limit > 0) {
+        echo json_encode([
+            "success" => true,
+            "products" => $products,
+            "total" => $totalCount,
+            "page" => $page,
+            "limit" => $limit,
+            "hasMore" => ($offset + $limit) < $totalCount
+        ]);
+    } else {
+        echo json_encode($products);
+    }
     exit;
 }
 
@@ -93,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $barcode = $conn->real_escape_string($data['barcode'] ?? '');
     $description = $conn->real_escape_string($data['description'] ?? '');
     $images = $data['images'] ?? []; // Array de Base64 strings
+    $is_recommended = isset($data['is_recommended']) ? (int)$data['is_recommended'] : 0;
 
     if (!$name || !$price) {
         echo json_encode(["success" => false, "message" => "Nombre y precio requeridos"]);
@@ -102,8 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Convertir array de imágenes a JSON para guardar
     $imagesJson = $conn->real_escape_string(json_encode($images));
 
-    $sql = "INSERT INTO products (name, brand, category, price, tag, use_type, stock, barcode, description, images) 
-            VALUES ('$name', '$brand', '$category', $price, '$tag', '$use_type', $stock, '$barcode', '$description', '$imagesJson')";
+    $sql = "INSERT INTO products (name, brand, category, price, tag, use_type, stock, barcode, description, images, is_recommended) 
+            VALUES ('$name', '$brand', '$category', $price, '$tag', '$use_type', $stock, '$barcode', '$description', '$imagesJson', $is_recommended)";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["success" => true, "message" => "Producto guardado", "id" => $conn->insert_id]);
@@ -146,6 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $stock = (int)($data['stock'] ?? 0);
     $barcode = $conn->real_escape_string($data['barcode'] ?? '');
     $description = $conn->real_escape_string($data['description'] ?? '');
+    $is_recommended = isset($data['is_recommended']) ? (int)$data['is_recommended'] : 0;
     
     // Solo actualizar imágenes si se envían nuevas
     $imagesSql = "";
@@ -156,7 +179,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 
     $sql = "UPDATE products SET 
             name='$name', brand='$brand', category='$category', 
-            price=$price, tag='$tag', stock=$stock, barcode='$barcode', description='$description'
+            price=$price, tag='$tag', stock=$stock, barcode='$barcode', description='$description',
+            is_recommended=$is_recommended
             $imagesSql
             WHERE id=$id";
 

@@ -197,6 +197,19 @@
     </div>
   </section>
 
+  <!-- PRODUCTOS RECOMENDADOS (GALERÍA PREMIUM) -->
+  <section class="section section--alt" id="recomendados" style="padding-bottom: 2rem;">
+    <div class="container">
+      <div class="section__header">
+        <h2>Recomendados para ti</h2>
+        <p>Selección premium de nuestros expertos para llevar tu rendimiento al siguiente nivel.</p>
+      </div>
+      <div class="grid productos__grid" id="featuredList">
+        <!-- JS inyecta recomendados aquí -->
+      </div>
+    </div>
+  </section>
+
   <!-- PRODUCTOS -->
   <section class="section" id="productos">
     <div class="container">
@@ -215,6 +228,12 @@
 
       <div class="grid productos__grid" id="productList">
         <!-- JS inyecta las tarjetas de producto aquí -->
+      </div>
+
+      <!-- Paginación / Carga de más productos -->
+      <div id="paginationContainer" style="text-align: center; margin-top: 3rem;">
+        <div id="productLoader" class="loader-premium" style="display: none; margin: 0 auto 1.5rem;"></div>
+        <button id="loadMoreBtn" class="btn-secondary" style="display: none; padding: 1rem 3rem;">Cargar más productos</button>
       </div>
     </div>
   </section>
