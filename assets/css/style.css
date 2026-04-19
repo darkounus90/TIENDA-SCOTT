@@ -4297,6 +4297,70 @@ a {
 /* =========================================================
    SKILL: FRONTEND-DESIGN - MOBILE PERFORMANCE & AESTHETICS
    ========================================================= */
+/* Paginación Luxe */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 3rem;
+  padding: 1rem;
+}
+
+.pagination-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  min-width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pagination-btn:hover:not(.disabled):not(.active) {
+  background: rgba(217, 119, 6, 0.1);
+  border-color: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(217, 119, 6, 0.2);
+}
+
+.pagination-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 0 20px rgba(217, 119, 6, 0.4);
+  cursor: default;
+}
+
+.pagination-btn.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pagination-dots {
+  color: #64748b;
+  font-weight: 800;
+  padding: 0 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .pagination-wrapper {
+    gap: 0.3rem;
+  }
+  .pagination-btn {
+    min-width: 38px;
+    height: 38px;
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 768px) {
   /* 1. PERFOMANCE FIX: Eliminar desenfoques que matan el renderizado GPU */
   .header__content, .nav, .search-input, .glass-form-panel, .cart-modal__content {

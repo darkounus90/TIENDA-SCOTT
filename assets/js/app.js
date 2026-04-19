@@ -408,9 +408,9 @@ let currentUser = null;
 // Paginación y Estado de Productos
 let currentPage = 1;
 const itemsPerPage = 12;
-let hasMoreProducts = true;
 let isProductLoading = false;
 let currentProductsTotal = 0;
+let totalPages = 1;
 
 // Restaurar sesión y validar estado fresco
 async function checkSession() {
@@ -477,21 +477,16 @@ function renderSkeletons() {
   productList.appendChild(fragment);
 }
 
-// Función para obtener productos (Con Paginación y Filtros)
-async function fetchProducts(append = false) {
+// Función para obtener productos (Con Paginación por Páginas)
+async function fetchProducts() {
   if (isProductLoading) return;
   isProductLoading = true;
 
   const loader = document.getElementById("productLoader");
-  const loadMoreBtn = document.getElementById("loadMoreBtn");
   if (loader) loader.style.display = "block";
-  if (loadMoreBtn) loadMoreBtn.style.display = "none";
 
-  if (!append) {
-    currentPage = 1;
-    products = [];
-    renderSkeletons();
-  }
+  products = [];
+  renderSkeletons();
 
   try {
     const params = new URLSearchParams({
@@ -506,34 +501,100 @@ async function fetchProducts(append = false) {
     const data = await response.json();
 
     if (data.success && Array.isArray(data.products)) {
-        if (append) {
-          products = [...products, ...data.products];
-        } else {
-          products = data.products;
-        }
-        hasMoreProducts = data.hasMore;
-        currentProductsTotal = data.total;
-        renderProducts(data.products, append);
+      products = data.products;
+      currentProductsTotal = data.total || 0;
+      totalPages = Math.ceil(currentProductsTotal / itemsPerPage) || 1;
+      renderProducts(data.products, false);
     } else {
-      // Fallback for non-paginated API or errors
       const fallbackProducts = Array.isArray(data) ? data : [];
       products = fallbackProducts;
-      hasMoreProducts = false;
-      renderProducts(fallbackProducts, append);
+      totalPages = 1;
+      renderProducts(fallbackProducts, false);
     }
 
-    // Actualizar visibilidad del botón Load More
-    if (loadMoreBtn) {
-      loadMoreBtn.style.display = hasMoreProducts ? "inline-block" : "none";
+    renderPagination();
+
+    // Scroll al tope de la sección al cambiar de página
+    const prodSection = document.getElementById('productos');
+    if (prodSection && currentPage > 1) {
+      prodSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
   } catch (err) {
     console.error('Error fetching products:', err);
-    if (!append) products = [];
+    products = [];
   } finally {
     isProductLoading = false;
     if (loader) loader.style.display = "none";
   }
+}
+
+// Renderizar controles de paginación
+function renderPagination() {
+  const container = document.getElementById('paginationControls');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (totalPages <= 1) return;
+
+  const maxVisible = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+  if (endPage - startPage < maxVisible - 1) {
+    startPage = Math.max(1, endPage - maxVisible + 1);
+  }
+
+  // Botón anterior
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'pagination-btn' + (currentPage === 1 ? ' disabled' : '');
+  prevBtn.innerHTML = '&#8592;';
+  prevBtn.disabled = currentPage === 1;
+  prevBtn.addEventListener('click', () => { currentPage--; fetchProducts(); });
+  container.appendChild(prevBtn);
+
+  // Primera página + ellipsis
+  if (startPage > 1) {
+    const btn = createPageBtn(1);
+    container.appendChild(btn);
+    if (startPage > 2) {
+      const dots = document.createElement('span');
+      dots.className = 'pagination-dots';
+      dots.textContent = '...';
+      container.appendChild(dots);
+    }
+  }
+
+  // Páginas visibles
+  for (let i = startPage; i <= endPage; i++) {
+    container.appendChild(createPageBtn(i));
+  }
+
+  // Última página + ellipsis
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) {
+      const dots = document.createElement('span');
+      dots.className = 'pagination-dots';
+      dots.textContent = '...';
+      container.appendChild(dots);
+    }
+    container.appendChild(createPageBtn(totalPages));
+  }
+
+  // Botón siguiente
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'pagination-btn' + (currentPage === totalPages ? ' disabled' : '');
+  nextBtn.innerHTML = '&#8594;';
+  nextBtn.disabled = currentPage === totalPages;
+  nextBtn.addEventListener('click', () => { currentPage++; fetchProducts(); });
+  container.appendChild(nextBtn);
+}
+
+function createPageBtn(page) {
+  const btn = document.createElement('button');
+  btn.className = 'pagination-btn' + (page === currentPage ? ' active' : '');
+  btn.textContent = page;
+  btn.addEventListener('click', () => { currentPage = page; fetchProducts(); });
+  return btn;
 }
 
 // Función para obtener productos recomendados
@@ -614,45 +675,8 @@ document.addEventListener("DOMContentLoaded", () => {
   checkSession();
   fetchFeaturedProducts();
   fetchProducts().then(() => {
-    // Revalidar carrito existente contra stock actual
-    cart = cart.filter(item => {
-      // Nota: Si el producto del carrito no está en la primera página, 
-      // esto fallará con server-side pagination si solo revisamos 'products'.
-      // Idealmente revalidaríamos contra un endpoint de validación unitaria.
-      return true; // Simplificación para evitar borrar items válidos no cargados
-    });
-    updateCartUI(); // Restaurar UI del carrito
+    updateCartUI();
   });
-
-  // Event listener para botón de carga
-  const loadMoreBtn = document.getElementById("loadMoreBtn");
-  if (loadMoreBtn) {
-    loadMoreBtn.addEventListener("click", () => {
-      if (hasMoreProducts && !isProductLoading) {
-        currentPage++;
-        fetchProducts(true);
-      }
-    });
-  }
-
-  // Infinite Scroll con Intersection Observer
-  const observerOptions = {
-    root: null,
-    rootMargin: '200px', // Cargar antes de llegar al final
-    threshold: 0.1
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && hasMoreProducts && !isProductLoading) {
-        currentPage++;
-        fetchProducts(true);
-      }
-    });
-  }, observerOptions);
-
-  const sentinel = document.getElementById("paginationContainer");
-  if (sentinel) observer.observe(sentinel);
 });
 
 
@@ -883,6 +907,7 @@ function renderProducts(itemsToRender, append = false) {
 if (categoryFilter) {
   categoryFilter.addEventListener("change", e => {
     filteredCategory = e.target.value;
+    currentPage = 1; // Reset page on filter
     fetchProducts();
   });
 }
@@ -893,6 +918,7 @@ document.querySelectorAll(".categoria").forEach(card => {
     const cat = card.dataset.category;
     filteredCategory = cat;
     categoryFilter.value = cat;
+    currentPage = 1; // Reset page on filter
     fetchProducts();
     window.scrollTo({ top: document.getElementById("productos").offsetTop - 80, behavior: "smooth" });
   });
@@ -904,6 +930,7 @@ if (searchInput) {
     clearTimeout(searchDebounceTimer);
     searchDebounceTimer = setTimeout(() => {
       searchTerm = e.target.value.toLowerCase();
+      currentPage = 1; // Reset page on search
       fetchProducts();
     }, 300); // Wait 300ms before searching
   });
