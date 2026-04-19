@@ -4183,6 +4183,20 @@ a {
   display: block;
 }
 
+/* Form Wrapper - contiene el panel de cristal */
+.service-luxe__form-wrapper {
+  width: 100%;
+  max-width: 480px;
+  justify-self: end;
+}
+
+@media (max-width: 900px) {
+  .service-luxe__form-wrapper {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
+
 /* Glass Form Panel */
 .glass-form-panel {
   background: rgba(255, 255, 255, 0.02);
