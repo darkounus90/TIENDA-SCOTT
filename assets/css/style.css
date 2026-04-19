@@ -4131,24 +4131,29 @@ a {
 .service-luxe__container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6rem;
+  gap: 3rem;
   align-items: center;
 }
 
 @media (max-width: 900px) {
   .service-luxe__container {
     grid-template-columns: 1fr;
-    gap: 4rem;
+    gap: 2.5rem;
   }
+}
+
+.service-luxe__info .title-luxe {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  word-break: break-word;
 }
 
 .service-luxe__list {
   list-style: none;
   padding: 0;
-  margin: 3rem 0 0 0;
+  margin: 2rem 0 0 0;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .service-luxe__list li {
@@ -4172,13 +4177,13 @@ a {
   display: block;
   color: white;
   font-family: 'Syne', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   margin-bottom: 0.25rem;
 }
 
 .service-luxe__list span {
   color: #A8A29E;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   display: block;
 }
@@ -4186,15 +4191,6 @@ a {
 /* Form Wrapper - contiene el panel de cristal */
 .service-luxe__form-wrapper {
   width: 100%;
-  max-width: 480px;
-  justify-self: end;
-}
-
-@media (max-width: 900px) {
-  .service-luxe__form-wrapper {
-    max-width: 100%;
-    justify-self: stretch;
-  }
 }
 
 /* Glass Form Panel */
@@ -4204,7 +4200,7 @@ a {
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
-  padding: 3rem;
+  padding: 2.5rem;
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
 }
 
