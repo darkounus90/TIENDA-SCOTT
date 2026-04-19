@@ -542,15 +542,24 @@ async function fetchFeaturedProducts() {
   if (!featuredList) return;
 
   try {
+    // Forzamos el límite a 4 en la consulta
     const response = await fetch(`${API_BASE}/products.php?recommended=1&limit=4&_t=${Date.now()}`);
     const data = await response.json();
 
     if (data.success && Array.isArray(data.products)) {
-        renderFeatured(data.products);
+        // Tomamos solo los primeros 4 por si el API devolvió más, y filtramos por si acaso
+        const filtered = data.products.filter(p => p.is_recommended == 1).slice(0, 4);
+        renderFeatured(filtered);
     } else {
-        // Si no hay recomendados, ocultar la sección
-        const section = document.getElementById("recomendados");
-        if (section) section.style.display = "none";
+        // Fallback si la API devolvió un array plano
+        const productsArray = Array.isArray(data) ? data : [];
+        const filtered = productsArray.filter(p => p.is_recommended == 1).slice(0, 4);
+        if (filtered.length > 0) {
+            renderFeatured(filtered);
+        } else {
+            const section = document.getElementById("recomendados");
+            if (section) section.style.display = "none";
+        }
     }
   } catch (err) {
     console.error('Error fetching featured products:', err);

@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $where .= " AND (name LIKE '%$search%' OR brand LIKE '%$search%' OR tag LIKE '%$search%' OR barcode LIKE '%$search%')";
         }
 
-        if ($recommended) {
+        if (isset($_GET['recommended'])) {
             $where .= " AND is_recommended = 1";
         }
     }

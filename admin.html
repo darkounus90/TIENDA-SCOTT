@@ -1805,7 +1805,10 @@
             const useField = product.use || product.use_type || '';
             document.getElementById('final-use').value = useField;
             document.getElementById('input-use').value = useField;
-            document.getElementById('inputIsRecommended').checked = product.is_recommended == 1;
+            
+            // Cargar estado de recomendado
+            const recInput = document.getElementById('inputIsRecommended');
+            if (recInput) recInput.checked = (product.is_recommended == 1);
 
             openAddProduct();
         }
