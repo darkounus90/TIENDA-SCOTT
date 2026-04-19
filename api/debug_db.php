@@ -1,4 +1,7 @@
 <?php
+require 'auth_helper.php';
+setCorsHeaders();
+requireAdmin();
 require 'db.php';
 $res = $conn->query("SELECT * FROM products");
 $rows = [];

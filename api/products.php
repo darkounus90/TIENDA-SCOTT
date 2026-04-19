@@ -1,14 +1,9 @@
 <?php
 // products.php - Gestión completa de productos
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header('Content-Type: application/json');
+require 'auth_helper.php';
+setCorsHeaders();
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
 
 require 'db.php';
 
@@ -31,22 +26,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $category = $conn->real_escape_string($_GET['category'] ?? '');
     $search = $conn->real_escape_string($_GET['search'] ?? '');
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
     $recommended = isset($_GET['recommended']) && $_GET['recommended'] === '1' ? 1 : 0;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 0; // 0 means no limit (backward compatibility)
     
     $where = " WHERE 1=1";
     
-    if ($category && $category !== 'all') {
-        $where .= " AND category = '$category'";
-    }
-    
-    if ($search) {
-        $where .= " AND (name LIKE '%$search%' OR brand LIKE '%$search%' OR tag LIKE '%$search%' OR barcode LIKE '%$search%')";
-    }
+    if ($id > 0) {
+        $where .= " AND id = $id";
+    } else {
+        if ($category && $category !== 'all') {
+            $where .= " AND category = '$category'";
+        }
+        
+        if ($search) {
+            $where .= " AND (name LIKE '%$search%' OR brand LIKE '%$search%' OR tag LIKE '%$search%' OR barcode LIKE '%$search%')";
+        }
 
-    if ($recommended) {
-        $where .= " AND is_recommended = 1";
+        if ($recommended) {
+            $where .= " AND is_recommended = 1";
+        }
     }
     
     // Count total products for this query (without pagination)
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $sql = "SELECT * FROM products $where ORDER BY id DESC";
     
-    if ($limit > 0) {
+    if ($limit > 0 && $id <= 0) {
         $offset = ($page - 1) * $limit;
         $sql .= " LIMIT $limit OFFSET $offset";
     }
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 
-    if ($limit > 0) {
+    if ($limit > 0 && $id <= 0) {
         echo json_encode([
             "success" => true,
             "products" => $products,
@@ -88,19 +88,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             "hasMore" => ($offset + $limit) < $totalCount
         ]);
     } else {
-        echo json_encode($products);
+        if ($id > 0) {
+            echo json_encode(["success" => true, "product" => ($products[0] ?? null)]);
+        } else {
+            echo json_encode($products);
+        }
     }
     exit;
 }
 
 // --- POST: Crear Producto (Solo Admin) ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validar Auth (básico)
-    $headers = getallheaders();
-    $auth = $headers['Authorization'] ?? '';
-    // En producción REAL, validar token JWT aquí. 
-    // Por simplicidad, confiamos en que el frontend envía si es admin, 
-    // pero idealmente decodificaríamos el token para verificar isAdmin=1.
+    requireAdmin(); // Verifica token firmado Y que isAdmin === 1
 
     $data = json_decode(file_get_contents('php://input'), true);
     
@@ -135,8 +134,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// --- DELETE: Eliminar producto ---
+// --- DELETE: Eliminar producto (Solo Admin) ---
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    requireAdmin();
     $id = (int)($_GET['id'] ?? 0);
     if ($id > 0) {
         if ($conn->query("DELETE FROM products WHERE id=$id")) {
@@ -150,8 +150,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     exit;
 }
 
-// --- PUT: Actualizar Producto ---
+// --- PUT: Actualizar Producto (Solo Admin) ---
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    requireAdmin();
     $data = json_decode(file_get_contents('php://input'), true);
     
     $id = (int)($data['id'] ?? 0);
@@ -169,6 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $barcode = $conn->real_escape_string($data['barcode'] ?? '');
     $description = $conn->real_escape_string($data['description'] ?? '');
     $is_recommended = isset($data['is_recommended']) ? (int)$data['is_recommended'] : 0;
+    $use_type = $conn->real_escape_string($data['use'] ?? '');
     
     // Solo actualizar imágenes si se envían nuevas
     $imagesSql = "";
@@ -180,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $sql = "UPDATE products SET 
             name='$name', brand='$brand', category='$category', 
             price=$price, tag='$tag', stock=$stock, barcode='$barcode', description='$description',
-            is_recommended=$is_recommended
+            is_recommended=$is_recommended, use_type='$use_type'
             $imagesSql
             WHERE id=$id";
 

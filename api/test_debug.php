@@ -1,8 +1,11 @@
 <?php
-// api/test_debug.php
-header('Content-Type: application/json');
+// api/test_debug.php — Protegido: solo admins
+require 'auth_helper.php';
+setCorsHeaders();
+requireAdmin();
 require 'db.php';
 
+header('Content-Type: application/json');
 $admins = [];
 $res = $conn->query("SELECT id, username, email, isAdmin FROM users WHERE isAdmin = 1");
 if ($res) {

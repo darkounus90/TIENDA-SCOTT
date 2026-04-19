@@ -472,6 +472,7 @@ async function fetchProducts() {
 document.addEventListener("DOMContentLoaded", () => {
   checkSession();
   fetchProducts().then(() => {
+    populateCategoryFilters();
     renderProducts();
     // Revalidar carrito existente contra stock actual
     cart = cart.filter(item => {
@@ -664,8 +665,48 @@ let filteredCategory = "all";
 let searchTerm = "";
 let searchDebounceTimer;
 
+// Llenar listas desplegables de categoría dinámicamente según BD
+function populateCategoryFilters() {
+  if (products.length === 0) return;
+
+  // Extraer categorías únicas
+  const uniqueCategories = [...new Set(products
+    .map(p => p.category ? p.category.trim() : '')
+    .filter(c => c !== '' && c.toLowerCase() !== 'all')
+  )].sort();
+
+  // Actualizar #categoryFilter (el select del catálogo)
+  const catFilter = document.getElementById("categoryFilter");
+  if (catFilter) {
+    const currentValue = catFilter.value;
+    let html = '<option value="all">Todas las categorías</option>';
+    uniqueCategories.forEach(cat => {
+      const label = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+      html += `<option value="${cat}">${label}</option>`;
+    });
+    catFilter.innerHTML = html;
+    
+    // Restaurar el valor si aún es válido
+    if (currentValue === 'all' || uniqueCategories.includes(currentValue)) {
+      catFilter.value = currentValue;
+    }
+  }
+
+  // Actualizar #categoryOptions (el datalist para crear nuevos productos)
+  const catOptions = document.getElementById("categoryOptions");
+  if (catOptions) {
+    let html = '';
+    uniqueCategories.forEach(cat => {
+      const label = cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase();
+      html += `<option value="${cat}">${label}</option>`;
+    });
+    catOptions.innerHTML = html;
+  }
+}
+
 // Render productos
 function renderProducts() {
+  if (!productList) return;
   productList.innerHTML = "";
   const fragment = document.createDocumentFragment();
 
@@ -1878,6 +1919,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+// Lógica para agendar citas hacia WhatsApp
+const serviceForm = document.getElementById('serviceForm');
+if (serviceForm) {
+  serviceForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(serviceForm);
+    const nombre = formData.get('nombre');
+    const telefono = formData.get('telefono');
+    
+    const selectElement = serviceForm.querySelector('select[name="tipo"]');
+    const tipoTexto = selectElement && selectElement.selectedIndex >= 0 
+      ? selectElement.options[selectElement.selectedIndex].text 
+      : formData.get('tipo');
+
+    const mensaje = `Hola El Pedalazo, quiero agendar una cita para taller.\n\n*Nombre*: ${nombre}\n*Teléfono*: ${telefono}\n*Servicio*: ${tipoTexto}`;
+    const waUrl = `https://wa.me/573114497589?text=${encodeURIComponent(mensaje)}`;
+    
+    const statusMsg = document.getElementById('serviceStatus');
+    if (statusMsg) {
+      statusMsg.textContent = '¡Redirigiendo a WhatsApp...!';
+      statusMsg.style.color = '#22c55e';
+    }
+    
+    window.open(waUrl, '_blank');
+    serviceForm.reset();
+    
+    setTimeout(() => {
+      if (statusMsg) statusMsg.textContent = '';
+    }, 3000);
+  });
+}
 
 // Initialize Lucide Icons
 window.addEventListener('load', () => {

@@ -1,36 +1,14 @@
 <?php
 // orders.php - Gestión de Pedidos
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Content-Type: application/json");
+require 'auth_helper.php';
+setCorsHeaders();
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
 
 require 'db.php';
 
-// Helper: Get User from Token (Simulated/Basic)
-function getUserFromToken($conn) {
-    $auth = null;
-    if (function_exists('apache_request_headers')) {
-        $headers = apache_request_headers();
-        if (isset($headers['Authorization'])) $auth = $headers['Authorization'];
-        elseif (isset($headers['authorization'])) $auth = $headers['authorization'];
-    }
-    if (!$auth && isset($_SERVER['HTTP_AUTHORIZATION'])) $auth = $_SERVER['HTTP_AUTHORIZATION'];
-    if (!$auth && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-    
-    if (!$auth) return null;
-    $token = str_replace('Bearer ', '', $auth);
-    
-    // Decode simple mock token
-    $parts = explode('.', $token);
-    if(count($parts) < 2) return null;
-    $payload = json_decode(base64_decode($parts[0]), true);
-    return $payload; // ['username' => ..., 'isAdmin' => ...]
-}
+$user = requireAuth(); // Verifica firma del token — reemplaza getUserFromToken()
 
-$user = getUserFromToken($conn);
 
 // --- GET: Listar Pedidos ---
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -39,22 +17,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
     
-    // Obtener ID real
-    $username = $conn->real_escape_string($user['username']);
-    $uRes = $conn->query("SELECT id, isAdmin FROM users WHERE username='$username'");
-    if (!$uRes || $uRes->num_rows === 0) {
+    // Obtener ID real desde DB usando el sub del token
+    $userId = (int)($user['sub'] ?? 0);
+    $stmt = $conn->prepare("SELECT id, isAdmin FROM users WHERE id=?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $r = $stmt->get_result();
+    if (!$r || $r->num_rows === 0) {
+        http_response_code(401);
         echo json_encode(['success' => false, 'message' => 'Usuario inválido']);
         exit;
     }
-    $dbUser = $uRes->fetch_assoc();
+    $dbUser = $r->fetch_assoc();
     
     // Si es Admin, listar TODO. Si no, solo suyos.
     $sql = "SELECT o.*, u.username as user_name, u.email as user_email 
             FROM orders o 
             LEFT JOIN users u ON o.user_id = u.id ";
             
+    $uid = (int)$dbUser['id'];
     if ($dbUser['isAdmin'] != 1) {
-        $sql .= " WHERE o.user_id = " . $dbUser['id'];
+        $sql .= " WHERE o.user_id = $uid";
     }
     
     $sql .= " ORDER BY o.created_at DESC";
@@ -86,11 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $data = json_decode(file_get_contents('php://input'), true);
     
-    // Get User ID
-    $username = $conn->real_escape_string($user['username']);
-    $uRes = $conn->query("SELECT id FROM users WHERE username='$username'");
-    $dbUser = $uRes->fetch_assoc();
-    $userId = $dbUser['id'];
+    // Obtener ID real del usuario por sub del token
+    $userId = (int)($user['sub'] ?? 0);
+    if (!$userId) {
+        echo json_encode(['success' => false, 'message' => 'Token inválido']);
+        exit;
+    }
     
     $items = $data['items'] ?? [];
     if (empty($items)) {
@@ -123,43 +107,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    // Generar Referencia
-    $reference = 'ORD-' . time() . '-' . rand(1000, 9999);
-    
-    // Insert Order
-    $sql = "INSERT INTO orders (user_id, total, status, reference, created_at) VALUES ($userId, $total, 'pending', '$reference', NOW())";
-    if ($conn->query($sql)) {
+    // ---- INICIO TRANSACCIÓN MYSQL ----
+    $conn->begin_transaction();
+    try {
+        $orderId = null;
+        $reference = 'ORD-' . time() . '-' . rand(1000, 9999);
+
+        // Insert Order
+        $pendingStatus = 'pending';
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, total, status, reference, created_at) VALUES (?,?,?,?,NOW())");
+        $stmt->bind_param("idss", $userId, $total, $pendingStatus, $reference);
+        $stmt->execute();
         $orderId = $conn->insert_id;
-        
-        // Insert Items & Update Stock
+
+        // Insert Items + Stock atómico (previene sobreventa)
         foreach ($finalItems as $item) {
-            $conn->query("INSERT INTO order_items (order_id, product_id, product_name, price, quantity) 
-                          VALUES ($orderId, {$item['id']}, '{$conn->real_escape_string($item['name'])}', {$item['price']}, {$item['qty']})");
-            
-            $conn->query("UPDATE products SET stock = stock - {$item['qty']} WHERE id={$item['id']}");
+            // Decremento atómico con condición — si stock < qty no actualiza ninguna fila
+            $upd = $conn->prepare("UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?");
+            $upd->bind_param("iii", $item['qty'], $item['id'], $item['qty']);
+            $upd->execute();
+            if ($upd->affected_rows === 0) {
+                throw new Exception("Stock insuficiente para '{$item['name']}' al procesar el pago");
+            }
+
+            $ins = $conn->prepare("INSERT INTO order_items (order_id, product_id, product_name, price, quantity) VALUES (?,?,?,?,?)");
+            $ins->bind_param("iisdi", $orderId, $item['id'], $item['name'], $item['price'], $item['qty']);
+            $ins->execute();
         }
-        
+
+        $conn->commit();
         echo json_encode(['success' => true, 'orderId' => $orderId, 'reference' => $reference, 'total' => $total]);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Error DB: ' . $conn->error]);
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
     exit;
 }
 
-// --- PUT: Actualizar Estado (Admin) ---
+// --- PUT: Actualizar Estado (Solo Admin) ---
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    // Check Admin...
-    if (!$user) exit; // ... logic simplified ...
-    
+    requireAdmin(); // Verifica token Y que isAdmin === 1
+
     $data = json_decode(file_get_contents('php://input'), true);
     $orderId = (int)($data['id'] ?? 0);
-    $status = $conn->real_escape_string($data['status'] ?? '');
-    
-    if ($orderId && $status) {
-        $conn->query("UPDATE orders SET status='$status' WHERE id=$orderId");
+
+    $allowed = ['pending','confirmed','shipped','delivered','cancelled'];
+    $status  = $data['status'] ?? '';
+    if (!in_array($status, $allowed)) {
+        echo json_encode(['success' => false, 'message' => 'Estado inválido']);
+        exit;
+    }
+
+    if ($orderId) {
+        $stmt = $conn->prepare("UPDATE orders SET status=? WHERE id=?");
+        $stmt->bind_param("si", $status, $orderId);
+        $stmt->execute();
         echo json_encode(['success' => true]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+        echo json_encode(['success' => false, 'message' => 'ID inválido']);
     }
     exit;
 }

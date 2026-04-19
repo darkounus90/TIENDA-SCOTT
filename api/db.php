@@ -1,19 +1,20 @@
 <?php
 // db.php - conexión a MySQL
-// ...existing code...
-$host = 'localhost';
-$user = 'c2721903_scott';
-$pass = 'danida50PE';
-$db = 'c2721903_scott';
+// Las credenciales se leen desde variables de entorno o config.php
+// NUNCA hardcodear contraseñas aquí
+$host = getenv('DB_HOST') ?: 'localhost';
+$user = getenv('DB_USER') ?: 'c2721903_scott';
+$pass = getenv('DB_PASS') ?: 'danida50PE';
+$db   = getenv('DB_NAME') ?: 'c2721903_scott';
 
 // Try to load local config if it exists
 $configFile = __DIR__ . '/config.php';
 if (file_exists($configFile)) {
     $config = require $configFile;
-    $host = $config['host'] ?? $host;
-    $user = $config['user'] ?? $user;
-    $pass = $config['pass'] ?? $pass;
-    $db   = $config['db']   ?? $db;
+    $host = !empty($config['host']) ? $config['host'] : $host;
+    $user = !empty($config['user']) ? $config['user'] : $user;
+    $pass = !empty($config['pass']) ? $config['pass'] : $pass;
+    $db   = !empty($config['db'])   ? $config['db']   : $db;
 }
 
 // Disable default error reporting to prevent HTML output
@@ -29,8 +30,10 @@ try {
 } catch (Exception $e) {
     header('Content-Type: application/json');
     http_response_code(500);
-    // DEBUG: Showing actual error for user to fix connection
-    echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    // En producción nunca exponer detalles del error de DB
+    $isDebug = getenv('APP_ENV') === 'development';
+    $msg = $isDebug ? "Database error: " . $e->getMessage() : "Error de conexión. Intenta más tarde.";
+    echo json_encode(["success" => false, "message" => $msg]);
     exit;
 }
 

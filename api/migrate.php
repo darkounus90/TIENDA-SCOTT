@@ -1,10 +1,10 @@
 <?php
-// api/migrate.php
-// Script unificado para actualizar la base de datos
-header("Access-Control-Allow-Origin: *");
-header('Content-Type: application/json');
-
+// api/migrate.php — Protegido: solo admins
+require 'auth_helper.php';
+setCorsHeaders();
+requireAdmin();
 require 'db.php';
+header('Content-Type: application/json');
 
 $results = [];
 

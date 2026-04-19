@@ -1,9 +1,7 @@
 <?php
 // google_login.php - Login/registro con Google
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header('Content-Type: application/json');
+require 'auth_helper.php';
+setCorsHeaders();
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -28,21 +26,30 @@ try {
         throw new Exception("Token de Google requerido");
     }
 
-    // Decodificar el JWT de Google (sin librería externa)
-    $parts = explode('.', $credential);
-    if (count($parts) !== 3) {
-        throw new Exception("Token inválido");
+    // --- VERIFICACIÓN REAL DEL TOKEN DE GOOGLE ---
+    // Llama a la API de Google para validar el token (no solo decodifica)
+    $clientId = getenv('GOOGLE_CLIENT_ID');
+    $verifyUrl = 'https://oauth2.googleapis.com/tokeninfo?id_token=' . urlencode($credential);
+    $ch = curl_init($verifyUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode !== 200 || !$response) {
+        throw new Exception("Token de Google inválido o expirado");
     }
 
-    $payload = json_decode(base64_decode(strtr($parts[1], '-_', '+/')), true);
+    $payload = json_decode($response, true);
 
-    if (!$payload || !isset($payload['email']) || !isset($payload['sub'])) {
-        throw new Exception("No se pudo decodificar el token de Google");
+    // Verificar que el token fue emitido para NUESTRA app
+    if (!$clientId || ($payload['aud'] ?? '') !== $clientId) {
+        throw new Exception("Token no pertenece a esta aplicación");
     }
 
-    // Verificar que el token no esté expirado
-    if (isset($payload['exp']) && $payload['exp'] < time()) {
-        throw new Exception("Token de Google expirado");
+    if (!isset($payload['email']) || !isset($payload['sub'])) {
+        throw new Exception("Token de Google no contiene datos requeridos");
     }
 
     $google_id = $payload['sub'];
@@ -136,25 +143,24 @@ try {
         ];
     }
 
-    $tokenPayload = base64_encode(json_encode([
-        'username' => $user['username'],
-        'email' => $user['email'],
-        'phone' => $user['phone'] ?? '',
-        'isAdmin' => $user['isAdmin'],
-        'iat' => time()
-    ]));
-    $token = $tokenPayload . '.' . md5($tokenPayload . 'SALT');
+    // Token seguro con HMAC-SHA256
+    $token = generateToken([
+        'sub'     => (string)$user['id'],
+        'username'=> $user['username'],
+        'email'   => $user['email'],
+        'isAdmin' => (int)($user['isAdmin'] ?? 0),
+    ]);
 
     echo json_encode([
         "success" => true,
         "message" => "Login con Google exitoso",
-        "user" => $user,
-        "token" => $token
+        "user"    => $user,
+        "token"   => $token
     ]);
 
 } catch (Exception $e) {
     error_log("Google Login Error: " . $e->getMessage());
-    http_response_code(500);
+    http_response_code(401);
     echo json_encode(["success" => false, "message" => $e->getMessage()]);
 }
 ?>

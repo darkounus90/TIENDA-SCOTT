@@ -1,9 +1,7 @@
 <?php
 // login.php - login de usuario
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header('Content-Type: application/json');
+require 'auth_helper.php';
+setCorsHeaders();
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -46,19 +44,17 @@ if (!password_verify($password, $user['password'])) {
 }
 unset($user['password']);
 $user['isAdmin'] = (int)$user['isAdmin'];
-// Simular un token simple (NO JWT real, solo para frontend)
-$tokenPayload = base64_encode(json_encode([
-    'username' => $user['username'],
-    'email' => $user['email'],
-    'phone' => $user['phone'] ?? '',
-    'isAdmin' => $user['isAdmin'],
-    'iat' => time()
-]));
-$token = $tokenPayload . '.' . md5($tokenPayload . 'SALT');
+// Token seguro con HMAC-SHA256 (reemplaza el md5 + SALT anterior)
+$token = generateToken([
+    'sub'     => (string)$user['id'],
+    'username'=> $user['username'],
+    'email'   => $user['email'],
+    'isAdmin' => (int)$user['isAdmin'],
+]);
 echo json_encode([
     "success" => true,
     "message" => "Login exitoso",
-    "user" => $user,
-    "token" => $token
+    "user"    => $user,
+    "token"   => $token
 ]);
 ?>

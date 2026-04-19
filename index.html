@@ -7,19 +7,27 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Grupo Empresarial El Pedalazo - Tienda de Bicicletas</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <!-- Tema oscuro fijo -->
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0a0a0a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="stylesheet" href="style.css?v=17.0.0" />
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Optimizaciones de Rendimiento -->
+  <link rel="dns-prefetch" href="https://unpkg.com">
+  <link rel="dns-prefetch" href="https://accounts.google.com">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css?v=20.0.0" />
+  <!-- Lucide Icons - Cargado con defer para no bloquear el renderizado -->
+  <script src="https://unpkg.com/lucide@latest" defer></script>
   <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -62,18 +70,15 @@
   <header class="header">
     <div class="container header__content">
       <div class="logo">
-        <a href="#home" style="text-decoration: none; display: flex; align-items: center;">
-          <img src="logo-pedalazo-icon.svg" alt="El Pedalazo" style="height: 50px; width: auto;">
-          <span
-            style="font-size: 2rem; font-weight: 800; color: white; margin-left: 5px; letter-spacing: -1px; font-family: 'Inter', sans-serif;">El
-            Pedalazo</span>
+        <a href="#home">
+          <span>El Pedalazo</span>
         </a>
       </div>
 
       <nav class="nav" id="mainNav">
         <a href="#home">Inicio</a>
         <a href="#categorias">Categorías</a>
-        <a href="#productos">Productos</a>
+        <a href="productos.html">Productos</a>
         <a href="cars.html" class="nav-highlight">
           Para tu carro!
           <span class="nav-badge">NEW</span>
@@ -121,77 +126,127 @@
   <!-- NOISE OVERLAY FOR PREMIUM TEXTURE -->
   <div class="noise-overlay"></div>
 
-  <!-- HERO (Awwwards Enterprise Style) -->
-  <section class="hero hero-video-bg" id="home">
-    <div class="hero-bg-media" style="background-image: url('scott-scale-pov-real.png');"></div>
-    <div class="hero-overlay"></div>
-    <div class="container hero__container">
-      <div class="hero__text-content fade-up-anim">
-        <h1 class="hero__headline">
-          PERFORMANCE<br /><span style="color:var(--primary); -webkit-text-fill-color:var(--primary);">PURA</span>
+  <!-- REDISEÑO PREMIUM: HERO EDITORIAL -->
+  <section class="hero-premium" id="home">
+    <div class="hero-premium__bg" style="background-image: url('assets/images/scott-scale-pov-real.png');"></div>
+    <div class="hero-premium__vignette"></div>
+    <div class="hero-premium__grain"></div>
+    
+    <div class="container hero-premium__container">
+      <div class="hero-premium__content">
+        <div class="hero-premium__badge fade-up-anim">SCOTT COLOMBIA</div>
+        <h1 class="hero-premium__title fade-up-anim delay-1">
+          <span class="line">DOMINA</span>
+          <span class="line offset">LA <em class="accent">RUTA.</em></span>
         </h1>
-        <span class="hero__sub-headline">ENTREGA TOTAL EN CADA PEDALAZO. DESCUBRE TU LÍMITE.</span>
-        <div class="hero__actions">
-          <a href="#productos" class="btn-primary"
-            style="padding: 1.25rem 3rem; font-size: 1.1rem; border-radius: 100px;">
-            Ver Colección
-          </a>
+        <h1 class="hero-premium__title fade-up-anim delay-1" style="display:none">
+          <span class="line">DOMINA</span>
+          <span class="line offset">LA <em class="accent">RUTA.</em></span>
+        </h1>
+        <p class="hero-premium__desc fade-up-anim delay-2">
+          Ingeniería suiza para el <strong class="text-glow">máximo desempeño</strong>. Descubre bicicletas de <span class="text-highlight">diseño vanguardista</span> construidas para cruzar cualquier límite.
+        </p>
+        <div class="hero-premium__actions fade-up-anim delay-3">
+          <a href="#productos" class="btn-luxe">Explorar Colección <i data-lucide="arrow-right"></i></a>
+          <a href="#servicios" class="link-luxe">Agenda tu taller</a>
         </div>
       </div>
-      <div class="hero__stats fade-up-anim delay-2">
-        <div class="stat-item"><strong>50+</strong><br><span>Modelos</span></div>
-        <div class="stat-item"><strong>12k</strong><br><span>Usuarios</span></div>
-        <div class="stat-item"><strong>24/7</strong><br><span>Soporte</span></div>
+
+      <div class="hero-premium__stats fade-up-anim delay-4">
+        <div class="stat-luxe">
+          <span class="stat-luxe__num">01</span>
+          <span class="stat-luxe__label">Garantía<br>Oficial</span>
+        </div>
+        <div class="stat-luxe">
+          <span class="stat-luxe__num">02</span>
+          <span class="stat-luxe__label">Armado<br>Premium</span>
+        </div>
+        <div class="stat-luxe">
+          <span class="stat-luxe__num">03</span>
+          <span class="stat-luxe__label">Soporte<br>Experto</span>
+        </div>
       </div>
     </div>
+    
+    <!-- Decoración geométrica -->
+    <div class="hero-premium__deco-line"></div>
+    <div class="hero-premium__deco-circle"></div>
   </section>
 
-  <!-- MARQUEE (Infinite scrolling banner) -->
-  <div class="marquee-section">
-    <div class="marquee-content">
-      <span>✦ INGENIERÍA SUIZA</span>
-      <span>✦ MATERIALES DE ALTA GAMA</span>
-      <span>✦ ENVÍOS NACIONALES INMEDIATOS</span>
-      <span>✦ GARANTÍA DIRECTA</span>
-      <span>✦ MÁXIMO DESEMPEÑO</span>
-      <span>✦ INGENIERÍA SUIZA</span>
-      <span>✦ MATERIALES DE ALTA GAMA</span>
-      <span>✦ ENVÍOS NACIONALES INMEDIATOS</span>
-      <span>✦ GARANTÍA DIRECTA</span>
-      <span>✦ MÁXIMO DESEMPEÑO</span>
+  <!-- MARQUEE MODERNIZADO -->
+  <div class="marquee-luxe">
+    <div class="marquee-luxe__track">
+      <span>PERFORMANCE PURA</span>
+      <span class="separator">✦</span>
+      <span>DISEÑO AERODINÁMICO</span>
+      <span class="separator">✦</span>
+      <span>TECNOLOGÍA DE CARBONO</span>
+      <span class="separator">✦</span>
+      <span>ENVÍOS A TODA COLOMBIA</span>
+      <span class="separator">✦</span>
+      <span>PERFORMANCE PURA</span>
+      <span class="separator">✦</span>
+      <span>DISEÑO AERODINÁMICO</span>
+      <span class="separator">✦</span>
+      <span>TECNOLOGÍA DE CARBONO</span>
+      <span class="separator">✦</span>
+      <span>ENVÍOS A TODA COLOMBIA</span>
+      <span class="separator">✦</span>
     </div>
   </div>
 
-  <!-- CATEGORÍAS -->
-  <section class="section" id="categorias">
+  <!-- CATEGORÍAS BENTO LUXE -->
+  <section class="section category-luxe" id="categorias">
     <div class="container">
-      <h2>Categorías principales</h2>
-      <p>Encuentra la bicicleta ideal y complementos para cada tipo de ciclismo.</p>
+      <div class="section-luxe__header">
+        <h2 class="title-luxe">CATEGORÍAS<br><em class="accent">EXPLORA</em></h2>
+        <p class="desc-luxe">Selección experta para cada disciplina y estilo de competencia.</p>
+      </div>
 
-      <div class="bento-grid">
-        <article class="card categoria bento-item-1" data-category="mtb">
-          <h3>Montaña (MTB)</h3>
-          <p>XC, trail y enduro para dominar cualquier terreno.</p>
+      <div class="bento-luxe">
+        <article class="bento-luxe__item span-2" data-category="mtb">
+          <div class="bento-luxe__icon"><i data-lucide="mountain"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Montaña (MTB)</h3>
+            <p>XC, trail y enduro. Domina cualquier terreno con precisión.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-2" data-category="ruta">
-          <h3>Ruta</h3>
-          <p>Ligereza y aerodinámica para largas distancias.</p>
+        <article class="bento-luxe__item" data-category="ruta">
+          <div class="bento-luxe__icon"><i data-lucide="wind"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Ruta</h3>
+            <p>Aerodinámica y velocidad en el asfalto.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-3" data-category="gravel">
-          <h3>Gravel</h3>
-          <p>Aventura y versatilidad en caminos mixtos.</p>
+        <article class="bento-luxe__item span-tall" data-category="ebike">
+          <div class="bento-luxe__icon"><i data-lucide="zap"></i></div>
+          <div class="bento-luxe__content">
+            <h3>E‑Bikes</h3>
+            <p>El futuro es hoy. Asistencia eléctrica para cruzar horizontes sin límites.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-4" data-category="ebike">
-          <h3>E‑Bikes & Urbanas</h3>
-          <p>Asistencia eléctrica y confort para el día a día.</p>
+        <article class="bento-luxe__item" data-category="gravel">
+          <div class="bento-luxe__icon"><i data-lucide="map"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Gravel</h3>
+            <p>Versatilidad en caminos mixtos.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
 
-        <article class="card categoria bento-item-5" data-category="accesorios">
-          <h3>Accesorios Premium</h3>
-          <p>Cascos, luces, herramientas y componentes clave.</p>
+        <article class="bento-luxe__item span-2" data-category="accesorios">
+          <div class="bento-luxe__icon"><i data-lucide="shield"></i></div>
+          <div class="bento-luxe__content">
+            <h3>Accesorios Premium</h3>
+            <p>Cascos, luces, indumentaria y herramientas vitales.</p>
+          </div>
+          <div class="bento-luxe__glow"></div>
         </article>
       </div>
     </div>
@@ -200,9 +255,9 @@
   <!-- PRODUCTOS RECOMENDADOS (GALERÍA PREMIUM) -->
   <section class="section section--alt" id="recomendados" style="padding-bottom: 2rem;">
     <div class="container">
-      <div class="section__header">
-        <h2>Recomendados para ti</h2>
-        <p>Selección premium de nuestros expertos para llevar tu rendimiento al siguiente nivel.</p>
+      <div class="section-luxe__header">
+        <h2 class="title-luxe">RECOMENDADOS<br><em class="accent">EXCLUSIVOS</em></h2>
+        <p class="desc-luxe">Selección premium de nuestros expertos para llevar tu rendimiento al siguiente nivel.</p>
       </div>
       <div class="grid productos__grid" id="featuredList">
         <!-- JS inyecta recomendados aquí -->
@@ -213,17 +268,19 @@
   <!-- PRODUCTOS -->
   <section class="section" id="productos">
     <div class="container">
-      <div class="section__header">
-        <h2>Productos destacados</h2>
-        <select id="categoryFilter">
-          <option value="all">Todas las categorías</option>
-          <option value="mtb">Montaña</option>
-          <option value="ruta">Ruta</option>
-          <option value="gravel">Gravel</option>
-          <option value="ciudad">Ciudad</option>
-          <option value="ebike">E‑Bikes</option>
-          <option value="accesorios">Accesorios</option>
-        </select>
+      <div class="section-luxe__header">
+        <h2 class="title-luxe">NUESTRA<br><em class="accent">COLECCIÓN</em></h2>
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; margin-top: 1.5rem;">
+          <select id="categoryFilter" class="form-luxe__select-minimal">
+            <option value="all">Todas las categorías</option>
+            <option value="mtb">Montaña</option>
+            <option value="ruta">Ruta</option>
+            <option value="gravel">Gravel</option>
+            <option value="ciudad">Ciudad</option>
+            <option value="ebike">E‑Bikes</option>
+            <option value="accesorios">Accesorios</option>
+          </select>
+        </div>
       </div>
 
       <div class="grid productos__grid" id="productList">
@@ -238,45 +295,66 @@
     </div>
   </section>
 
-  <!-- SERVICIOS / TALLER -->
-  <section class="section section--alt" id="servicios">
-    <div class="container servicios__content">
-      <div>
-        <h2>Taller especializado y servicios</h2>
-        <p>
-          Ofrecemos mantenimiento preventivo, reparaciones completas, ajustes de transmisión
-          y servicio de suspensión para todas las marcas.
+  <!-- SERVICIOS / TALLER LUXE -->
+  <section class="section service-luxe" id="servicios">
+    <div class="service-luxe__bg"></div>
+    <div class="container service-luxe__container">
+      <div class="service-luxe__info">
+        <h2 class="title-luxe">PERFORMANCE<br><em class="accent">LAB</em></h2>
+        <p class="desc-luxe">
+          Más que un taller, es el centro neurálgico para mantener tu máquina en estado de competencia.
         </p>
-        <ul class="servicios__list">
-          <li>Mantenimiento básico y avanzado.</li>
-          <li>Ajuste de frenos, cambios y suspensión.</li>
-          <li>Armado de bicicletas nuevas y personalización.</li>
-          <li>Asesoría para elección de talla y tipo de bicicleta.</li>
+        <ul class="service-luxe__list">
+          <li>
+            <span class="icon-wrap"><i data-lucide="settings"></i></span>
+            <div>
+              <strong>Mantenimiento Avanzado</strong>
+              <span>Desensamble, limpieza ultrasónica y torque preciso.</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon-wrap"><i data-lucide="activity"></i></span>
+            <div>
+              <strong>Ajuste y Suspensión</strong>
+              <span>Telemetría y ajuste fino para dominar el sendero.</span>
+            </div>
+          </li>
+          <li>
+            <span class="icon-wrap"><i data-lucide="user-plus"></i></span>
+            <div>
+              <strong>Asesoría y Personalización</strong>
+              <span>Biometría y armado a la medida de tu fisionomía.</span>
+            </div>
+          </li>
         </ul>
       </div>
-      <div class="servicios__box">
-        <h3>Agenda tu servicio</h3>
-        <form id="serviceForm">
-          <label>
-            Nombre
-            <input type="text" name="nombre" required />
-          </label>
-          <label>
-            Teléfono / WhatsApp
-            <input type="tel" name="telefono" required />
-          </label>
-          <label>
-            Tipo de servicio
-            <select name="tipo" required>
-              <option value="mantenimiento">Mantenimiento general</option>
-              <option value="ajuste">Ajuste cambios / frenos</option>
-              <option value="suspension">Servicio de suspensión</option>
-              <option value="asesoria">Asesoría de compra</option>
-            </select>
-          </label>
-          <button type="submit" class="btn-primary btn-full">Enviar solicitud</button>
-          <p class="form__status" id="serviceStatus"></p>
-        </form>
+      
+      <div class="service-luxe__form-wrapper">
+        <div class="glass-form-panel">
+          <h3>Agendar Intervención</h3>
+          <p>Reserva tu espacio en el taller especializado.</p>
+          <form id="serviceForm" class="form-luxe">
+            <div class="form-luxe__group">
+              <input type="text" name="nombre" required placeholder=" " />
+              <label>Tu Nombre</label>
+            </div>
+            <div class="form-luxe__group">
+              <input type="tel" name="telefono" required placeholder=" " />
+              <label>WhatsApp / Teléfono</label>
+            </div>
+            <div class="form-luxe__group select-mod">
+              <select name="tipo" required>
+                <option value="" disabled selected>Selecciona el servicio...</option>
+                <option value="mantenimiento">Mantenimiento general VIP</option>
+                <option value="ajuste">Ajuste de precisión (Frenos/Cambios)</option>
+                <option value="suspension">Service de suspensión completa</option>
+                <option value="asesoria">Asesoría de compra y fitting</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-luxe btn-full">Solicitar Espacio <i data-lucide="calendar"></i></button>
+            <p class="form__status" id="serviceStatus"></p>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -341,7 +419,7 @@
         <div class="map-wrapper"
           style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid var(--glass-border); height: 450px; position: relative;">
           <iframe
-            src="https://maps.google.com/maps?q=Cra%205%20%239-53%2C%20Pitalito%2C%20Huila&t=&z=17&ie=UTF8&iwloc=&output=embed"
+            src="https://www.google.com/maps?q=Cra+5+%239-53,+Pitalito,+Huila&output=embed"
             width="100%" height="100%" style="border:0; display:block;" allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"></iframe>
 
@@ -360,7 +438,7 @@
   <footer class="footer" id="contacto">
     <div class="container footer__content">
       <div>
-        <img src="logo-pedalazo-completo.svg" alt="Pedalazo" style="height: 60px; margin-bottom: 1rem;">
+        <img src="assets/images/logo-pedalazo-completo.svg" alt="Pedalazo" style="height: 60px; margin-bottom: 1rem;">
         <p>Tu tienda de bicicletas y accesorios en línea.</p>
       </div>
       <div>
@@ -467,7 +545,7 @@
       <button class="cart-modal__close" id="closeLogin"><i data-lucide="x"></i></button>
       <div class="login-header">
         <div class="login-logo">
-          <img src="logo-pedalazo-completo.svg" alt="Pedalazo" style="height: 70px; width: auto;">
+          <img src="assets/images/logo-pedalazo-completo.svg" alt="Pedalazo" style="height: 70px; width: auto;">
         </div>
         <h2>Iniciar Sesión</h2>
         <p>Accede a tu cuenta para gestionar productos</p>
@@ -523,7 +601,7 @@
       <button class="cart-modal__close" id="closeRegister"><i data-lucide="x"></i></button>
       <div class="login-header">
         <div class="login-logo">
-          <img src="logo-pedalazo-completo.svg" alt="Pedalazo" style="height: 70px; width: auto;">
+          <img src="assets/images/logo-pedalazo-completo.svg" alt="Pedalazo" style="height: 70px; width: auto;">
         </div>
         <h2>Crear Cuenta</h2>
         <p>Únete a Grupo Empresarial Pedalazo<br>y comienza a vender</p>
@@ -628,15 +706,10 @@
             </div>
             <div class="form-group">
               <label for="productCategory"><span class="icon" data-lucide="folder"></span> Categoría</label>
-              <select id="productCategory" name="category" required>
-                <option value="">Seleccionar categoría</option>
-                <option value="mtb">MTB</option>
-                <option value="ruta">Ruta</option>
-                <option value="gravel">Gravel</option>
-                <option value="ciudad">Ciudad</option>
-                <option value="ebike">E-Bike</option>
-                <option value="accesorios">Accesorios</option>
-              </select>
+              <input type="text" id="productCategory" name="category" list="categoryOptions" required placeholder="Ej: MTB o Nueva Categoría">
+              <datalist id="categoryOptions">
+                <!-- JS autocompletará esto -->
+              </datalist>
             </div>
             <div class="form-group">
               <label for="productPrice"><span class="icon" data-lucide="dollar-sign"></span> Precio (COP)</label>
@@ -720,34 +793,47 @@
   <style>
     .whatsapp-float {
       position: fixed;
-      bottom: 2rem;
-      left: 2rem;
-      background: #25D366;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
       width: 60px;
       height: 60px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       z-index: 1000;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.3s ease;
     }
 
     .whatsapp-float:hover {
       transform: scale(1.1);
+      background-color: #128c7e;
     }
 
     .whatsapp-float img {
       width: 35px;
       height: 35px;
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    }
+
+    @media (max-width: 768px) {
+      .whatsapp-float {
+        bottom: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+      }
+
+      .whatsapp-float img {
+        width: 30px;
+        height: 30px;
+      }
     }
   </style>
 
-  <!-- Module type for imports -->
-  <script type="module" src="app.js?v=6.0.0"></script>
-
+  <!-- JS Principal -->
+  <script src="assets/js/app.js"></script>
 </body>
 
 </html>

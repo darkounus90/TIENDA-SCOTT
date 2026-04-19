@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Explora nuestro catálogo completo de bicicletas Scott y repuestos automotrices. Encuentra la mejor calidad en El Pedalazo.">
+  <title>Catálogo de Productos | Grupo Empresarial El Pedalazo</title>
+  
+  <link rel="stylesheet" href="assets/css/style.css?v=20.0.0">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="products-page">
+  <!-- CABECERA -->
+  <header class="header">
+    <div class="container header__content">
+      <div class="logo">
+        <a href="index.html">
+          <span>El Pedalazo</span>
+        </a>
+      </div>
+
+      <nav class="nav" id="mainNav">
+        <a href="index.html">Inicio</a>
+        <a href="index.html#categorias">Categorías</a>
+        <a href="productos.html" class="active">Productos</a>
+        <a href="cars.html" class="nav-highlight">
+          Para tu carro!
+          <span class="nav-badge">NEW</span>
+        </a>
+        <a href="index.html#servicios">Servicios</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+
+      <div class="header__actions">
+        <button class="btn-icon" id="searchToggle"><i data-lucide="search"></i></button>
+        <button class="btn-icon" id="cartButton">
+          <i data-lucide="shopping-bag"></i> <span id="cartCount">0</span>
+        </button>
+
+        <div class="user-menu-container">
+          <button class="btn-icon" id="loginButton" title="Iniciar Sesión"><i data-lucide="user"></i></button>
+          <button class="btn-icon" id="accountButton" style="display:none;" title="Mi Cuenta"><i
+              data-lucide="user"></i></button>
+
+          <!-- Dropdown Menu -->
+          <div class="user-dropdown" id="userDropdown">
+            <button id="menuProfile"><span class="icon"><i data-lucide="user"></i></span> Mi Perfil</button>
+            <button id="menuOrders"><span class="icon"><i data-lucide="package"></i></span> Mis Pedidos</button>
+            <div class="dropdown-divider"></div>
+            <button id="menuLogout" class="text-danger"><span class="icon"><i data-lucide="log-out"></i></span> Cerrar
+              Sesión</button>
+          </div>
+        </div>
+
+        <!-- HAMBURGER MENU BUTTON -->
+        <button class="hamburger-menu" id="hamburgerMenu" aria-label="Abrir menú">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+
+      <!-- Search Input Hidden -->
+      <div class="search-overlay" id="searchOverlay" style="display: none;">
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar productos..." />
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 120px; padding-bottom: 60px;">
+    <section id="productos">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="badge">Catálogo</span>
+          <h2>Nuestros Productos</h2>
+        </div>
+        <div class="filter-wrapper">
+          <select id="categoryFilter">
+            <option value="all">Todas las categorías</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="productos__grid" id="productList">
+        <!-- JS Populated -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (Simplified from index.html) -->
+  <footer class="footer">
+    <div class="container footer__content">
+      <div class="footer__brand">
+        <img src="assets/images/logo-pedalazo-completo.svg" alt="El Pedalazo" style="height: 40px; margin-bottom: 1rem;">
+        <p>Tu pasión por el pedal y el motor en un solo lugar.</p>
+      </div>
+      <div class="footer__links">
+        <h4>Enlaces</h4>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="privacidad.html">Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 Grupo Empresarial El Pedalazo. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Login/Cart Modals (Will be handled by app.js if elements match) -->
+  <div class="cart-modal" id="cartModal"></div>
+  <div class="cart-modal" id="loginModal"></div>
+  <div class="cart-modal" id="registerModal"></div>
+  <div class="cart-modal" id="accountModal"></div>
+
+  <!-- Scripts -->
+  <script src="assets/js/app.js" type="module"></script>
+</body>
+
+</html>

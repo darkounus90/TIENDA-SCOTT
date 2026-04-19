@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <title>JDAUTOPARTES - Repuestos Automotrices</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="stylesheet" href="style.css?v=16.0.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="stylesheet" href="assets/css/style.css?v=20.0.0" />
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -85,7 +88,7 @@
         <div class="container header__content">
             <div class="logo">
                 <a href="index.html" style="text-decoration: none; display: flex; align-items: center;">
-                    <!-- <img src="logo-pedalazo-icon.svg" alt="JDAUTOPARTES" style="height: 50px; width: auto;"> -->
+                    <!-- <img src="assets/images/logo-pedalazo-icon.svg" alt="JDAUTOPARTES" style="height: 50px; width: auto;"> -->
                     <span
                         style="font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: -1px; font-family: 'Inter', sans-serif;">JDAUTOPARTES</span>
                 </a>
@@ -98,7 +101,7 @@
                     Para tu carro!
                     <span class="nav-badge">NEW</span>
                 </a>
-                <a href="index.html#servicios">Servicios</a>
+                <a href="productos.html">Productos</a>
                 <a href="index.html#contacto">Contacto</a>
             </nav>
 
@@ -297,6 +300,18 @@
             'taxi', 'hyundai', 'i10', 'atos', 'grand i10'
         ];
 
+        // Helper for COP Currency formatting
+        const currencyFormat = value => {
+            const num = Number(value);
+            if (isNaN(num)) return value;
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(num);
+        };
+
         async function fetchCarProducts() {
             const container = document.getElementById('carProductsList');
             try {
@@ -350,11 +365,11 @@
                 <div class="product-card__brand">${p.brand || p.category || 'Repuesto'}</div>
                 <h3 class="product-card__title">${p.name}</h3>
                 <div class="product-card__meta">
-                    <span class="product-card__price">$${Number(p.price).toLocaleString()}</span>
+                    <span class="product-card__price">${currencyFormat(p.price)}</span>
                     ${p.tag ? `<span class="product-card__tag">${p.tag}</span>` : ''}
                 </div>
                 <div class="product-card__actions">
-                    <button class="btn-primary btn-full" onclick="window.open('https://wa.me/573114497589?text=Hola%20JDAUTOPARTES,%20me%20gustar%C3%ADa%20cotizar%20el%20repuesto:%20' + encodeURIComponent('${p.name}'), '_blank')" title="Cotizar por WhatsApp">
+                    <button class="btn-primary btn-full" onclick="window.open('https://wa.me/573114497589?text=Hola%20JDAUTOPARTES,%20me%20gustar%C3%ADa%20cotizar%20el%20repuesto:%20' + encodeURIComponent('${p.name}') + '%20por%20' + encodeURIComponent('${currencyFormat(p.price)}'), '_blank')" title="Cotizar por WhatsApp">
                         Cotizar por WhatsApp
                     </button>
                 </div>

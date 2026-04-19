@@ -7,9 +7,12 @@
     <title id="seoTitle">Cargando Producto... | El Pedalazo</title>
     <meta id="seoDesc" name="description"
         content="Encuentra el mejor repuesto o bicicleta al mejor precio en El Pedalazo.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="style.css?v=16.0.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link rel="stylesheet" href="assets/css/style.css?v=20.0.0" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .product-view-container {
@@ -32,6 +35,53 @@
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
+            .product-gallery {
+                position: relative !important;
+                top: 0 !important;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .main-image {
+                height: 350px !important;
+                width: 100% !important;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            .product-thumbnails {
+                justify-content: center;
+                width: 100%;
+            }
+            .product-info-panel {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .product-info-panel h1 {
+                font-size: 2rem !important;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+                text-align: center;
+            }
+            .product-price {
+                justify-content: center;
+            }
+            .features-list {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+            .action-bars {
+                flex-direction: column;
+                width: 100%;
+                gap: 1rem;
+            }
+            .btn-add-cart, .btn-whatsapp-buy {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         .product-gallery {
@@ -42,10 +92,11 @@
         .main-image {
             width: 100%;
             height: 500px;
-            object-fit: cover;
+            object-fit: contain; /* IMPORTANTE: contain para que no se recorte la foto automotriz/bici */
             border-radius: var(--radius-lg);
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
+            padding: 1rem; /* Margen interno para que no toque los bordes */
             box-shadow: var(--glass-shadow);
         }
 
@@ -164,13 +215,16 @@
         }
 
         .btn-whatsapp-buy {
+            flex: 1;
             background: #25D366;
             color: white;
-            border: none;
-            border-radius: var(--radius-sm);
+            border: 1px solid #25D366; /* Mismo tamaño de borde que btn-primary para alinear altura */
+            border-radius: var(--radius-pill); /* MISMO borde curvo */
             padding: 1rem 2rem;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            text-transform: uppercase; /* Misma tipografía */
+            letter-spacing: 0.05em; /* Mismo espaciado de letras */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -181,7 +235,7 @@
 
         .btn-whatsapp-buy:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
         }
     </style>
 </head>
@@ -278,6 +332,18 @@
             document.getElementById('cartCountLocal').innerText = count;
         }
 
+        // Helper for COP Currency formatting
+        const currencyFormat = value => {
+            const num = Number(value);
+            if (isNaN(num)) return value;
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(num);
+        };
+
         async function loadProduct() {
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
@@ -288,8 +354,8 @@
             }
 
             try {
-                // Recuperar catálogo. (Idealmente sería un endpoint /products.php?id=... pero por ahora lista total)
-                const res = await fetch(`api/products.php`);
+                // Recuperar catálogo optimizado: pedimos solo el ID que necesitamos
+                const res = await fetch(`api/products.php?id=${id}`);
                 const products = await res.json();
 
                 const product = products.find(p => p.id == id);
@@ -302,7 +368,7 @@
                 document.title = `${product.name} - El Pedalazo`;
                 document.getElementById('pName').innerText = product.name;
                 document.getElementById('pBrand').innerText = product.brand || 'Original';
-                document.getElementById('pPrice').innerText = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(product.price);
+                document.getElementById('pPrice').innerText = currencyFormat(product.price);
                 document.getElementById('pCategory').innerText = `Repuesto / Bicicleta categorizada en: ${product.category}. ${product.tag ? 'Etiqueta: ' + product.tag : ''} | Referencia: ${product.use || 'General'}`;
 
                 if (product.description) {
@@ -380,7 +446,7 @@
                 };
 
                 document.getElementById('btnWhatsapp').onclick = () => {
-                    const wsMsg = `Hola El Pedalazo, me gustaría comprar el producto de su web: ${product.name} por $${product.price}. ID: ${product.id}`;
+                    const wsMsg = `Hola El Pedalazo, me gustaría comprar el producto de su web: ${product.name} por ${currencyFormat(product.price)}. ID: ${product.id}`;
                     window.open(`https://wa.me/573114497589?text=${encodeURIComponent(wsMsg)}`, '_blank');
                 };
 
