@@ -5,7 +5,7 @@
 
 define('TOKEN_SECRET', getenv('TOKEN_SECRET') ?: 'CAMBIA_ESTO_EN_ENV_ANTES_DE_PRODUCCION');
 define('TOKEN_TTL', 60 * 60 * 8); // 8 horas
-define('ALLOWED_ORIGIN', getenv('ALLOWED_ORIGIN') ?: '*');
+define('ALLOWED_ORIGIN', getenv('ALLOWED_ORIGIN') ?: 'https://bikeclubpedalazo.online');
 
 /**
  * Emite los headers CORS correctos.

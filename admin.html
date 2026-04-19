@@ -790,11 +790,15 @@
                             <label>Código de Barras</label>
                             <input type="text" name="barcode" class="form-input" placeholder="Opcional">
                         </div>
-                        <div class="form-group full-width" style="background: rgba(217, 119, 6, 0.05); padding: 1rem; border-radius: 8px; border: 1px solid var(--glass-border); margin-top: 1rem;">
-                           <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; color: var(--primary);">
+                        <div class="form-group full-width" style="background: rgba(217, 119, 6, 0.05); padding: 1rem; border-radius: 8px; border: 1px solid var(--glass-border); margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                           <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; color: var(--primary); flex: 1;">
                                <input type="checkbox" id="inputIsRecommended" name="is_recommended" style="width: 20px; height: 20px;">
-                               ⭐ Marcar como Producto Recomendado (Aparece en inicio)
+                               ⭐ Marcar como Producto Recomendado (Inicio)
                            </label>
+                           <div style="display: flex; align-items: center; gap: 0.5rem; color: white;">
+                               <span>Orden:</span>
+                               <input type="number" id="inputRecommendedOrder" name="recommended_order" class="form-input" style="width: 70px; padding: 0.4rem;" min="0" placeholder="0">
+                           </div>
                         </div>
                         <div class="form-group full-width" style="grid-column: 1 / -1;">
                             <label>Descripción del Producto</label>
@@ -919,6 +923,7 @@
             document.getElementById('editProductId').value = '';
             document.getElementById('addProductForm').reset();
             document.getElementById('inputIsRecommended').checked = false;
+            document.getElementById('inputRecommendedOrder').value = '0';
             document.getElementById('imagePreviewGrid').innerHTML = '';
             productImagesBase64 = [];
             openAddProduct();
@@ -1174,7 +1179,8 @@
                 barcode: formData.get('barcode'),
                 description: formData.get('description'),
                 images: productImagesBase64,
-                is_recommended: document.getElementById('inputIsRecommended').checked ? 1 : 0
+                is_recommended: document.getElementById('inputIsRecommended').checked ? 1 : 0,
+                recommended_order: parseInt(document.getElementById('inputRecommendedOrder').value) || 0
             };
 
             const editId = document.getElementById('editProductId').value;
@@ -1640,7 +1646,7 @@
             ${imgUrl ? `<img src="${imgUrl}" style="width: 44px; height: 44px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 2px 4px rgba(0,0,0,0.2);">` : `<div style="width: 44px; height: 44px; border-radius: 6px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #64748b; font-weight: 500;">Sin Img</div>`}
         </td>
         <td>
-            <div style="font-weight: 600; font-size: 0.95rem; color: #f8fafc; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${p.name}">${p.is_recommended == 1 ? '⭐ ' : ''}${p.name}</div>
+            <div style="font-weight: 600; font-size: 0.95rem; color: #f8fafc; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${p.name}">${p.is_recommended == 1 ? `<span style="color: #f59e0b;" title="Orden en Inicio: ${p.recommended_order}">⭐ ${p.recommended_order}</span> ` : ''}${p.name}</div>
             <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">SKU: <span style="font-family: monospace;">${p.barcode || 'N/A'}</span></div>
         </td>
         <td>
@@ -1806,9 +1812,12 @@
             document.getElementById('final-use').value = useField;
             document.getElementById('input-use').value = useField;
             
-            // Cargar estado de recomendado
+            // Cargar estado de recomendado y orden
             const recInput = document.getElementById('inputIsRecommended');
             if (recInput) recInput.checked = (product.is_recommended == 1);
+            
+            const ordInput = document.getElementById('inputRecommendedOrder');
+            if (ordInput) ordInput.value = product.recommended_order || 0;
 
             openAddProduct();
         }

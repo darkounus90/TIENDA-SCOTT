@@ -41,6 +41,12 @@ if ($conn->query($sql) === TRUE) {
         $conn->query("ALTER TABLE products ADD COLUMN is_recommended TINYINT(1) DEFAULT 0 AFTER description");
         echo "<p>✅ Columna 'is_recommended' agregada.</p>";
     }
+
+    $checkOrder = $conn->query("SHOW COLUMNS FROM products LIKE 'recommended_order'");
+    if ($checkOrder->num_rows == 0) {
+        $conn->query("ALTER TABLE products ADD COLUMN recommended_order INT DEFAULT 0 AFTER is_recommended");
+        echo "<p>✅ Columna 'recommended_order' agregada.</p>";
+    }
     
 } else {
     echo "<h2 style='color:red'>❌ Error creando tabla: " . $conn->error . "</h2>";

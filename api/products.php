@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         if (isset($_GET['recommended'])) {
             $where .= " AND is_recommended = 1";
+            $orderBy = "recommended_order ASC, id DESC";
         }
     }
     
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $countRes = $conn->query("SELECT COUNT(*) as total FROM products $where");
     $totalCount = ($countRes) ? (int)$countRes->fetch_assoc()['total'] : 0;
 
-    $sql = "SELECT * FROM products $where ORDER BY id DESC";
+    $sql = "SELECT * FROM products $where ORDER BY " . ($orderBy ?? "id DESC");
     
     if ($limit > 0 && $id <= 0) {
         $offset = ($page - 1) * $limit;
@@ -114,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = $conn->real_escape_string($data['description'] ?? '');
     $images = $data['images'] ?? []; // Array de Base64 strings
     $is_recommended = isset($data['is_recommended']) ? (int)$data['is_recommended'] : 0;
+    $recommended_order = isset($data['recommended_order']) ? (int)$data['recommended_order'] : 0;
 
     if (!$name || !$price) {
         echo json_encode(["success" => false, "message" => "Nombre y precio requeridos"]);
@@ -123,8 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Convertir array de imágenes a JSON para guardar
     $imagesJson = $conn->real_escape_string(json_encode($images));
 
-    $sql = "INSERT INTO products (name, brand, category, price, tag, use_type, stock, barcode, description, images, is_recommended) 
-            VALUES ('$name', '$brand', '$category', $price, '$tag', '$use_type', $stock, '$barcode', '$description', '$imagesJson', $is_recommended)";
+    $sql = "INSERT INTO products (name, brand, category, price, tag, use_type, stock, barcode, description, images, is_recommended, recommended_order) 
+            VALUES ('$name', '$brand', '$category', $price, '$tag', '$use_type', $stock, '$barcode', '$description', '$imagesJson', $is_recommended, $recommended_order)";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["success" => true, "message" => "Producto guardado", "id" => $conn->insert_id]);
@@ -170,6 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $barcode = $conn->real_escape_string($data['barcode'] ?? '');
     $description = $conn->real_escape_string($data['description'] ?? '');
     $is_recommended = isset($data['is_recommended']) ? (int)$data['is_recommended'] : 0;
+    $recommended_order = isset($data['recommended_order']) ? (int)$data['recommended_order'] : 0;
     $use_type = $conn->real_escape_string($data['use'] ?? '');
     
     // Solo actualizar imágenes si se envían nuevas
@@ -182,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $sql = "UPDATE products SET 
             name='$name', brand='$brand', category='$category', 
             price=$price, tag='$tag', stock=$stock, barcode='$barcode', description='$description',
-            is_recommended=$is_recommended, use_type='$use_type'
+            is_recommended=$is_recommended, recommended_order=$recommended_order, use_type='$use_type'
             $imagesSql
             WHERE id=$id";
 
