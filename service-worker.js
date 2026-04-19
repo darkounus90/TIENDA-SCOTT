@@ -11,6 +11,7 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (e) => {
+  // Update - LUXE Version Release - Cache Bust
   self.skipWaiting(); // Obliga al nuevo service worker a instalarse de inmediato sin esperar a que se cierren las pestañas
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
