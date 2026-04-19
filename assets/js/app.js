@@ -2098,6 +2098,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Lógica para agendar citas hacia WhatsApp
+const serviceForm = document.getElementById('serviceForm');
+if (serviceForm) {
+  serviceForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(serviceForm);
+    const nombre = formData.get('nombre');
+    const telefono = formData.get('telefono');
+    
+    const selectElement = serviceForm.querySelector('select[name="tipo"]');
+    const tipoTexto = selectElement && selectElement.selectedIndex >= 0 
+      ? selectElement.options[selectElement.selectedIndex].text 
+      : formData.get('tipo');
+
+    const mensaje = `Hola El Pedalazo, quiero agendar una cita para taller.\n\n*Nombre*: ${nombre}\n*Teléfono*: ${telefono}\n*Servicio*: ${tipoTexto}`;
+    const waUrl = `https://wa.me/573114497589?text=${encodeURIComponent(mensaje)}`;
+    
+    const statusMsg = document.getElementById('serviceStatus');
+    if (statusMsg) {
+      statusMsg.textContent = '¡Redirigiendo a WhatsApp...!';
+      statusMsg.style.color = '#22c55e';
+    }
+    
+    window.open(waUrl, '_blank');
+    serviceForm.reset();
+    
+    setTimeout(() => {
+      if (statusMsg) statusMsg.textContent = '';
+    }, 3000);
+  });
+}
+
 // Initialize Lucide Icons
 window.addEventListener('load', () => {
   if (typeof lucide !== 'undefined') {
