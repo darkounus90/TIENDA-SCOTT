@@ -838,6 +838,7 @@ let searchDebounceTimer;
 
 // Render productos
 function renderProducts(itemsToRender, append = false) {
+  if (!productList) return;
   if (!append) productList.innerHTML = "";
   
   if (itemsToRender.length === 0 && !append) {
@@ -879,10 +880,12 @@ function renderProducts(itemsToRender, append = false) {
 }
 
 // Filtro por select
-categoryFilter.addEventListener("change", e => {
-  filteredCategory = e.target.value;
-  fetchProducts();
-});
+if (categoryFilter) {
+  categoryFilter.addEventListener("change", e => {
+    filteredCategory = e.target.value;
+    fetchProducts();
+  });
+}
 
 // Filtro por categoría clickeando cards de categorías
 document.querySelectorAll(".categoria").forEach(card => {
@@ -913,30 +916,38 @@ const menuOrders = document.getElementById("menuOrders");
 const menuLogout = document.getElementById("menuLogout");
 
 // Cerrar desplegable al hacer clic fuera
-document.addEventListener("click", (e) => {
-  if (!loginButton.contains(e.target) && !userDropdown.contains(e.target)) {
-    userDropdown.classList.remove("active");
-  }
-});
+if (loginButton && userDropdown) {
+  document.addEventListener("click", (e) => {
+    if (!loginButton.contains(e.target) && !userDropdown.contains(e.target)) {
+      userDropdown.classList.remove("active");
+    }
+  });
+}
 
 // Acciones del menú
-menuProfile.addEventListener("click", () => {
-  userDropdown.classList.remove("active");
-  openAccountModal("info");
-});
+if (menuProfile) {
+  menuProfile.addEventListener("click", () => {
+    userDropdown.classList.remove("active");
+    openAccountModal("info");
+  });
+}
 
-menuOrders.addEventListener("click", () => {
-  userDropdown.classList.remove("active");
-  openAccountModal("orders");
-});
+if (menuOrders) {
+  menuOrders.addEventListener("click", () => {
+    userDropdown.classList.remove("active");
+    openAccountModal("orders");
+  });
+}
 
-menuLogout.addEventListener("click", () => {
-  localStorage.removeItem('token');
-  currentUser = null;
-  userDropdown.classList.remove("active");
-  updateLoginButton();
-  window.location.reload();
-});
+if (menuLogout) {
+  menuLogout.addEventListener("click", () => {
+    localStorage.removeItem('token');
+    currentUser = null;
+    if (userDropdown) userDropdown.classList.remove("active");
+    updateLoginButton();
+    window.location.reload();
+  });
+}
 
 // Actualizar botón de login
 function updateLoginButton() {
@@ -1080,9 +1091,9 @@ function closeAddProductModal() {
 }
 
 // Listeners de cierre
-closeLogin.addEventListener("click", closeLoginModal);
-closeRegister.addEventListener("click", closeRegisterModal);
-closeAddProduct.addEventListener("click", closeAddProductModal);
+if (closeLogin) closeLogin.addEventListener("click", closeLoginModal);
+if (closeRegister) closeRegister.addEventListener("click", closeRegisterModal);
+if (closeAddProduct) closeAddProduct.addEventListener("click", closeAddProductModal);
 
 // Reactivar cierre por clic fuera
 if (loginModal) {
@@ -1103,73 +1114,81 @@ if (addProductModal) {
   });
 }
 
-showRegister.addEventListener("click", e => {
-  e.preventDefault();
-  closeLoginModal();
-  openRegister();
-});
-
-showLogin.addEventListener("click", e => {
-  e.preventDefault();
-  closeRegisterModal();
-  openLogin();
-});
-
-loginForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const formData = new FormData(loginForm);
-  const username = formData.get("username");
-  const password = formData.get("password");
-  await loginUser(username, password);
-  if (currentUser) {
+if (showRegister) {
+  showRegister.addEventListener("click", e => {
+    e.preventDefault();
     closeLoginModal();
-  }
-});
+    openRegister();
+  });
+}
 
-registerForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const formData = new FormData(registerForm);
-  const username = registerForm.username.value;
-  const email = registerForm.email.value;
-  const phone = registerForm.phone.value;
-  const password = registerForm.password.value;
-  const confirmPassword = registerForm.confirmPassword.value;
-
-
-  const trimmedUsername = username?.trim();
-  const trimmedEmail = email?.trim();
-  const trimmedPhone = phone?.trim();
-  const trimmedPassword = password?.trim();
-  const trimmedConfirmPassword = confirmPassword?.trim();
-
-  if (!trimmedUsername || !trimmedEmail || !trimmedPassword || !trimmedConfirmPassword) {
-    alert("Todos los campos obligatorios deben llenarse.");
-    return;
-  }
-  if (trimmedPassword !== trimmedConfirmPassword) {
-    alert("Las contraseñas no coinciden.");
-    return;
-  }
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(trimmedEmail)) {
-    alert("El email no es válido.");
-    return;
-  }
-
-  // Capturar dirección
-  const dep = document.getElementById("registerDepartment").value;
-  const city = document.getElementById("registerCity").value;
-  const address = document.getElementById("registerAddress").value;
-
-  if (!dep || !city || !address) {
-    alert("Por favor completa los datos de ubicación.");
-    return;
-  }
-
-  const result = await registerUser(trimmedUsername, trimmedEmail, trimmedPhone, trimmedPassword, { department: dep, city: city, address: address });
-  if (result === true) {
+if (showLogin) {
+  showLogin.addEventListener("click", e => {
+    e.preventDefault();
     closeRegisterModal();
-  }
-});
+    openLogin();
+  });
+}
+
+if (loginForm) {
+  loginForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const formData = new FormData(loginForm);
+    const username = formData.get("username");
+    const password = formData.get("password");
+    await loginUser(username, password);
+    if (currentUser) {
+      closeLoginModal();
+    }
+  });
+}
+
+if (registerForm) {
+  registerForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const formData = new FormData(registerForm);
+    const username = registerForm.username.value;
+    const email = registerForm.email.value;
+    const phone = registerForm.phone.value;
+    const password = registerForm.password.value;
+    const confirmPassword = registerForm.confirmPassword.value;
+
+
+    const trimmedUsername = username?.trim();
+    const trimmedEmail = email?.trim();
+    const trimmedPhone = phone?.trim();
+    const trimmedPassword = password?.trim();
+    const trimmedConfirmPassword = confirmPassword?.trim();
+
+    if (!trimmedUsername || !trimmedEmail || !trimmedPassword || !trimmedConfirmPassword) {
+      alert("Todos los campos obligatorios deben llenarse.");
+      return;
+    }
+    if (trimmedPassword !== trimmedConfirmPassword) {
+      alert("Las contraseñas no coinciden.");
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(trimmedEmail)) {
+      alert("El email no es válido.");
+      return;
+    }
+
+    // Capturar dirección
+    const dep = document.getElementById("registerDepartment").value;
+    const city = document.getElementById("registerCity").value;
+    const address = document.getElementById("registerAddress").value;
+
+    if (!dep || !city || !address) {
+      alert("Por favor completa los datos de ubicación.");
+      return;
+    }
+
+    const result = await registerUser(trimmedUsername, trimmedEmail, trimmedPhone, trimmedPassword, { department: dep, city: city, address: address });
+    if (result === true) {
+      closeRegisterModal();
+    }
+  });
+}
 
 
 
@@ -1181,19 +1200,23 @@ registerForm.addEventListener("submit", async e => {
 const toggleLoginPassword = document.getElementById("toggleLoginPassword");
 const toggleRegisterPassword = document.getElementById("toggleRegisterPassword");
 
-toggleLoginPassword.addEventListener("click", () => {
-  const input = document.getElementById("loginPassword");
-  const type = input.getAttribute("type") === "password" ? "text" : "password";
-  input.setAttribute("type", type);
-  toggleLoginPassword.querySelector(".eye-icon").textContent = type === "password" ? "👁️" : "🙈";
-});
+if (toggleLoginPassword) {
+  toggleLoginPassword.addEventListener("click", () => {
+    const input = document.getElementById("loginPassword");
+    const type = input.getAttribute("type") === "password" ? "text" : "password";
+    input.setAttribute("type", type);
+    toggleLoginPassword.querySelector(".eye-icon").textContent = type === "password" ? "👁️" : "🙈";
+  });
+}
 
-toggleRegisterPassword.addEventListener("click", () => {
-  const input = document.getElementById("registerPassword");
-  const type = input.getAttribute("type") === "password" ? "text" : "password";
-  input.setAttribute("type", type);
-  toggleRegisterPassword.querySelector(".eye-icon").textContent = type === "password" ? "👁️" : "🙈";
-});
+if (toggleRegisterPassword) {
+  toggleRegisterPassword.addEventListener("click", () => {
+    const input = document.getElementById("registerPassword");
+    const type = input.getAttribute("type") === "password" ? "text" : "password";
+    input.setAttribute("type", type);
+    toggleRegisterPassword.querySelector(".eye-icon").textContent = type === "password" ? "👁️" : "🙈";
+  });
+}
 
 // Funcionalidad de carga de imágenes (Cuadrícula multi-imagen)
 const imageUploadGrid = document.getElementById("imageUploadGrid");
