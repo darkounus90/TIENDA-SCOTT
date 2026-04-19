@@ -92,6 +92,23 @@
       <div class="productos__grid" id="productList">
         <!-- JS Populated -->
       </div>
+
+      <!-- Loader de productos -->
+      <div id="productLoader" style="display:none; text-align:center; padding:2rem;">
+        <div class="skeleton-card" style="margin:0 auto; max-width:200px;">
+          <div class="skeleton-img"></div>
+        </div>
+      </div>
+
+      <!-- Botón cargar más -->
+      <div style="text-align:center; margin-top:2rem;">
+        <button id="loadMoreBtn" class="btn-secondary" style="display:none; padding:0.8rem 2rem; font-size:1rem;">
+          Cargar más productos
+        </button>
+      </div>
+
+      <!-- Sentinel para Infinite Scroll -->
+      <div id="paginationContainer" style="height:1px;"></div>
     </section>
   </main>
 
@@ -123,7 +140,7 @@
   <div class="cart-modal" id="accountModal"></div>
 
   <!-- Scripts -->
-  <script src="assets/js/app.js" type="module"></script>
+  <script src="assets/js/app.js?v=21.0.2"></script>
 </body>
 
 </html>
